@@ -1,0 +1,109 @@
+{
+  "base_branch": "main",
+  "branch": "plan/20260509-123140_mangadict-mvp",
+  "slug": "20260509-123140_mangadict-mvp",
+  "status": "in_progress",
+  "mode": "multi-task",
+  "execution_mode": "sequential",
+  "started_at": "2026-05-09",
+  "tasks": [
+    {
+      "number": 1,
+      "name": "ocr-validation-spike",
+      "depends_on": [],
+      "parallelizable_with": [],
+      "status": "planned",
+      "plan_file": "PLAN-task-1-ocr-validation-spike.md",
+      "changes_summary": null,
+      "verification_result": null,
+      "error": null,
+      "retry_count": 0
+    },
+    {
+      "number": 2,
+      "name": "data-model",
+      "depends_on": [1],
+      "parallelizable_with": [3, 4],
+      "status": "planned",
+      "plan_file": "PLAN-task-2-data-model.md",
+      "changes_summary": null,
+      "verification_result": null,
+      "error": null,
+      "retry_count": 0
+    },
+    {
+      "number": 3,
+      "name": "translation-service",
+      "depends_on": [1],
+      "parallelizable_with": [2, 4],
+      "status": "planned",
+      "plan_file": "PLAN-task-3-translation-service.md",
+      "changes_summary": null,
+      "verification_result": null,
+      "error": null,
+      "retry_count": 0
+    },
+    {
+      "number": 4,
+      "name": "ocr-service",
+      "depends_on": [1],
+      "parallelizable_with": [2, 3],
+      "status": "planned",
+      "plan_file": "PLAN-task-4-ocr-service.md",
+      "changes_summary": null,
+      "verification_result": null,
+      "error": null,
+      "retry_count": 0
+    },
+    {
+      "number": 5,
+      "name": "reader-overlay",
+      "depends_on": [1, 4],
+      "parallelizable_with": [],
+      "status": "planned",
+      "plan_file": "PLAN-task-5-reader-overlay.md",
+      "changes_summary": null,
+      "verification_result": null,
+      "error": null,
+      "retry_count": 0
+    },
+    {
+      "number": 6,
+      "name": "word-lookup-sheet",
+      "depends_on": [2, 3, 5],
+      "parallelizable_with": [7],
+      "status": "planned",
+      "plan_file": "PLAN-task-6-word-lookup-sheet.md",
+      "changes_summary": null,
+      "verification_result": null,
+      "error": null,
+      "retry_count": 0
+    },
+    {
+      "number": 7,
+      "name": "sentence-translation",
+      "depends_on": [2, 3, 5],
+      "parallelizable_with": [6],
+      "status": "planned",
+      "plan_file": "PLAN-task-7-sentence-translation.md",
+      "changes_summary": null,
+      "verification_result": null,
+      "error": null,
+      "retry_count": 0
+    },
+    {
+      "number": 8,
+      "name": "vocab-flashcards",
+      "depends_on": [2, 3, 6],
+      "parallelizable_with": [],
+      "status": "planned",
+      "plan_file": "PLAN-task-8-vocab-flashcards.md",
+      "changes_summary": null,
+      "verification_result": null,
+      "error": null,
+      "retry_count": 0
+    }
+  ],
+  "verification_gates": [],
+  "execution_log": []
+}

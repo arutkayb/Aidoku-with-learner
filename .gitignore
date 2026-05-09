@@ -19,3 +19,11 @@
 
 # Xcode-Build-Server
 buildServer.json
+
+# graphify (local-only — see graphify README)
+graphify-out/manifest.json
+graphify-out/cost.json
+
+# OCR Spike build artifacts
+spikes/OCRSpike/build/
+spikes/OCRSpike/DerivedData/
