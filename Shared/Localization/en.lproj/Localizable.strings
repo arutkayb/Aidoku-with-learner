@@ -775,6 +775,12 @@
 "LEARNER_TRANSLATE_SENTENCE" = "Translate this sentence";
 "LEARNER_FAMILIARITY" = "Familiarity";
 "LEARNER_WORD_LOOKUP_ERROR" = "Could not load translation.";
+"LEARNER_TRANSLATE_PAGE" = "Translate Page";
+"LEARNER_SIMPLIFIED_LABEL" = "Simplified";
+"LEARNER_SENTENCE_LOAD_ERROR" = "Could not load sentence translation.";
+"LEARNER_RETRY" = "Retry";
+"LEARNER_NO_TEXT_DETECTED" = "No text detected on this page.";
+"LEARNER_PAGE" = "Page";
 
 // MARK: — Learner Mode (Task 5)
 "LEARNER_MODE" = "Learner Mode";
