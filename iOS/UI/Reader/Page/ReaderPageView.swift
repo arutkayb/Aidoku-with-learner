@@ -557,7 +557,7 @@ class ReaderPageView: UIView {
         imageAnalaysisInteraction?.analysis = nil
     }
 
-    private func notifyLearnerOfImage() {
+    func notifyLearnerOfImage() {
         guard let ctx = learnerContext, let image = imageView.image else { return }
         Task { await LearnerOverlayCoordinator.shared.imageDidLoad(image, context: ctx, container: self) }
     }
