@@ -13,12 +13,12 @@ import Foundation
 
 final class CompositeTranslationService: TranslationService {
 
-    private let foundationModels: FoundationModelsTranslationService
-    private let deepL: DeepLTranslationService
+    private let foundationModels: any TranslationService
+    private let deepL: any TranslationService
 
     init(
-        foundationModels: FoundationModelsTranslationService = FoundationModelsTranslationService(),
-        deepL: DeepLTranslationService = DeepLTranslationService()
+        foundationModels: any TranslationService = FoundationModelsTranslationService(),
+        deepL: any TranslationService = DeepLTranslationService()
     ) {
         self.foundationModels = foundationModels
         self.deepL = deepL

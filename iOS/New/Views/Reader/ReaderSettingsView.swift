@@ -16,6 +16,7 @@ struct ReaderSettingsView: View {
     @StateObject private var downsampleImages = UserDefaultsBool(key: "Reader.downsampleImages")
     @StateObject private var upscaleImages = UserDefaultsBool(key: "Reader.upscaleImages")
     @StateObject private var splitWideImages = UserDefaultsBool(key: "Reader.splitWideImages")
+    @StateObject private var learnerEnabled: UserDefaultsBool
 
     // All available font families on the system
     private static let availableFonts: [String] = {
@@ -37,6 +38,9 @@ struct ReaderSettingsView: View {
         self._tapZones = State(
             initialValue: UserDefaults.standard.string(forKey: "Reader.tapZones")
                 .flatMap(DefaultTapZones.init) ?? .disabled
+        )
+        self._learnerEnabled = StateObject(
+            wrappedValue: UserDefaultsBool(key: "Learner.enabled.\(mangaId)")
         )
     }
 
@@ -394,7 +398,7 @@ struct ReaderSettingsView: View {
                     )
                     .disabled(!isPaged)
 
-                    if isPaged && UserDefaults.standard.bool(forKey: learnerKey) {
+                    if isPaged && learnerEnabled.value {
                         SettingView(
                             setting: .init(
                                 key: "Learner.ocrLanguages",
@@ -411,7 +415,7 @@ struct ReaderSettingsView: View {
                 } footer: {
                     if !isPaged {
                         Text(NSLocalizedString("LEARNER_PAGED_ONLY_NOTICE"))
-                    } else if UserDefaults.standard.bool(forKey: learnerKey) {
+                    } else if learnerEnabled.value {
                         Text(NSLocalizedString("LEARNER_LIVE_TEXT_PAUSED_NOTICE"))
                     }
                 }

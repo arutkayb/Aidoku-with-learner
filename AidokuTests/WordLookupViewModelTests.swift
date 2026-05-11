@@ -40,12 +40,17 @@ private func makeEvent(word: String = "Buch", manga: String = "test-manga-wlvm")
 
 @Suite struct WordLookupViewModelTests {
 
-    // Test 1: normalizeLemma strips punctuation and lowercases
-    @Test func normalizeLemma_stripsPunctuationAndLowercases() {
-        #expect(LearnerStrings.normalizeLemma("Buch.") == "buch")
-        #expect(LearnerStrings.normalizeLemma("Buch,") == "buch")
+    // Test 1: normalizeLemma matches VocabularyEntryObject.normalize so the overlay
+    // badge lookup never diverges from the storage key (Decision Register #6).
+    // Whitespace and case are folded; punctuation is preserved.
+    @Test func normalizeLemma_matchesStorageRule() {
         #expect(LearnerStrings.normalizeLemma("  Buch  ") == "buch")
         #expect(LearnerStrings.normalizeLemma("BUCH") == "buch")
+        // Punctuation preserved: "Buch." and "Buch" must NOT collide.
+        #expect(LearnerStrings.normalizeLemma("Buch.") == "buch.")
+        #expect(LearnerStrings.normalizeLemma("Buch,") == "buch,")
+        // Symmetry with the entity-level normalizer (single source of truth).
+        #expect(LearnerStrings.normalizeLemma("Mädchen?") == VocabularyEntryObject.normalize("Mädchen?"))
     }
 
     // Test 2: fresh event — not in vocab initially

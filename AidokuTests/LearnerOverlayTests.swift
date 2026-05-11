@@ -54,12 +54,28 @@ import Testing
         #expect(view.subviews.isEmpty)
     }
 
-    // Test 3: hit-test passes through on empty overlay space
-    @Test @MainActor func hitTest_emptySpace_returnsNil() {
+    // Test 3: empty-space taps are claimed by the overlay so its long-press recognizer fires.
+    // Word-region touches are still routed to their UIControl subviews.
+    @Test @MainActor func hitTest_emptySpace_returnsSelf() {
         let view = LearnerOverlayView(frame: CGRect(x: 0, y: 0, width: 400, height: 600))
-        // No words, no controls — tap should pass through
         let hit = view.hitTest(CGPoint(x: 200, y: 300), with: nil)
-        #expect(hit == nil)
+        #expect(hit === view, "Overlay must claim empty-space touches so long-press can fire")
+    }
+
+    // Test 3b: with words present, hit on a word region resolves to the WordRegionControl subview.
+    @Test @MainActor func hitTest_wordRegion_returnsControl() {
+        let view = LearnerOverlayView(frame: CGRect(x: 0, y: 0, width: 400, height: 600))
+        // One large word spanning the full overlay
+        let word = OCRWordBox(
+            text: "Wort",
+            boundingBox: CGRect(x: 0, y: 0, width: 1.0, height: 1.0),
+            confidence: 0.9,
+            lineIndex: 0
+        )
+        view.update(words: [word], vocabIndex: VocabIndex.shared, language: "de-DE", pageContext: makeContext())
+        view.layoutIfNeeded()
+        let hit = view.hitTest(CGPoint(x: 200, y: 300), with: nil)
+        #expect(hit !== view, "Hit on a word region should resolve to its UIControl subview, not the overlay")
     }
 }
 

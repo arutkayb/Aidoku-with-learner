@@ -45,7 +45,8 @@ actor BackupManager {
         "Manga",
         "Logs",
         "Search",
-        "Token"
+        "Token",
+        "Learner"
     ]
 
     func save(backup: Backup, url: URL? = nil) {

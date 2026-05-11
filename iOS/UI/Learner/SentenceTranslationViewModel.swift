@@ -88,14 +88,24 @@ final class SentenceTranslationViewModel: ObservableObject {
             return
         }
 
-        // Validate: if grouping returned nothing or appears invalid, fall back to one-line-per-sentence
+        // Validate that every input fragment index appears exactly once across groups.
+        // If the LLM dropped or duplicated indices, fall back to one-fragment-per-sentence.
+        let inputIndices = Set(fragments.map(\.index))
+        let returnedFlat = groups.flatMap(\.fragmentIndices)
+        let returnedSet = Set(returnedFlat)
+        let groupingIsValid = !groups.isEmpty
+            && returnedSet == inputIndices
+            && returnedFlat.count == inputIndices.count
         let resolvedGroups: [SentenceGroup]
-        if groups.isEmpty {
+        if groupingIsValid {
+            resolvedGroups = groups
+        } else {
+            if !groups.isEmpty {
+                print("[Learner] sentence grouping returned invalid fragment indices; falling back to one-per-line")
+            }
             resolvedGroups = fragments.map { frag in
                 SentenceGroup(fragmentIndices: [frag.index], combinedText: frag.text)
             }
-        } else {
-            resolvedGroups = groups
         }
 
         // Seed sentences array with source text (no translation yet)
@@ -152,8 +162,9 @@ final class SentenceTranslationViewModel: ObservableObject {
 
 // MARK: — LearnerPageContext language helper
 
-private extension LearnerPageContext {
-    /// Derives the source language tag from the OCR language stored in UserDefaults for this manga.
+extension LearnerPageContext {
+    /// Derives the source language tag from the OCR language stored in UserDefaults.
+    /// Currently global; per-manga language is tracked as I11 in the review backlog.
     var language: String {
         if let lang = UserDefaults.standard.string(forKey: "Learner.ocrLanguages"), !lang.isEmpty {
             return lang

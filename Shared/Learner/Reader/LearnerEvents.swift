@@ -65,4 +65,12 @@ public final class LearnerEvents {
     /// Subscribers (overlay, vocab list) should refresh their vocab index on receipt.
     public let vocabChanged = PassthroughSubject<Void, Never>()
 }
+
+// MARK: — Notifications
+
+public extension Notification.Name {
+    /// Posted when `Learner.enabledGlobally` flips on (first time the user enables Learner
+    /// mode for any manga). TabBarController observes this to show the Vocabulary tab.
+    static let learnerEnabledGloballyChanged = Notification.Name("Learner.enabledGloballyChanged")
+}
 #endif // canImport(UIKit)

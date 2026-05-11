@@ -73,17 +73,24 @@ final class StubTranslationService: TranslationService, @unchecked Sendable {
         #expect(stub.wordCallCount == 2)
     }
 
+    // The production CompositeTranslationService already accepts stub services via its
+    // init (CompositeTranslationService.swift:19-25). Tests 3-6 exercise it directly.
+    // Note: only StubTranslationService doubles are used; the real init types
+    // (FoundationModelsTranslationService / DeepLTranslationService) are concrete but
+    // CompositeTranslationService stores the protocol-typed `any TranslationService`
+    // members internally for the routing logic. To stay on the production class we
+    // construct it with default args and then mutate routing via a thin shim below.
+
     // MARK: 3. DeepL preferred when key is set
 
     @Test func deepLPreferred_whenKeyIsSet() async throws {
         let deepLStub = StubTranslationService()
         let fmStub = StubTranslationService()
 
-        // Set a fake API key
         UserDefaults.standard.set("fake-key", forKey: "Learner.deepLAPIKey")
         defer { UserDefaults.standard.removeObject(forKey: "Learner.deepLAPIKey") }
 
-        let composite = CompositeTranslationServiceTestable(foundationModels: fmStub, deepL: deepLStub)
+        let composite = makeComposite(fm: fmStub, deepL: deepLStub)
         _ = try await composite.translateWord("Buch", sourceLanguage: "de-DE", targetLanguage: "en")
 
         #expect(deepLStub.wordCallCount == 1)
@@ -98,7 +105,7 @@ final class StubTranslationService: TranslationService, @unchecked Sendable {
 
         UserDefaults.standard.removeObject(forKey: "Learner.deepLAPIKey")
 
-        let composite = CompositeTranslationServiceTestable(foundationModels: fmStub, deepL: deepLStub)
+        let composite = makeComposite(fm: fmStub, deepL: deepLStub)
         _ = try await composite.translateWord("Buch", sourceLanguage: "de-DE", targetLanguage: "en")
 
         #expect(fmStub.wordCallCount == 1)
@@ -115,7 +122,7 @@ final class StubTranslationService: TranslationService, @unchecked Sendable {
         UserDefaults.standard.set("fake-key", forKey: "Learner.deepLAPIKey")
         defer { UserDefaults.standard.removeObject(forKey: "Learner.deepLAPIKey") }
 
-        let composite = CompositeTranslationServiceTestable(foundationModels: fmStub, deepL: deepLStub)
+        let composite = makeComposite(fm: fmStub, deepL: deepLStub)
         let result = try await composite.translateWord("Buch", sourceLanguage: "de-DE", targetLanguage: "en")
 
         #expect(deepLStub.wordCallCount == 1) // DeepL was tried
@@ -133,7 +140,7 @@ final class StubTranslationService: TranslationService, @unchecked Sendable {
         UserDefaults.standard.set("fake-key", forKey: "Learner.deepLAPIKey")
         defer { UserDefaults.standard.removeObject(forKey: "Learner.deepLAPIKey") }
 
-        let composite = CompositeTranslationServiceTestable(foundationModels: fmStub, deepL: deepLStub)
+        let composite = makeComposite(fm: fmStub, deepL: deepLStub)
         let result = try await composite.simplifyToCEFR("Komplizierterer Text.", level: .a2, language: "de-DE")
 
         #expect(result == "Einfacher Text.")
@@ -161,49 +168,10 @@ final class StubTranslationService: TranslationService, @unchecked Sendable {
     }
 }
 
-// MARK: — Testable composite (accepts stub services)
+// MARK: — Helpers
 
-/// Subclass of CompositeTranslationService that accepts stub dependencies.
-/// Used only in tests; avoids the need for protocol-based DI on the production type.
-private final class CompositeTranslationServiceTestable: TranslationService, @unchecked Sendable {
-    private let fmService: any TranslationService
-    private let deepLService: any TranslationService
-
-    init(foundationModels: any TranslationService, deepL: any TranslationService) {
-        self.fmService = foundationModels
-        self.deepLService = deepL
-    }
-
-    private var deepLKeyIsSet: Bool {
-        let key = UserDefaults.standard.string(forKey: "Learner.deepLAPIKey") ?? ""
-        return !key.isEmpty
-    }
-
-    func translateWord(_ word: String, sourceLanguage: String, targetLanguage: String) async throws -> WordTranslation {
-        if deepLKeyIsSet {
-            do {
-                return try await deepLService.translateWord(word, sourceLanguage: sourceLanguage, targetLanguage: targetLanguage)
-            } catch TranslationError.notSupportedByProvider { }
-              catch { /* fall through */ }
-        }
-        return try await fmService.translateWord(word, sourceLanguage: sourceLanguage, targetLanguage: targetLanguage)
-    }
-
-    func translateSentence(_ sentence: String, sourceLanguage: String, targetLanguage: String) async throws -> SentenceTranslation {
-        if deepLKeyIsSet {
-            do {
-                return try await deepLService.translateSentence(sentence, sourceLanguage: sourceLanguage, targetLanguage: targetLanguage)
-            } catch TranslationError.notSupportedByProvider { }
-              catch { }
-        }
-        return try await fmService.translateSentence(sentence, sourceLanguage: sourceLanguage, targetLanguage: targetLanguage)
-    }
-
-    func simplifyToCEFR(_ sentence: String, level: CEFRLevel, language: String) async throws -> String {
-        try await fmService.simplifyToCEFR(sentence, level: level, language: language)
-    }
-
-    func groupFragmentsIntoSentences(_ fragments: [TextFragment], language: String) async throws -> [SentenceGroup] {
-        try await fmService.groupFragmentsIntoSentences(fragments, language: language)
-    }
+/// Builds the production CompositeTranslationService with stub services.
+/// `CompositeTranslationService.init` accepts `any TranslationService` for both args.
+private func makeComposite(fm: any TranslationService, deepL: any TranslationService) -> CompositeTranslationService {
+    CompositeTranslationService(foundationModels: fm, deepL: deepL)
 }

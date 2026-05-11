@@ -112,7 +112,11 @@ struct SentenceTranslationSheet: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 0) {
                     ForEach($viewModel.sentences) { $sentence in
-                        SentenceRowView(sentence: $sentence) {
+                        SentenceRowView(
+                            sentence: $sentence,
+                            language: viewModel.context.language,
+                            pageContext: viewModel.context
+                        ) {
                             Task { await viewModel.simplify(id: sentence.id) }
                         }
                         Divider()
@@ -130,19 +134,49 @@ struct SentenceTranslationSheet: View {
     }
 }
 
+// MARK: — Tokenized word for tap handling
+
+private struct SentenceToken: Identifiable {
+    let id = UUID()
+    let text: String
+}
+
+private func tokenize(_ sentence: String) -> [SentenceToken] {
+    sentence
+        .split(whereSeparator: { $0.isWhitespace })
+        .map { SentenceToken(text: String($0)) }
+}
+
 // MARK: — SentenceRowView
 
 private struct SentenceRowView: View {
 
     @Binding var sentence: SentenceVM
+    let language: String
+    let pageContext: LearnerPageContext
     let onExpand: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Source text
-            Text(sentence.source)
-                .font(.title3)
-                .fixedSize(horizontal: false, vertical: true)
+            // Source text — per-word taps emit `wordTapped` so the same WordLookupSheet
+            // flow as in the reader is reused (plan Task 7 AC #4).
+            WrappingHStack(tokenize(sentence.source), id: \.id) { token in
+                Button {
+                    let event = WordTapEvent(
+                        surfaceForm: token.text,
+                        lemma: LearnerStrings.normalizeLemma(token.text),
+                        language: language,
+                        pageContext: pageContext
+                    )
+                    LearnerEvents.shared.wordTapped.send(event)
+                } label: {
+                    Text(token.text + " ")
+                        .font(.title3)
+                        .foregroundStyle(.primary)
+                }
+                .buttonStyle(.plain)
+            }
+            .fixedSize(horizontal: false, vertical: true)
 
             // Translation (or loading dots if still pending)
             if let translation = sentence.translation {

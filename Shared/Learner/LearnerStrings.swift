@@ -9,12 +9,11 @@ import Foundation
 
 public enum LearnerStrings {
     /// Normalizes a surface form into a lookup lemma.
-    /// Rule: lowercase + trim whitespace + trim leading/trailing punctuation.
-    /// Matches the normalization applied by VocabularyEntryObject.normalize at storage time.
+    /// Delegates to `VocabularyEntryObject.normalize` so the badge-lookup key on the
+    /// overlay (which uses the entity-level normalizer directly) cannot diverge from
+    /// the lookup key produced when a word is added to vocab.
+    /// Rule: lowercase + trim whitespace. Punctuation is preserved per Decision Register #6.
     public static func normalizeLemma(_ input: String) -> String {
-        input
-            .lowercased()
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .trimmingCharacters(in: .punctuationCharacters)
+        VocabularyEntryObject.normalize(input)
     }
 }

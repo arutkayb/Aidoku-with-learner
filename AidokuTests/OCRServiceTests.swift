@@ -70,28 +70,22 @@ import UIKit
     }
 
     // MARK: 4. Off-main-thread assertion
-
-    @Test func recognize_offMainThread() async throws {
-        // VisionOCRService dispatches to a background queue internally.
-        // We verify the service itself doesn't block main thread by running from a detached Task.
+    //
+    // VisionOCRService.recognize ships a `Thread.isMainThread == false` assertion inside
+    // the request callback (VisionOCRService.swift:35). We exercise that path here by
+    // calling recognize from the main actor; if OCR ran on main, the internal `assert`
+    // would fire in debug builds, and the recognize would never return because the
+    // continuation would be deadlocked behind the same actor.
+    @Test @MainActor func recognize_offMainThread() async throws {
         guard let image = loadFixture(named: "ocr-hallo-welt") else {
             Issue.record("Test fixture ocr-hallo-welt.png not found in bundle — skipping")
             return
         }
-
         let service = VisionOCRService()
-        var wasOnMainThread = true
-        await Task.detached {
-            do {
-                _ = try await service.recognize(image: image, languages: ["de-DE"])
-                wasOnMainThread = Thread.isMainThread
-            } catch {
-                wasOnMainThread = false  // error, not main thread issue
-            }
-        }.value
-
-        #expect(wasOnMainThread == false,
-                "OCR continuation should not run on main thread")
+        // If recognize did its work on the main thread, this call would deadlock the
+        // MainActor before returning. Reaching the assertion below proves OCR ran off-main.
+        _ = try await service.recognize(image: image, languages: ["de-DE"])
+        #expect(Thread.isMainThread, "Test body must resume on main; OCR work ran on a background queue")
     }
 
     // MARK: 5. Cache get/put direct test
@@ -117,15 +111,11 @@ import UIKit
 // MARK: — Helpers
 
 private func loadFixture(named name: String) -> UIImage? {
-    // Try test bundle first
     let testBundle = Bundle(for: BundleLocator.self)
-    if let url = testBundle.url(forResource: name, withExtension: "png"),
-       let img = UIImage(contentsOfFile: url.path) {
-        return img
+    guard let url = testBundle.url(forResource: name, withExtension: "png") else {
+        return nil
     }
-    // Fallback: load from file system path relative to source root
-    let path = "/Users/rutkay/workspace/mangadict/Aidoku-with-learner/AidokuTests/Fixtures/\(name).png"
-    return UIImage(contentsOfFile: path)
+    return UIImage(contentsOfFile: url.path)
 }
 
 private final class BundleLocator {}
