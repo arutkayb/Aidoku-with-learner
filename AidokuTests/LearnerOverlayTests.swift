@@ -51,7 +51,7 @@ import Testing
         #expect(view.subviews.count == 5)
 
         view.clear()
-        #expect(view.subviews.count == 0)
+        #expect(view.subviews.isEmpty)
     }
 
     // Test 3: hit-test passes through on empty overlay space

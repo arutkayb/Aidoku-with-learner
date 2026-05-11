@@ -183,32 +183,3 @@ import Testing
     }
 }
 
-// MARK: — In-memory container factory
-
-private func makeInMemoryContainer() -> NSPersistentContainer {
-    let bundle = Bundle(for: CoreDataManager.self)
-    guard let modelURL = bundle.url(forResource: "Aidoku", withExtension: "momd") else {
-        // Fall back to direct model URL lookup
-        let container = NSPersistentContainer(name: "Aidoku")
-        let description = NSPersistentStoreDescription()
-        description.type = NSInMemoryStoreType
-        container.persistentStoreDescriptions = [description]
-        container.loadPersistentStores { _, error in
-            if let error { fatalError("In-memory store error: \(error)") }
-        }
-        container.viewContext.automaticallyMergesChangesFromParent = true
-        return container
-    }
-    guard let model = NSManagedObjectModel(contentsOf: modelURL) else {
-        fatalError("Cannot load model from \(modelURL)")
-    }
-    let container = NSPersistentContainer(name: "Aidoku", managedObjectModel: model)
-    let description = NSPersistentStoreDescription()
-    description.type = NSInMemoryStoreType
-    container.persistentStoreDescriptions = [description]
-    container.loadPersistentStores { _, error in
-        if let error { fatalError("In-memory store error: \(error)") }
-    }
-    container.viewContext.automaticallyMergesChangesFromParent = true
-    return container
-}
