@@ -625,6 +625,16 @@ extension Settings {
                     values: ["en", "de", "ja", "fr", "es", "tr"],
                     titles: ["English", "German", "Japanese", "French", "Spanish", "Turkish"]
                 ))
+            ),
+            .init(
+                key: "Learner.deepLAPIKey",
+                title: NSLocalizedString("LEARNER_DEEPL_API_KEY"),
+                value: .text(.init(
+                    placeholder: NSLocalizedString("LEARNER_DEEPL_API_KEY_PLACEHOLDER"),
+                    autocapitalizationType: 0,
+                    autocorrectionDisabled: true,
+                    secure: true
+                ))
             )
         ])))
     ]

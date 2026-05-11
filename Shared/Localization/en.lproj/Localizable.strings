@@ -818,3 +818,5 @@
 "LEARNER_OVERLAY_TOGGLE" = "Learner";
 "LEARNER_MODE_GLOBAL_SUBTITLE" = "Show vocabulary overlays in every paged manga.";
 "LEARNER_TARGET_LANGUAGE" = "Translate Into";
+"LEARNER_DEEPL_API_KEY" = "DeepL API Key";
+"LEARNER_DEEPL_API_KEY_PLACEHOLDER" = "Paste your DeepL key";
