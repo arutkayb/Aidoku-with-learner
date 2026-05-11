@@ -51,14 +51,6 @@ enum Settings {
                 ))
             ),
             .init(
-                title: NSLocalizedString("LEARNER_MODE"),
-                value: .page(.init(
-                    items: learnerSettings,
-                    inlineTitle: true,
-                    icon: .system(name: "book.closed.fill", color: "purple")
-                ))
-            ),
-            .init(
                 key: "Tracking",
                 title: NSLocalizedString("TRACKING"),
                 value: .page(.init(
@@ -600,43 +592,6 @@ extension Settings {
                 ]
             ))
         )
-    ]
-
-    private static let learnerSettings: [Setting] = [
-        .init(value: .group(.init(items: [
-            .init(
-                key: "Learner.globallyEnabled",
-                title: NSLocalizedString("LEARNER_MODE_ENABLE"),
-                notification: .init("Learner.globallyEnabled"),
-                value: .toggle(.init(subtitle: NSLocalizedString("LEARNER_MODE_GLOBAL_SUBTITLE")))
-            ),
-            .init(
-                key: "Learner.ocrLanguages",
-                title: NSLocalizedString("LEARNER_OCR_LANGUAGES"),
-                value: .select(.init(
-                    values: ["de-DE", "en-US", "ja-JP", "fr-FR", "es-ES"],
-                    titles: ["German (de-DE)", "English (en-US)", "Japanese (ja-JP)", "French (fr-FR)", "Spanish (es-ES)"]
-                ))
-            ),
-            .init(
-                key: "Learner.targetLanguage",
-                title: NSLocalizedString("LEARNER_TARGET_LANGUAGE"),
-                value: .select(.init(
-                    values: ["en", "de", "ja", "fr", "es", "tr"],
-                    titles: ["English", "German", "Japanese", "French", "Spanish", "Turkish"]
-                ))
-            ),
-            .init(
-                key: "Learner.deepLAPIKey",
-                title: NSLocalizedString("LEARNER_DEEPL_API_KEY"),
-                value: .text(.init(
-                    placeholder: NSLocalizedString("LEARNER_DEEPL_API_KEY_PLACEHOLDER"),
-                    autocapitalizationType: 0,
-                    autocorrectionDisabled: true,
-                    secure: true
-                ))
-            )
-        ])))
     ]
 
     private static let advancedSettings: [Setting] = [

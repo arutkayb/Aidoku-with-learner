@@ -16,7 +16,6 @@ class TabBarController: UITabBarController {
 
     private var settingsPath: NavigationCoordinator?
     private var previousSelectedIndex: Int?
-    private weak var learnerViewController: UIHostingController<LearnerTabView>?
 
     private lazy var libraryProgressView = CircularProgressView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
 
@@ -118,19 +117,12 @@ class TabBarController: UITabBarController {
         historyViewController.navigationBar.prefersLargeTitles = true
         searchViewController.navigationBar.prefersLargeTitles = true
 
-        let learnerViewController = UIHostingController(rootView: LearnerTabView())
-        learnerViewController.navigationItem.largeTitleDisplayMode = .never
-        self.learnerViewController = learnerViewController
-
-        let learnerVisible = UserDefaults.standard.bool(forKey: "Learner.enabledGlobally")
-            || UserDefaults.standard.bool(forKey: "Learner.globallyEnabled")
-
         if #available(iOS 26.0, *) {
             let searchTab = UISearchTab { _ in
                 searchViewController
             }
             searchTab.automaticallyActivatesSearch = true
-            var fixedTabs: [UITab] = [
+            let fixedTabs = [
                 UITab(
                     title: NSLocalizedString("LIBRARY"),
                     image: UIImage(systemName: "books.vertical.fill"),
@@ -151,35 +143,21 @@ class TabBarController: UITabBarController {
                     identifier: "2"
                 ) { _ in
                     historyViewController
+                },
+                UITab(
+                    title: NSLocalizedString("SETTINGS"),
+                    image: UIImage(systemName: "gear"),
+                    identifier: "3"
+                ) { _ in
+                    settingsViewController
                 }
             ]
-            if learnerVisible {
-                fixedTabs.append(UITab(
-                    title: NSLocalizedString("LEARNER_TAB_TITLE"),
-                    image: UIImage(systemName: "book.closed"),
-                    identifier: "4"
-                ) { _ in
-                    learnerViewController
-                })
-            }
-            fixedTabs.append(UITab(
-                title: NSLocalizedString("SETTINGS"),
-                image: UIImage(systemName: "gear"),
-                identifier: "3"
-            ) { _ in
-                settingsViewController
-            })
             fixedTabs.forEach {
                 $0.allowsHiding = false
                 $0.preferredPlacement = .fixed
             }
             tabs = fixedTabs + [searchTab]
         } else {
-            learnerViewController.tabBarItem = UITabBarItem(
-                title: NSLocalizedString("LEARNER_TAB_TITLE", comment: ""),
-                image: UIImage(systemName: "book.closed"),
-                tag: 5
-            )
             libraryViewController.tabBarItem = UITabBarItem(
                 title: NSLocalizedString("LIBRARY", comment: ""),
                 image: UIImage(systemName: "books.vertical.fill"),
@@ -203,33 +181,14 @@ class TabBarController: UITabBarController {
                 image: UIImage(systemName: "gear"),
                 tag: 4
             )
-            var controllers: [UIViewController] = [
+            viewControllers = [
                 libraryViewController,
                 browseViewController,
                 historyViewController,
-                searchViewController
+                searchViewController,
+                settingsViewController
             ]
-            if learnerVisible {
-                controllers.append(learnerViewController)
-            }
-            controllers.append(settingsViewController)
-            viewControllers = controllers
         }
-
-        NotificationCenter.default.publisher(for: .learnerEnabledGloballyChanged)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.refreshLearnerTabVisibility()
-            }
-            .store(in: &cancellables)
-
-        // User-driven global Learner toggle in Settings.
-        NotificationCenter.default.publisher(for: Notification.Name("Learner.globallyEnabled"))
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.refreshLearnerTabVisibility()
-            }
-            .store(in: &cancellables)
 
         let updateCount = UserDefaults.standard.integer(forKey: "Browse.updateCount")
         browseViewController.tabBarItem.badgeValue = updateCount > 0 ? String(updateCount) : nil
@@ -239,40 +198,6 @@ class TabBarController: UITabBarController {
                 self?.updateFrame(animated: true)
             }
             .store(in: &cancellables)
-    }
-
-    /// Inserts the Learner tab if `Learner.enabledGlobally` flipped on at runtime.
-    /// Called from a notification observer; idempotent — if the tab is already present, does nothing.
-    private func refreshLearnerTabVisibility() {
-        let visible = UserDefaults.standard.bool(forKey: "Learner.enabledGlobally")
-            || UserDefaults.standard.bool(forKey: "Learner.globallyEnabled")
-        guard visible else { return }
-        guard let learnerViewController else { return }
-
-        if #available(iOS 26.0, *) {
-            // If a tab with the same identifier already exists, skip.
-            if (tabs ?? []).contains(where: { $0.identifier == "4" }) { return }
-            let learnerTab = UITab(
-                title: NSLocalizedString("LEARNER_TAB_TITLE"),
-                image: UIImage(systemName: "book.closed"),
-                identifier: "4"
-            ) { _ in learnerViewController }
-            learnerTab.allowsHiding = false
-            learnerTab.preferredPlacement = .fixed
-            // Insert before the trailing search tab if present, after Settings otherwise.
-            var newTabs = tabs ?? []
-            let searchIdx = newTabs.firstIndex(where: { $0 is UISearchTab })
-            let insertAt = searchIdx ?? newTabs.count
-            newTabs.insert(learnerTab, at: insertAt)
-            tabs = newTabs
-        } else {
-            var controllers = viewControllers ?? []
-            if controllers.contains(where: { $0 === learnerViewController }) { return }
-            // Insert before the trailing Settings VC (last item).
-            let insertAt = max(0, controllers.count - 1)
-            controllers.insert(learnerViewController, at: insertAt)
-            setViewControllers(controllers, animated: true)
-        }
     }
 
     func updateFrame(animated: Bool = false) {
@@ -383,9 +308,9 @@ extension TabBarController: UITabBarControllerDelegate {
     private func checkForSettingsPop() {
         let settingsIndex: Int
         if #available(iOS 26.0, *) {
-            settingsIndex = 4
+            settingsIndex = 3
         } else {
-            settingsIndex = 5
+            settingsIndex = 4
         }
         if selectedIndex == previousSelectedIndex && previousSelectedIndex == settingsIndex {
             settingsPath?.navigationController?.popToRootViewController(animated: true)

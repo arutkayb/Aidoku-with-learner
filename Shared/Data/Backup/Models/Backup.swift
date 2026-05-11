@@ -26,10 +26,6 @@ struct Backup: Codable, Hashable, Identifiable, Sendable {
     var automatic: Bool?
     var version: String?
 
-    // MARK: — Learner
-    /// Vocabulary entries with embedded familiarity progress. FlashcardState is excluded (ephemeral).
-    var vocabulary: [BackupVocabularyEntry]?
-
     static func load(from url: URL) -> Backup? {
         guard let json = try? Data(contentsOf: url) else { return nil }
 

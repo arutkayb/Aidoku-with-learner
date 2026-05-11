@@ -1,6 +1,15 @@
 {
-  "originHash" : "926d5c33a8e934ce488e3a19ff6de6a882f292cab4f6a5017a1a4488005f3f05",
+  "originHash" : "fbee1fcd32ad03a92ffe9109e2bd94b400fad95c547fb7d3b5ec7a14031d23a7",
   "pins" : [
+    {
+      "identity" : "aidokurunner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Aidoku/AidokuRunner",
+      "state" : {
+        "branch" : "main",
+        "revision" : "3dcb4ea9afd8f6ad35b4f7fe47166f596ae4a0a9"
+      }
+    },
     {
       "identity" : "gifu",
       "kind" : "remoteSourceControl",
@@ -65,6 +74,15 @@
       }
     },
     {
+      "identity" : "swiftlintplugins",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SimplyDanny/SwiftLintPlugins",
+      "state" : {
+        "revision" : "8545ddf4de043e6f2051c5cf204f39ef778ebf6b",
+        "version" : "0.59.1"
+      }
+    },
+    {
       "identity" : "swiftsoup",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/scinfu/SwiftSoup",
@@ -88,6 +106,15 @@
       "state" : {
         "revision" : "6a6475db9bf9f7e04731ab60053c3ca4934c1ac6",
         "version" : "3.1.1"
+      }
+    },
+    {
+      "identity" : "wasm3",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Skittyblock/Wasm3",
+      "state" : {
+        "branch" : "main",
+        "revision" : "565f4858aa59976ab27719ec02238524eb27030d"
       }
     },
     {

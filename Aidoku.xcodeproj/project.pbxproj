@@ -590,62 +590,6 @@
 		FBFF58912E7F2642009367B7 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFF58902E7F2641009367B7 /* Settings.swift */; };
 		FBFF58932E7F2BF5009367B7 /* SettingView+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFF58922E7F2BEF009367B7 /* SettingView+Environment.swift */; };
 		FBFF58952E807282009367B7 /* DoneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFF58942E807280009367B7 /* DoneButton.swift */; };
-		LC0001A1000000000000001A /* VocabularyEntryObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F1000000000000001A /* VocabularyEntryObject.swift */; };
-		LC0001A2000000000000001A /* VocabularyEntryObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F1000000000000001A /* VocabularyEntryObject.swift */; };
-		LC0001A3000000000000001A /* FamiliarityProgressObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F2000000000000001A /* FamiliarityProgressObject.swift */; };
-		LC0001A4000000000000001A /* FamiliarityProgressObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F2000000000000001A /* FamiliarityProgressObject.swift */; };
-		LC0001A5000000000000001A /* FlashcardStateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F3000000000000001A /* FlashcardStateObject.swift */; };
-		LC0001A6000000000000001A /* FlashcardStateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F3000000000000001A /* FlashcardStateObject.swift */; };
-		LC0001A7000000000000001A /* CoreDataManager+Vocabulary.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */; };
-		LC0001A8000000000000001A /* CoreDataManager+Vocabulary.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */; };
-		LC0001A9000000000000001A /* BackupVocabularyEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F5000000000000001A /* BackupVocabularyEntry.swift */; };
-		LC0001AA000000000000001A /* BackupVocabularyEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F5000000000000001A /* BackupVocabularyEntry.swift */; };
-		LC0001AB000000000000001A /* TranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B1000000000000001A /* TranslationService.swift */; };
-		LC0001AC000000000000001A /* TranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B1000000000000001A /* TranslationService.swift */; };
-		LC0001AD000000000000001A /* FoundationModelsTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B2000000000000001A /* FoundationModelsTranslationService.swift */; };
-		LC0001AE000000000000001A /* FoundationModelsTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B2000000000000001A /* FoundationModelsTranslationService.swift */; };
-		LC0001AF000000000000001A /* DeepLTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B3000000000000001A /* DeepLTranslationService.swift */; };
-		LC0001B0000000000000001A /* DeepLTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B3000000000000001A /* DeepLTranslationService.swift */; };
-		LC0001B4000000000000001A /* CompositeTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B8000000000000001A /* CompositeTranslationService.swift */; };
-		LC0001B5000000000000001A /* CompositeTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B8000000000000001A /* CompositeTranslationService.swift */; };
-		LC0001B6000000000000001A /* CachingTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B9000000000000001A /* CachingTranslationService.swift */; };
-		LC0001B7000000000000001A /* CachingTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B9000000000000001A /* CachingTranslationService.swift */; };
-		LC0001BA000000000000001A /* TranslationServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001BB000000000000001A /* TranslationServiceFactory.swift */; };
-		LC0001BC000000000000001A /* TranslationServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001BB000000000000001A /* TranslationServiceFactory.swift */; };
-		LC0001C0000000000000001A /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C3000000000000001A /* OCRService.swift */; };
-		LC0001C1000000000000001A /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C3000000000000001A /* OCRService.swift */; };
-		LC0001C4000000000000001A /* OCRResultCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C6000000000000001A /* OCRResultCache.swift */; };
-		LC0001C5000000000000001A /* OCRResultCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C6000000000000001A /* OCRResultCache.swift */; };
-		LC0001C7000000000000001A /* VisionOCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C8000000000000001A /* VisionOCRService.swift */; };
-		LC0001C9000000000000001A /* VisionOCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C8000000000000001A /* VisionOCRService.swift */; };
-		LC0001F8000000000000001A /* LearnerEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000200000000000000001A /* LearnerEvents.swift */; };
-		LC0001F9000000000000001A /* LearnerEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000200000000000000001A /* LearnerEvents.swift */; };
-		LC0001FA000000000000001A /* VocabIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000201000000000000001A /* VocabIndex.swift */; };
-		LC0001FB000000000000001A /* VocabIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000201000000000000001A /* VocabIndex.swift */; };
-		LC0001FC000000000000001A /* LearnerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000202000000000000001A /* LearnerOverlayView.swift */; };
-		LC0001FD000000000000001A /* LearnerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000202000000000000001A /* LearnerOverlayView.swift */; };
-		LC0001FE000000000000001A /* LearnerOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000203000000000000001A /* LearnerOverlayCoordinator.swift */; };
-		LC0001FF000000000000001A /* LearnerOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000203000000000000001A /* LearnerOverlayCoordinator.swift */; };
-		LC000209000000000000001A /* WordLookupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000206000000000000001A /* WordLookupSheet.swift */; };
-		LC00020A000000000000001A /* WordLookupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000206000000000000001A /* WordLookupSheet.swift */; };
-		LC00020B000000000000001A /* WordLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000207000000000000001A /* WordLookupViewModel.swift */; };
-		LC00020C000000000000001A /* WordLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000207000000000000001A /* WordLookupViewModel.swift */; };
-		LC00020D000000000000001A /* LearnerStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000208000000000000001A /* LearnerStrings.swift */; };
-		LC00020E000000000000001A /* LearnerStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000208000000000000001A /* LearnerStrings.swift */; };
-		LC000211000000000000001A /* SentenceTranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC00020F000000000000001A /* SentenceTranslationSheet.swift */; };
-		LC000212000000000000001A /* SentenceTranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC00020F000000000000001A /* SentenceTranslationSheet.swift */; };
-		LC000213000000000000001A /* SentenceTranslationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000210000000000000001A /* SentenceTranslationViewModel.swift */; };
-		LC000214000000000000001A /* SentenceTranslationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000210000000000000001A /* SentenceTranslationViewModel.swift */; };
-		LC00021A000000000000001A /* VocabularyListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000215000000000000001A /* VocabularyListViewModel.swift */; };
-		LC00021B000000000000001A /* VocabularyListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000215000000000000001A /* VocabularyListViewModel.swift */; };
-		LC00021C000000000000001A /* VocabularyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000216000000000000001A /* VocabularyListView.swift */; };
-		LC00021D000000000000001A /* VocabularyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000216000000000000001A /* VocabularyListView.swift */; };
-		LC00021E000000000000001A /* FlashcardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000217000000000000001A /* FlashcardsViewModel.swift */; };
-		LC00021F000000000000001A /* FlashcardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000217000000000000001A /* FlashcardsViewModel.swift */; };
-		LC000220000000000000001A /* FlashcardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000218000000000000001A /* FlashcardsView.swift */; };
-		LC000221000000000000001A /* FlashcardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000218000000000000001A /* FlashcardsView.swift */; };
-		LC000222000000000000001A /* LearnerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000219000000000000001A /* LearnerTabView.swift */; };
-		LC000223000000000000001A /* LearnerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000219000000000000001A /* LearnerTabView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1129,35 +1073,6 @@
 		FBFF58902E7F2641009367B7 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		FBFF58922E7F2BEF009367B7 /* SettingView+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingView+Environment.swift"; sourceTree = "<group>"; };
 		FBFF58942E807280009367B7 /* DoneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneButton.swift; sourceTree = "<group>"; };
-		LC0001B1000000000000001A /* TranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationService.swift; sourceTree = "<group>"; };
-		LC0001B2000000000000001A /* FoundationModelsTranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationModelsTranslationService.swift; sourceTree = "<group>"; };
-		LC0001B3000000000000001A /* DeepLTranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLTranslationService.swift; sourceTree = "<group>"; };
-		LC0001B8000000000000001A /* CompositeTranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeTranslationService.swift; sourceTree = "<group>"; };
-		LC0001B9000000000000001A /* CachingTranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingTranslationService.swift; sourceTree = "<group>"; };
-		LC0001BB000000000000001A /* TranslationServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationServiceFactory.swift; sourceTree = "<group>"; };
-		LC0001C3000000000000001A /* OCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRService.swift; sourceTree = "<group>"; };
-		LC0001C6000000000000001A /* OCRResultCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRResultCache.swift; sourceTree = "<group>"; };
-		LC0001C8000000000000001A /* VisionOCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionOCRService.swift; sourceTree = "<group>"; };
-		LC0001F1000000000000001A /* VocabularyEntryObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyEntryObject.swift; sourceTree = "<group>"; };
-		LC0001F2000000000000001A /* FamiliarityProgressObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamiliarityProgressObject.swift; sourceTree = "<group>"; };
-		LC0001F3000000000000001A /* FlashcardStateObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardStateObject.swift; sourceTree = "<group>"; };
-		LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataManager+Vocabulary.swift"; sourceTree = "<group>"; };
-		LC0001F5000000000000001A /* BackupVocabularyEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupVocabularyEntry.swift; sourceTree = "<group>"; };
-		LC0001F7000000000000001A /* 0.9.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.9.0.xcdatamodel; sourceTree = "<group>"; };
-		LC000200000000000000001A /* LearnerEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerEvents.swift; sourceTree = "<group>"; };
-		LC000201000000000000001A /* VocabIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabIndex.swift; sourceTree = "<group>"; };
-		LC000202000000000000001A /* LearnerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerOverlayView.swift; sourceTree = "<group>"; };
-		LC000203000000000000001A /* LearnerOverlayCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerOverlayCoordinator.swift; sourceTree = "<group>"; };
-		LC000206000000000000001A /* WordLookupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordLookupSheet.swift; sourceTree = "<group>"; };
-		LC000207000000000000001A /* WordLookupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordLookupViewModel.swift; sourceTree = "<group>"; };
-		LC000208000000000000001A /* LearnerStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerStrings.swift; sourceTree = "<group>"; };
-		LC00020F000000000000001A /* SentenceTranslationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceTranslationSheet.swift; sourceTree = "<group>"; };
-		LC000210000000000000001A /* SentenceTranslationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceTranslationViewModel.swift; sourceTree = "<group>"; };
-		LC000215000000000000001A /* VocabularyListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyListViewModel.swift; sourceTree = "<group>"; };
-		LC000216000000000000001A /* VocabularyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyListView.swift; sourceTree = "<group>"; };
-		LC000217000000000000001A /* FlashcardsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardsViewModel.swift; sourceTree = "<group>"; };
-		LC000218000000000000001A /* FlashcardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardsView.swift; sourceTree = "<group>"; };
-		LC000219000000000000001A /* LearnerTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerTabView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -1239,7 +1154,6 @@
 				FB427509295FB78E00131377 /* Browse */,
 				48177B8C2B75C29200AD41B4 /* Updates */,
 				FB0CAA6828A9BB900024561A /* Reader */,
-				LC000205000000000000001A /* Learner */,
 				FB05F8652964907200D1EA2D /* Source */,
 				FB171144296742C100AD523D /* Migration */,
 			);
@@ -1341,7 +1255,6 @@
 				FB947CFA2EF1D14F00FC6226 /* CoreDataManager+ReadingSession.swift */,
 				FB05F868296499DE00D1EA2D /* CoreDataManager+Source.swift */,
 				FB4EB4FE28AA959C00FDEA4A /* CoreDataManager+Track.swift */,
-				LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1466,7 +1379,6 @@
 				FB1B4830277CE1920056D02C /* Assets.xcassets */,
 				FB1DD89C2EF1A6BC0007FC78 /* AppIcon.icon */,
 				FB1B482B277CE18D0056D02C /* Aidoku.xcdatamodeld */,
-				LC0001BD000000000000001A /* Learner */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -2021,7 +1933,6 @@
 				FB72501B27CAACC00037F1C9 /* BackupChapter.swift */,
 				FB72501E27CAACC90037F1C9 /* BackupHistory.swift */,
 				FBCA1B2C2889AEE0007149C5 /* BackupTrackItem.swift */,
-				LC0001F5000000000000001A /* BackupVocabularyEntry.swift */,
 				FBF059C72EF8330700907B0E /* BackupUpdate.swift */,
 				FBF059CA2EF8330E00907B0E /* BackupReadingSession.swift */,
 				FB3D20772FA4A19E004DAC5E /* BackupSource.swift */,
@@ -2368,9 +2279,6 @@
 				48177B912B75C67300AD41B4 /* MangaUpdateObject.swift */,
 				FBED232227BB461D0095D0C0 /* SourceObject.swift */,
 				FBCA1B232888A910007149C5 /* TrackObject.swift */,
-				LC0001F1000000000000001A /* VocabularyEntryObject.swift */,
-				LC0001F2000000000000001A /* FamiliarityProgressObject.swift */,
-				LC0001F3000000000000001A /* FlashcardStateObject.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -2420,67 +2328,6 @@
 				FBE78128282F481A0038C0E3 /* DownloadCache.swift */,
 			);
 			path = Downloads;
-			sourceTree = "<group>";
-		};
-		LC0001BD000000000000001A /* Learner */ = {
-			isa = PBXGroup;
-			children = (
-				LC0001CA000000000000001A /* OCR */,
-				LC0001BF000000000000001A /* Translation */,
-				LC000204000000000000001A /* Reader */,
-				LC000208000000000000001A /* LearnerStrings.swift */,
-			);
-			path = Learner;
-			sourceTree = "<group>";
-		};
-		LC0001BF000000000000001A /* Translation */ = {
-			isa = PBXGroup;
-			children = (
-				LC0001B1000000000000001A /* TranslationService.swift */,
-				LC0001B2000000000000001A /* FoundationModelsTranslationService.swift */,
-				LC0001B3000000000000001A /* DeepLTranslationService.swift */,
-				LC0001B8000000000000001A /* CompositeTranslationService.swift */,
-				LC0001B9000000000000001A /* CachingTranslationService.swift */,
-				LC0001BB000000000000001A /* TranslationServiceFactory.swift */,
-			);
-			path = Translation;
-			sourceTree = "<group>";
-		};
-		LC0001CA000000000000001A /* OCR */ = {
-			isa = PBXGroup;
-			children = (
-				LC0001C3000000000000001A /* OCRService.swift */,
-				LC0001C6000000000000001A /* OCRResultCache.swift */,
-				LC0001C8000000000000001A /* VisionOCRService.swift */,
-			);
-			path = OCR;
-			sourceTree = "<group>";
-		};
-		LC000204000000000000001A /* Reader */ = {
-			isa = PBXGroup;
-			children = (
-				LC000200000000000000001A /* LearnerEvents.swift */,
-				LC000201000000000000001A /* VocabIndex.swift */,
-				LC000202000000000000001A /* LearnerOverlayView.swift */,
-				LC000203000000000000001A /* LearnerOverlayCoordinator.swift */,
-			);
-			path = Reader;
-			sourceTree = "<group>";
-		};
-		LC000205000000000000001A /* Learner */ = {
-			isa = PBXGroup;
-			children = (
-				LC000206000000000000001A /* WordLookupSheet.swift */,
-				LC000207000000000000001A /* WordLookupViewModel.swift */,
-				LC00020F000000000000001A /* SentenceTranslationSheet.swift */,
-				LC000210000000000000001A /* SentenceTranslationViewModel.swift */,
-				LC000215000000000000001A /* VocabularyListViewModel.swift */,
-				LC000216000000000000001A /* VocabularyListView.swift */,
-				LC000217000000000000001A /* FlashcardsViewModel.swift */,
-				LC000218000000000000001A /* FlashcardsView.swift */,
-				LC000219000000000000001A /* LearnerTabView.swift */,
-			);
-			path = Learner;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2638,11 +2485,10 @@
 				FB171149296770CC00AD523D /* XCRemoteSwiftPackageReference "Nuke" */,
 				FBE53F0A29CC015E00899601 /* XCRemoteSwiftPackageReference "Texture" */,
 				FB662EDC2DA816CF00007514 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
-				FBFDF5F62DF799180064F603 /* XCLocalSwiftPackageReference "../AidokuRunner" */,
+				FBFDF5F62DF799180064F603 /* XCRemoteSwiftPackageReference "AidokuRunner" */,
 				FBBCB31B2E08D6AF00ED5CAB /* XCRemoteSwiftPackageReference "Gifu" */,
 				FBAED40A2E3A762800B81E74 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 				FB2C83972E43F074003CA85F /* XCRemoteSwiftPackageReference "SwiftSoup" */,
-				FBAA00112E5A0001000000AA /* XCLocalSwiftPackageReference "../Wasm3" */,
 			);
 			productRefGroup = FB1B4836277CE1920056D02C /* Products */;
 			projectDirPath = "";
@@ -2975,34 +2821,6 @@
 				FB7F05F62DDCDC910036B116 /* HostingNode.swift in Sources */,
 				FB3DDA0A2ECE4D3A0081232F /* SourceSearchViewModel.swift in Sources */,
 				FB72501F27CAACC90037F1C9 /* BackupHistory.swift in Sources */,
-				LC0001A1000000000000001A /* VocabularyEntryObject.swift in Sources */,
-				LC0001A3000000000000001A /* FamiliarityProgressObject.swift in Sources */,
-				LC0001A5000000000000001A /* FlashcardStateObject.swift in Sources */,
-				LC0001A7000000000000001A /* CoreDataManager+Vocabulary.swift in Sources */,
-				LC0001A9000000000000001A /* BackupVocabularyEntry.swift in Sources */,
-				LC0001AB000000000000001A /* TranslationService.swift in Sources */,
-				LC0001AD000000000000001A /* FoundationModelsTranslationService.swift in Sources */,
-				LC0001AF000000000000001A /* DeepLTranslationService.swift in Sources */,
-				LC0001B4000000000000001A /* CompositeTranslationService.swift in Sources */,
-				LC0001B6000000000000001A /* CachingTranslationService.swift in Sources */,
-				LC0001BA000000000000001A /* TranslationServiceFactory.swift in Sources */,
-				LC0001C0000000000000001A /* OCRService.swift in Sources */,
-				LC0001C4000000000000001A /* OCRResultCache.swift in Sources */,
-				LC0001C7000000000000001A /* VisionOCRService.swift in Sources */,
-				LC0001F8000000000000001A /* LearnerEvents.swift in Sources */,
-				LC0001FA000000000000001A /* VocabIndex.swift in Sources */,
-				LC0001FC000000000000001A /* LearnerOverlayView.swift in Sources */,
-				LC0001FE000000000000001A /* LearnerOverlayCoordinator.swift in Sources */,
-				LC000209000000000000001A /* WordLookupSheet.swift in Sources */,
-				LC00020B000000000000001A /* WordLookupViewModel.swift in Sources */,
-				LC00020D000000000000001A /* LearnerStrings.swift in Sources */,
-				LC000211000000000000001A /* SentenceTranslationSheet.swift in Sources */,
-				LC000213000000000000001A /* SentenceTranslationViewModel.swift in Sources */,
-				LC00021A000000000000001A /* VocabularyListViewModel.swift in Sources */,
-				LC00021C000000000000001A /* VocabularyListView.swift in Sources */,
-				LC00021E000000000000001A /* FlashcardsViewModel.swift in Sources */,
-				LC000220000000000000001A /* FlashcardsView.swift in Sources */,
-				LC000222000000000000001A /* LearnerTabView.swift in Sources */,
 				FB4B0ADD285C2C570066A13B /* TrackSearchItem.swift in Sources */,
 				FBED232327BB461D0095D0C0 /* SourceObject.swift in Sources */,
 				FB619E512E9E90F000E3B565 /* SettingHeaderView.swift in Sources */,
@@ -3308,34 +3126,6 @@
 				FB0AB8952F50B98300AF1451 /* BackupCategory.swift in Sources */,
 				FB4EEBBE27A2F103005081A3 /* MangaObject.swift in Sources */,
 				FB72502027CAACC90037F1C9 /* BackupHistory.swift in Sources */,
-				LC0001A2000000000000001A /* VocabularyEntryObject.swift in Sources */,
-				LC0001A4000000000000001A /* FamiliarityProgressObject.swift in Sources */,
-				LC0001A6000000000000001A /* FlashcardStateObject.swift in Sources */,
-				LC0001A8000000000000001A /* CoreDataManager+Vocabulary.swift in Sources */,
-				LC0001AA000000000000001A /* BackupVocabularyEntry.swift in Sources */,
-				LC0001AC000000000000001A /* TranslationService.swift in Sources */,
-				LC0001AE000000000000001A /* FoundationModelsTranslationService.swift in Sources */,
-				LC0001B0000000000000001A /* DeepLTranslationService.swift in Sources */,
-				LC0001B5000000000000001A /* CompositeTranslationService.swift in Sources */,
-				LC0001B7000000000000001A /* CachingTranslationService.swift in Sources */,
-				LC0001BC000000000000001A /* TranslationServiceFactory.swift in Sources */,
-				LC0001C1000000000000001A /* OCRService.swift in Sources */,
-				LC0001C5000000000000001A /* OCRResultCache.swift in Sources */,
-				LC0001C9000000000000001A /* VisionOCRService.swift in Sources */,
-				LC0001F9000000000000001A /* LearnerEvents.swift in Sources */,
-				LC0001FB000000000000001A /* VocabIndex.swift in Sources */,
-				LC0001FD000000000000001A /* LearnerOverlayView.swift in Sources */,
-				LC0001FF000000000000001A /* LearnerOverlayCoordinator.swift in Sources */,
-				LC00020A000000000000001A /* WordLookupSheet.swift in Sources */,
-				LC00020C000000000000001A /* WordLookupViewModel.swift in Sources */,
-				LC00020E000000000000001A /* LearnerStrings.swift in Sources */,
-				LC000212000000000000001A /* SentenceTranslationSheet.swift in Sources */,
-				LC000214000000000000001A /* SentenceTranslationViewModel.swift in Sources */,
-				LC00021B000000000000001A /* VocabularyListViewModel.swift in Sources */,
-				LC00021D000000000000001A /* VocabularyListView.swift in Sources */,
-				LC00021F000000000000001A /* FlashcardsViewModel.swift in Sources */,
-				LC000221000000000000001A /* FlashcardsView.swift in Sources */,
-				LC000223000000000000001A /* LearnerTabView.swift in Sources */,
 				FB619E402E94A62000E3B565 /* PageTracker.swift in Sources */,
 				FB82A5C32DF8622700366BC8 /* LocalModels.swift in Sources */,
 			);
@@ -3555,7 +3345,6 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
-				DEVELOPMENT_TEAM = 3N682N99R2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -3576,7 +3365,6 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.8.2;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.aidoku.Aidoku-with-learner";
 				PRODUCT_NAME = Aidoku;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -3600,7 +3388,6 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
-				DEVELOPMENT_TEAM = 3N682N99R2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -3621,7 +3408,6 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.8.2;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.aidoku.Aidoku-with-learner";
 				PRODUCT_NAME = Aidoku;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -3801,17 +3587,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		FBAA00112E5A0001000000AA /* XCLocalSwiftPackageReference "../Wasm3" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Wasm3;
-		};
-		FBFDF5F62DF799180064F603 /* XCLocalSwiftPackageReference "../AidokuRunner" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../AidokuRunner;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		FB171149296770CC00AD523D /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -3869,6 +3644,14 @@
 				minimumVersion = 3.1.1;
 			};
 		};
+		FBFDF5F62DF799180064F603 /* XCRemoteSwiftPackageReference "AidokuRunner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Aidoku/AidokuRunner";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3923,12 +3706,12 @@
 		};
 		FBFDF5F72DF799180064F603 /* AidokuRunner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FBFDF5F62DF799180064F603 /* XCLocalSwiftPackageReference "../AidokuRunner" */;
+			package = FBFDF5F62DF799180064F603 /* XCRemoteSwiftPackageReference "AidokuRunner" */;
 			productName = AidokuRunner;
 		};
 		FBFDF5F92DF799340064F603 /* AidokuRunner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FBFDF5F62DF799180064F603 /* XCLocalSwiftPackageReference "../AidokuRunner" */;
+			package = FBFDF5F62DF799180064F603 /* XCRemoteSwiftPackageReference "AidokuRunner" */;
 			productName = AidokuRunner;
 		};
 /* End XCSwiftPackageProductDependency section */
@@ -3937,7 +3720,6 @@
 		FB1B482B277CE18D0056D02C /* Aidoku.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				LC0001F7000000000000001A /* 0.9.0.xcdatamodel */,
 				FB0AB8922F50B81800AF1451 /* 0.8.2.xcdatamodel */,
 				FB947CF92EF1CC4D00FC6226 /* 0.8.xcdatamodel */,
 				FB63D4FF2E37CBEF004FF4DC /* 0.7.1.xcdatamodel */,
@@ -3949,7 +3731,7 @@
 				FBCA1B2228889F1D007149C5 /* 0.5.xcdatamodel */,
 				FB1B482C277CE18D0056D02C /* Shared.xcdatamodel */,
 			);
-			currentVersion = LC0001F7000000000000001A /* 0.9.0.xcdatamodel */;
+			currentVersion = FB0AB8922F50B81800AF1451 /* 0.8.2.xcdatamodel */;
 			path = Aidoku.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -16,7 +16,6 @@ struct ReaderSettingsView: View {
     @StateObject private var downsampleImages = UserDefaultsBool(key: "Reader.downsampleImages")
     @StateObject private var upscaleImages = UserDefaultsBool(key: "Reader.upscaleImages")
     @StateObject private var splitWideImages = UserDefaultsBool(key: "Reader.splitWideImages")
-    @StateObject private var learnerEnabled: UserDefaultsBool
 
     // All available font families on the system
     private static let availableFonts: [String] = {
@@ -38,9 +37,6 @@ struct ReaderSettingsView: View {
         self._tapZones = State(
             initialValue: UserDefaults.standard.string(forKey: "Reader.tapZones")
                 .flatMap(DefaultTapZones.init) ?? .disabled
-        )
-        self._learnerEnabled = StateObject(
-            wrappedValue: UserDefaultsBool(key: "Learner.enabled.\(mangaId)")
         )
     }
 
@@ -381,42 +377,6 @@ struct ReaderSettingsView: View {
                         } footer: {
                             Text(NSLocalizedString("PILLARBOX_ORIENTATION_INFO"))
                         }
-                    }
-                }
-
-                // MARK: — Learner Mode
-                let learnerKey = "Learner.enabled.\(mangaId)"
-                let isPaged = reader == .paged
-                Section {
-                    SettingView(
-                        setting: .init(
-                            key: learnerKey,
-                            title: NSLocalizedString("LEARNER_MODE_ENABLE"),
-                            notification: .init(learnerKey),
-                            value: .toggle(.init())
-                        )
-                    )
-                    .disabled(!isPaged)
-
-                    if isPaged && learnerEnabled.value {
-                        SettingView(
-                            setting: .init(
-                                key: "Learner.ocrLanguages",
-                                title: NSLocalizedString("LEARNER_OCR_LANGUAGES"),
-                                value: .select(.init(
-                                    values: ["de-DE", "en-US", "ja-JP", "fr-FR", "es-ES"],
-                                    titles: ["German (de-DE)", "English (en-US)", "Japanese (ja-JP)", "French (fr-FR)", "Spanish (es-ES)"]
-                                ))
-                            )
-                        )
-                    }
-                } header: {
-                    Text(NSLocalizedString("LEARNER_MODE"))
-                } footer: {
-                    if !isPaged {
-                        Text(NSLocalizedString("LEARNER_PAGED_ONLY_NOTICE"))
-                    } else if learnerEnabled.value {
-                        Text(NSLocalizedString("LEARNER_LIVE_TEXT_PAUSED_NOTICE"))
                     }
                 }
             }

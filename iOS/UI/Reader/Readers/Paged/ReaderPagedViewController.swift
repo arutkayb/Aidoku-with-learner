@@ -157,19 +157,6 @@ class ReaderPagedViewController: BaseObservingViewController {
         addObserver(forName: .readerHidingBars) { [weak self] _ in
             self?.setLiveTextButtonHidden(true)
         }
-
-        // Re-process the visible page when either Learner toggle flips mid-chapter.
-        // On → coordinator runs OCR and attaches overlay. Off → coordinator deactivates.
-        let learnerSourceId = viewModel.source?.key ?? viewModel.manga.sourceKey
-        let learnerToggleKey = "Learner.enabled.\(learnerSourceId).\(viewModel.manga.key)"
-        let refreshLearner: (Notification) -> Void = { [weak self] _ in
-            guard let self,
-                  let incoming = pageViewController.viewControllers?.first as? ReaderPageViewController,
-                  let pageView = incoming.pageView else { return }
-            pageView.notifyLearnerOfImage()
-        }
-        addObserver(forName: learnerToggleKey, using: refreshLearner)
-        addObserver(forName: "Learner.globallyEnabled", using: refreshLearner)
     }
 
     func updatePageLayout() {
@@ -424,16 +411,6 @@ extension ReaderPagedViewController {
 
         let targetVC = pageViewControllers[vcIndex]
         let sourceId = viewModel.source?.key ?? viewModel.manga.sourceKey
-
-        // Inject Learner context before setPage so ReaderPageView can call the coordinator.
-        if let chapterId = chapter?.id {
-            targetVC.pageView?.learnerContext = LearnerPageContext(
-                sourceId: sourceId,
-                mangaId: "\(sourceId).\(viewModel.manga.key)",
-                chapterId: chapterId,
-                pageIndex: actualPageIndex - 1
-            )
-        }
 
         if let splitPageArray = splitPages[actualPageIndex] {
             let splitIndex = splitIndex(for: index, actualPageIndex: actualPageIndex)
@@ -927,17 +904,6 @@ extension ReaderPagedViewController: UIPageViewControllerDelegate {
                 } else if let doublePageController = viewController as? ReaderDoublePageViewController {
                     doublePageController.firstPageController.pageView?.clearLiveTextSelection()
                     doublePageController.secondPageController.pageView?.clearLiveTextSelection()
-                }
-            }
-            // Refresh Learner overlay on the newly visible page (vocab index may have changed).
-            if let incoming = pageViewController.viewControllers?.first as? ReaderPageViewController,
-               let pageView = incoming.pageView,
-               let ctx = pageView.learnerContext {
-                Task { @MainActor in
-                    await LearnerOverlayCoordinator.shared.pageDidBecomeVisible(
-                        context: ctx,
-                        container: pageView
-                    )
                 }
             }
         }
