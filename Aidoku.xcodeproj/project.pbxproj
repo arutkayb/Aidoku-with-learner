@@ -636,6 +636,16 @@
 		LC000212000000000000001A /* SentenceTranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC00020F000000000000001A /* SentenceTranslationSheet.swift */; };
 		LC000213000000000000001A /* SentenceTranslationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000210000000000000001A /* SentenceTranslationViewModel.swift */; };
 		LC000214000000000000001A /* SentenceTranslationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000210000000000000001A /* SentenceTranslationViewModel.swift */; };
+		LC00021A000000000000001A /* VocabularyListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000215000000000000001A /* VocabularyListViewModel.swift */; };
+		LC00021B000000000000001A /* VocabularyListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000215000000000000001A /* VocabularyListViewModel.swift */; };
+		LC00021C000000000000001A /* VocabularyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000216000000000000001A /* VocabularyListView.swift */; };
+		LC00021D000000000000001A /* VocabularyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000216000000000000001A /* VocabularyListView.swift */; };
+		LC00021E000000000000001A /* FlashcardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000217000000000000001A /* FlashcardsViewModel.swift */; };
+		LC00021F000000000000001A /* FlashcardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000217000000000000001A /* FlashcardsViewModel.swift */; };
+		LC000220000000000000001A /* FlashcardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000218000000000000001A /* FlashcardsView.swift */; };
+		LC000221000000000000001A /* FlashcardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000218000000000000001A /* FlashcardsView.swift */; };
+		LC000222000000000000001A /* LearnerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000219000000000000001A /* LearnerTabView.swift */; };
+		LC000223000000000000001A /* LearnerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000219000000000000001A /* LearnerTabView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1143,6 +1153,11 @@
 		LC000208000000000000001A /* LearnerStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerStrings.swift; sourceTree = "<group>"; };
 		LC00020F000000000000001A /* SentenceTranslationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceTranslationSheet.swift; sourceTree = "<group>"; };
 		LC000210000000000000001A /* SentenceTranslationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceTranslationViewModel.swift; sourceTree = "<group>"; };
+		LC000215000000000000001A /* VocabularyListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyListViewModel.swift; sourceTree = "<group>"; };
+		LC000216000000000000001A /* VocabularyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyListView.swift; sourceTree = "<group>"; };
+		LC000217000000000000001A /* FlashcardsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardsViewModel.swift; sourceTree = "<group>"; };
+		LC000218000000000000001A /* FlashcardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardsView.swift; sourceTree = "<group>"; };
+		LC000219000000000000001A /* LearnerTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerTabView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -2459,6 +2474,11 @@
 				LC000207000000000000001A /* WordLookupViewModel.swift */,
 				LC00020F000000000000001A /* SentenceTranslationSheet.swift */,
 				LC000210000000000000001A /* SentenceTranslationViewModel.swift */,
+				LC000215000000000000001A /* VocabularyListViewModel.swift */,
+				LC000216000000000000001A /* VocabularyListView.swift */,
+				LC000217000000000000001A /* FlashcardsViewModel.swift */,
+				LC000218000000000000001A /* FlashcardsView.swift */,
+				LC000219000000000000001A /* LearnerTabView.swift */,
 			);
 			path = Learner;
 			sourceTree = "<group>";
@@ -2978,6 +2998,11 @@
 				LC00020D000000000000001A /* LearnerStrings.swift in Sources */,
 				LC000211000000000000001A /* SentenceTranslationSheet.swift in Sources */,
 				LC000213000000000000001A /* SentenceTranslationViewModel.swift in Sources */,
+				LC00021A000000000000001A /* VocabularyListViewModel.swift in Sources */,
+				LC00021C000000000000001A /* VocabularyListView.swift in Sources */,
+				LC00021E000000000000001A /* FlashcardsViewModel.swift in Sources */,
+				LC000220000000000000001A /* FlashcardsView.swift in Sources */,
+				LC000222000000000000001A /* LearnerTabView.swift in Sources */,
 				FB4B0ADD285C2C570066A13B /* TrackSearchItem.swift in Sources */,
 				FBED232327BB461D0095D0C0 /* SourceObject.swift in Sources */,
 				FB619E512E9E90F000E3B565 /* SettingHeaderView.swift in Sources */,
@@ -3306,6 +3331,11 @@
 				LC00020E000000000000001A /* LearnerStrings.swift in Sources */,
 				LC000212000000000000001A /* SentenceTranslationSheet.swift in Sources */,
 				LC000214000000000000001A /* SentenceTranslationViewModel.swift in Sources */,
+				LC00021B000000000000001A /* VocabularyListViewModel.swift in Sources */,
+				LC00021D000000000000001A /* VocabularyListView.swift in Sources */,
+				LC00021F000000000000001A /* FlashcardsViewModel.swift in Sources */,
+				LC000221000000000000001A /* FlashcardsView.swift in Sources */,
+				LC000223000000000000001A /* LearnerTabView.swift in Sources */,
 				FB619E402E94A62000E3B565 /* PageTracker.swift in Sources */,
 				FB82A5C32DF8622700366BC8 /* LocalModels.swift in Sources */,
 			);
