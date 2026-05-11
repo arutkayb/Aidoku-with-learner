@@ -632,6 +632,10 @@
 		LC00020C000000000000001A /* WordLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000207000000000000001A /* WordLookupViewModel.swift */; };
 		LC00020D000000000000001A /* LearnerStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000208000000000000001A /* LearnerStrings.swift */; };
 		LC00020E000000000000001A /* LearnerStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000208000000000000001A /* LearnerStrings.swift */; };
+		LC000211000000000000001A /* SentenceTranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC00020F000000000000001A /* SentenceTranslationSheet.swift */; };
+		LC000212000000000000001A /* SentenceTranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC00020F000000000000001A /* SentenceTranslationSheet.swift */; };
+		LC000213000000000000001A /* SentenceTranslationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000210000000000000001A /* SentenceTranslationViewModel.swift */; };
+		LC000214000000000000001A /* SentenceTranslationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000210000000000000001A /* SentenceTranslationViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1137,6 +1141,8 @@
 		LC000206000000000000001A /* WordLookupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordLookupSheet.swift; sourceTree = "<group>"; };
 		LC000207000000000000001A /* WordLookupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordLookupViewModel.swift; sourceTree = "<group>"; };
 		LC000208000000000000001A /* LearnerStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerStrings.swift; sourceTree = "<group>"; };
+		LC00020F000000000000001A /* SentenceTranslationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceTranslationSheet.swift; sourceTree = "<group>"; };
+		LC000210000000000000001A /* SentenceTranslationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceTranslationViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -2451,6 +2457,8 @@
 			children = (
 				LC000206000000000000001A /* WordLookupSheet.swift */,
 				LC000207000000000000001A /* WordLookupViewModel.swift */,
+				LC00020F000000000000001A /* SentenceTranslationSheet.swift */,
+				LC000210000000000000001A /* SentenceTranslationViewModel.swift */,
 			);
 			path = Learner;
 			sourceTree = "<group>";
@@ -2968,6 +2976,8 @@
 				LC000209000000000000001A /* WordLookupSheet.swift in Sources */,
 				LC00020B000000000000001A /* WordLookupViewModel.swift in Sources */,
 				LC00020D000000000000001A /* LearnerStrings.swift in Sources */,
+				LC000211000000000000001A /* SentenceTranslationSheet.swift in Sources */,
+				LC000213000000000000001A /* SentenceTranslationViewModel.swift in Sources */,
 				FB4B0ADD285C2C570066A13B /* TrackSearchItem.swift in Sources */,
 				FBED232327BB461D0095D0C0 /* SourceObject.swift in Sources */,
 				FB619E512E9E90F000E3B565 /* SettingHeaderView.swift in Sources */,
@@ -3294,6 +3304,8 @@
 				LC00020A000000000000001A /* WordLookupSheet.swift in Sources */,
 				LC00020C000000000000001A /* WordLookupViewModel.swift in Sources */,
 				LC00020E000000000000001A /* LearnerStrings.swift in Sources */,
+				LC000212000000000000001A /* SentenceTranslationSheet.swift in Sources */,
+				LC000214000000000000001A /* SentenceTranslationViewModel.swift in Sources */,
 				FB619E402E94A62000E3B565 /* PageTracker.swift in Sources */,
 				FB82A5C32DF8622700366BC8 /* LocalModels.swift in Sources */,
 			);
