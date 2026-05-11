@@ -42,6 +42,10 @@ class ReaderPageView: UIView {
     private var currentPage: Page?
     private var currentImageRequest: ImageRequest?
 
+    // MARK: — Learner
+    /// Set by ReaderPageViewController before calling setPage; used by LearnerOverlayCoordinator.
+    var learnerContext: LearnerPageContext?
+
     init() {
         super.init(frame: .zero)
         configure()
@@ -115,6 +119,9 @@ class ReaderPageView: UIView {
             imageView.image = image
             fixImageSize()
             startLiveTextAnalysis()
+            if let ctx = learnerContext {
+                Task { await LearnerOverlayCoordinator.shared.imageDidLoad(image, context: ctx, container: self) }
+            }
             return true
         } else if let zipURL = page.zipURL, let url = URL(string: zipURL), let filePath = page.imageURL {
             return await setPageImage(zipURL: url, filePath: filePath)
@@ -232,6 +239,10 @@ class ReaderPageView: UIView {
             }
             fixImageSize()
             startLiveTextAnalysis()
+            if let ctx = learnerContext {
+                let img = response.image
+                Task { await LearnerOverlayCoordinator.shared.imageDidLoad(img, context: ctx, container: self) }
+            }
             completion?(true)
             return true
         } catch {
