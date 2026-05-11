@@ -612,6 +612,12 @@
 		LC0001B7000000000000001A /* CachingTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B9000000000000001A /* CachingTranslationService.swift */; };
 		LC0001BA000000000000001A /* TranslationServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001BB000000000000001A /* TranslationServiceFactory.swift */; };
 		LC0001BC000000000000001A /* TranslationServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001BB000000000000001A /* TranslationServiceFactory.swift */; };
+		LC0001C0000000000000001A /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C3000000000000001A /* OCRService.swift */; };
+		LC0001C1000000000000001A /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C3000000000000001A /* OCRService.swift */; };
+		LC0001C4000000000000001A /* OCRResultCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C6000000000000001A /* OCRResultCache.swift */; };
+		LC0001C5000000000000001A /* OCRResultCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C6000000000000001A /* OCRResultCache.swift */; };
+		LC0001C7000000000000001A /* VisionOCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C8000000000000001A /* VisionOCRService.swift */; };
+		LC0001C9000000000000001A /* VisionOCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C8000000000000001A /* VisionOCRService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1095,19 +1101,21 @@
 		FBFF58902E7F2641009367B7 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		FBFF58922E7F2BEF009367B7 /* SettingView+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingView+Environment.swift"; sourceTree = "<group>"; };
 		FBFF58942E807280009367B7 /* DoneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneButton.swift; sourceTree = "<group>"; };
-		LC0001F1000000000000001A /* VocabularyEntryObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyEntryObject.swift; sourceTree = "<group>"; };
-		LC0001F2000000000000001A /* FamiliarityProgressObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamiliarityProgressObject.swift; sourceTree = "<group>"; };
-		LC0001F3000000000000001A /* FlashcardStateObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardStateObject.swift; sourceTree = "<group>"; };
-		LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataManager+Vocabulary.swift"; sourceTree = "<group>"; };
-		LC0001F5000000000000001A /* BackupVocabularyEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupVocabularyEntry.swift; sourceTree = "<group>"; };
-		LC0001F7000000000000001A /* 0.9.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.9.0.xcdatamodel; sourceTree = "<group>"; };
 		LC0001B1000000000000001A /* TranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationService.swift; sourceTree = "<group>"; };
 		LC0001B2000000000000001A /* FoundationModelsTranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationModelsTranslationService.swift; sourceTree = "<group>"; };
 		LC0001B3000000000000001A /* DeepLTranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLTranslationService.swift; sourceTree = "<group>"; };
 		LC0001B8000000000000001A /* CompositeTranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeTranslationService.swift; sourceTree = "<group>"; };
 		LC0001B9000000000000001A /* CachingTranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingTranslationService.swift; sourceTree = "<group>"; };
 		LC0001BB000000000000001A /* TranslationServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationServiceFactory.swift; sourceTree = "<group>"; };
-		LC0001BE000000000000001A /* Translation */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Translation; sourceTree = "<group>"; };
+		LC0001C3000000000000001A /* OCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRService.swift; sourceTree = "<group>"; };
+		LC0001C6000000000000001A /* OCRResultCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRResultCache.swift; sourceTree = "<group>"; };
+		LC0001C8000000000000001A /* VisionOCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionOCRService.swift; sourceTree = "<group>"; };
+		LC0001F1000000000000001A /* VocabularyEntryObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyEntryObject.swift; sourceTree = "<group>"; };
+		LC0001F2000000000000001A /* FamiliarityProgressObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamiliarityProgressObject.swift; sourceTree = "<group>"; };
+		LC0001F3000000000000001A /* FlashcardStateObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardStateObject.swift; sourceTree = "<group>"; };
+		LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataManager+Vocabulary.swift"; sourceTree = "<group>"; };
+		LC0001F5000000000000001A /* BackupVocabularyEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupVocabularyEntry.swift; sourceTree = "<group>"; };
+		LC0001F7000000000000001A /* 0.9.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.9.0.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -2374,6 +2382,7 @@
 		LC0001BD000000000000001A /* Learner */ = {
 			isa = PBXGroup;
 			children = (
+				LC0001CA000000000000001A /* OCR */,
 				LC0001BF000000000000001A /* Translation */,
 			);
 			path = Learner;
@@ -2390,6 +2399,16 @@
 				LC0001BB000000000000001A /* TranslationServiceFactory.swift */,
 			);
 			path = Translation;
+			sourceTree = "<group>";
+		};
+		LC0001CA000000000000001A /* OCR */ = {
+			isa = PBXGroup;
+			children = (
+				LC0001C3000000000000001A /* OCRService.swift */,
+				LC0001C6000000000000001A /* OCRResultCache.swift */,
+				LC0001C8000000000000001A /* VisionOCRService.swift */,
+			);
+			path = OCR;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2895,6 +2914,9 @@
 				LC0001B4000000000000001A /* CompositeTranslationService.swift in Sources */,
 				LC0001B6000000000000001A /* CachingTranslationService.swift in Sources */,
 				LC0001BA000000000000001A /* TranslationServiceFactory.swift in Sources */,
+				LC0001C0000000000000001A /* OCRService.swift in Sources */,
+				LC0001C4000000000000001A /* OCRResultCache.swift in Sources */,
+				LC0001C7000000000000001A /* VisionOCRService.swift in Sources */,
 				FB4B0ADD285C2C570066A13B /* TrackSearchItem.swift in Sources */,
 				FBED232327BB461D0095D0C0 /* SourceObject.swift in Sources */,
 				FB619E512E9E90F000E3B565 /* SettingHeaderView.swift in Sources */,
@@ -3211,6 +3233,9 @@
 				LC0001B5000000000000001A /* CompositeTranslationService.swift in Sources */,
 				LC0001B7000000000000001A /* CachingTranslationService.swift in Sources */,
 				LC0001BC000000000000001A /* TranslationServiceFactory.swift in Sources */,
+				LC0001C1000000000000001A /* OCRService.swift in Sources */,
+				LC0001C5000000000000001A /* OCRResultCache.swift in Sources */,
+				LC0001C9000000000000001A /* VisionOCRService.swift in Sources */,
 				FB619E402E94A62000E3B565 /* PageTracker.swift in Sources */,
 				FB82A5C32DF8622700366BC8 /* LocalModels.swift in Sources */,
 			);
