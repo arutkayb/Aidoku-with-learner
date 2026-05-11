@@ -83,7 +83,33 @@ final class VisionOCRService: OCRService {
                         }
                     }
 
-                    continuation.resume(returning: OCRResult(words: words, lines: lines))
+                    // Merge hyphenated words that wrap across lines.
+                    // Example: "ABEND-" on line N and "ESSEN" on line N+1 become "ABENDESSEN".
+                    // The merged word keeps the bounding box of the first half (the upper one)
+                    // so the tap target sits where the user expects.
+                    var mergedWords: [OCRWordBox] = []
+                    var i = 0
+                    while i < words.count {
+                        let current = words[i]
+                        if current.text.hasSuffix("-"),
+                           i + 1 < words.count,
+                           words[i + 1].lineIndex == current.lineIndex + 1 {
+                            let next = words[i + 1]
+                            let stem = String(current.text.dropLast()) // drop trailing '-'
+                            let merged = OCRWordBox(
+                                text: stem + next.text,
+                                boundingBox: current.boundingBox,
+                                confidence: min(current.confidence, next.confidence),
+                                lineIndex: current.lineIndex
+                            )
+                            mergedWords.append(merged)
+                            i += 2
+                        } else {
+                            mergedWords.append(current)
+                            i += 1
+                        }
+                    }
+                    continuation.resume(returning: OCRResult(words: mergedWords, lines: lines))
                 }
 
                 request.recognitionLevel = .accurate

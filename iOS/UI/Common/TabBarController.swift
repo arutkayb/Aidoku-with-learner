@@ -123,6 +123,7 @@ class TabBarController: UITabBarController {
         self.learnerViewController = learnerViewController
 
         let learnerVisible = UserDefaults.standard.bool(forKey: "Learner.enabledGlobally")
+            || UserDefaults.standard.bool(forKey: "Learner.globallyEnabled")
 
         if #available(iOS 26.0, *) {
             let searchTab = UISearchTab { _ in
@@ -222,6 +223,14 @@ class TabBarController: UITabBarController {
             }
             .store(in: &cancellables)
 
+        // User-driven global Learner toggle in Settings.
+        NotificationCenter.default.publisher(for: Notification.Name("Learner.globallyEnabled"))
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.refreshLearnerTabVisibility()
+            }
+            .store(in: &cancellables)
+
         let updateCount = UserDefaults.standard.integer(forKey: "Browse.updateCount")
         browseViewController.tabBarItem.badgeValue = updateCount > 0 ? String(updateCount) : nil
 
@@ -235,7 +244,9 @@ class TabBarController: UITabBarController {
     /// Inserts the Learner tab if `Learner.enabledGlobally` flipped on at runtime.
     /// Called from a notification observer; idempotent — if the tab is already present, does nothing.
     private func refreshLearnerTabVisibility() {
-        guard UserDefaults.standard.bool(forKey: "Learner.enabledGlobally") else { return }
+        let visible = UserDefaults.standard.bool(forKey: "Learner.enabledGlobally")
+            || UserDefaults.standard.bool(forKey: "Learner.globallyEnabled")
+        guard visible else { return }
         guard let learnerViewController else { return }
 
         if #available(iOS 26.0, *) {

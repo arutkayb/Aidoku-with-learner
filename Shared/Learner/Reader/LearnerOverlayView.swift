@@ -70,6 +70,20 @@ final class LearnerOverlayView: UIView {
         rebuild()
     }
 
+    // MARK: — Layout
+
+    private var lastRebuildBounds: CGRect = .zero
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // First OCR pass often runs before Auto Layout has sized the overlay; rebuild
+        // when bounds become non-zero so word regions and badges land in the right place.
+        if bounds.size != lastRebuildBounds.size, bounds.width > 0, bounds.height > 0 {
+            lastRebuildBounds = bounds
+            rebuild()
+        }
+    }
+
     // MARK: — Hit-test passthrough
 
     /// Word regions intercept their own touches via `UIControl.touchUpInside`.
@@ -169,13 +183,38 @@ final class LearnerOverlayView: UIView {
 
     // MARK: — Coordinate transform
 
-    /// Converts a Vision normalized bounding box (bottom-left origin) to UIKit view coordinates.
+    /// Converts a Vision normalized bounding box (bottom-left origin, relative to the
+    /// underlying image) to UIKit view coordinates inside the aspect-fit displayed rect.
     private func visionToView(_ box: CGRect, in size: CGSize) -> CGRect {
-        let x = box.origin.x * size.width
-        let y = (1.0 - box.origin.y - box.height) * size.height
-        let w = box.width * size.width
-        let h = box.height * size.height
+        let displayed = displayedImageRect(in: size)
+        let x = displayed.origin.x + box.origin.x * displayed.width
+        let y = displayed.origin.y + (1.0 - box.origin.y - box.height) * displayed.height
+        let w = box.width * displayed.width
+        let h = box.height * displayed.height
         return CGRect(x: x, y: y, width: w, height: h)
+    }
+
+    /// Returns the rect (inside our overlay bounds) that the imageView's image actually fills.
+    /// imageView uses `.scaleAspectFit` so the image is letterboxed when aspect ratios differ.
+    private func displayedImageRect(in size: CGSize) -> CGRect {
+        guard let imageSize = (superview as? UIImageView)?.image?.size,
+              imageSize.width > 0, imageSize.height > 0,
+              size.width > 0, size.height > 0 else {
+            return CGRect(origin: .zero, size: size)
+        }
+        let imageAspect = imageSize.width / imageSize.height
+        let viewAspect = size.width / size.height
+        if imageAspect > viewAspect {
+            // image is wider — fills width, letterboxed top/bottom
+            let h = size.width / imageAspect
+            let y = (size.height - h) / 2
+            return CGRect(x: 0, y: y, width: size.width, height: h)
+        } else {
+            // image is taller — fills height, letterboxed left/right
+            let w = size.height * imageAspect
+            let x = (size.width - w) / 2
+            return CGRect(x: x, y: 0, width: w, height: size.height)
+        }
     }
 }
 

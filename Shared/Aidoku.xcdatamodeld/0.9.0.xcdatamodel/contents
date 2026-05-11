@@ -152,11 +152,11 @@
         <memberEntity name="MangaUpdate"/>
         <memberEntity name="LocalFileInfo"/>
         <memberEntity name="ReadingSession"/>
-        <memberEntity name="VocabularyEntry"/>
-        <memberEntity name="FamiliarityProgress"/>
-        <memberEntity name="FlashcardState"/>
     </configuration>
     <configuration name="Local">
         <memberEntity name="Source"/>
+        <memberEntity name="VocabularyEntry"/>
+        <memberEntity name="FamiliarityProgress"/>
+        <memberEntity name="FlashcardState"/>
     </configuration>
 </model>
