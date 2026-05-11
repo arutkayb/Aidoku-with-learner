@@ -767,6 +767,15 @@
 "LEARNER_TRANSLATION_NETWORK_ERROR" = "Translation request failed. Check your connection.";
 "LEARNER_TRANSLATION_INVALID_KEY" = "Invalid DeepL API key.";
 
+// MARK: — Learner Word Lookup (Task 6)
+"LEARNER_WORD_LOOKUP" = "Word Lookup";
+"LEARNER_ADD_TO_VOCAB" = "Add to Vocabulary";
+"LEARNER_IN_VOCAB" = "In Vocabulary";
+"LEARNER_MARK_DONE" = "Mark as Done";
+"LEARNER_TRANSLATE_SENTENCE" = "Translate this sentence";
+"LEARNER_FAMILIARITY" = "Familiarity";
+"LEARNER_WORD_LOOKUP_ERROR" = "Could not load translation.";
+
 // MARK: — Learner Mode (Task 5)
 "LEARNER_MODE" = "Learner Mode";
 "LEARNER_MODE_ENABLE" = "Enable Learner Mode";
