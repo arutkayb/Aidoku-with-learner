@@ -7,6 +7,9 @@
 //
 
 import SwiftUI
+#if canImport(Translation)
+import Translation
+#endif
 
 struct WordLookupSheet: View {
 
@@ -157,7 +160,7 @@ struct WordLookupSheet: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(.stack)
-        .task { await viewModel.loadTranslation() }
+        .modifier(WordLookupTranslationDriver(viewModel: viewModel))
     }
 
     // MARK: — Helpers
@@ -191,3 +194,47 @@ struct WordLookupSheet: View {
 private extension String {
     var localized: String { NSLocalizedString(self, comment: "") }
 }
+
+// MARK: — Translation driver
+
+/// Routes translation through Apple's Translation framework on iOS 18+,
+/// falling back to the composite TranslationService (DeepL → Foundation Models) below that.
+private struct WordLookupTranslationDriver: ViewModifier {
+    @ObservedObject var viewModel: WordLookupViewModel
+
+    func body(content: Content) -> some View {
+        #if canImport(Translation)
+        if #available(iOS 18.0, *) {
+            content.modifier(AppleTranslationModifier(viewModel: viewModel))
+        } else {
+            content.task { await viewModel.loadTranslation() }
+        }
+        #else
+        content.task { await viewModel.loadTranslation() }
+        #endif
+    }
+}
+
+#if canImport(Translation)
+@available(iOS 18.0, *)
+private struct AppleTranslationModifier: ViewModifier {
+    @ObservedObject var viewModel: WordLookupViewModel
+    @State private var configuration: TranslationSession.Configuration?
+
+    func body(content: Content) -> some View {
+        content
+            .task {
+                guard configuration == nil else { return }
+                let target = UserDefaults.standard.string(forKey: "Learner.targetLanguage") ?? "en"
+                let sourceCode = String(viewModel.language.prefix(2))
+                configuration = TranslationSession.Configuration(
+                    source: Locale.Language(identifier: sourceCode),
+                    target: Locale.Language(identifier: target)
+                )
+            }
+            .translationTask(configuration) { session in
+                await viewModel.loadTranslation(using: session)
+            }
+    }
+}
+#endif

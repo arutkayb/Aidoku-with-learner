@@ -8,6 +8,9 @@
 //
 
 import SwiftUI
+#if canImport(Translation)
+import Translation
+#endif
 
 struct SentenceTranslationSheet: View {
 
@@ -50,7 +53,7 @@ struct SentenceTranslationSheet: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(.stack)
-        .task { await viewModel.load() }
+        .modifier(SentenceTranslationDriver(viewModel: viewModel))
     }
 
     // MARK: — Header
@@ -234,3 +237,48 @@ private struct SentenceRowView: View {
 private extension String {
     var localized: String { NSLocalizedString(self, comment: "") }
 }
+
+// MARK: — Translation driver
+
+/// Mirrors the WordLookupSheet pattern: uses Apple Translation on iOS 18+,
+/// falls back to the composite service below.
+private struct SentenceTranslationDriver: ViewModifier {
+    @ObservedObject var viewModel: SentenceTranslationViewModel
+
+    func body(content: Content) -> some View {
+        #if canImport(Translation)
+        if #available(iOS 18.0, *) {
+            content.modifier(AppleSentenceTranslationModifier(viewModel: viewModel))
+        } else {
+            content.task { await viewModel.load() }
+        }
+        #else
+        content.task { await viewModel.load() }
+        #endif
+    }
+}
+
+#if canImport(Translation)
+@available(iOS 18.0, *)
+private struct AppleSentenceTranslationModifier: ViewModifier {
+    @ObservedObject var viewModel: SentenceTranslationViewModel
+    @State private var configuration: TranslationSession.Configuration?
+
+    func body(content: Content) -> some View {
+        content
+            .task {
+                await viewModel.loadSourceSentences()
+                guard configuration == nil else { return }
+                let target = UserDefaults.standard.string(forKey: "Learner.targetLanguage") ?? "en"
+                let sourceCode = String(viewModel.context.language.prefix(2))
+                configuration = TranslationSession.Configuration(
+                    source: Locale.Language(identifier: sourceCode),
+                    target: Locale.Language(identifier: target)
+                )
+            }
+            .translationTask(configuration) { session in
+                await viewModel.translateAll(using: session)
+            }
+    }
+}
+#endif

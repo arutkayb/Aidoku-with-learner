@@ -8,6 +8,9 @@
 //
 
 import Foundation
+#if canImport(Translation)
+import Translation
+#endif
 import Combine
 
 // MARK: — SentenceVM
@@ -55,8 +58,15 @@ final class SentenceTranslationViewModel: ObservableObject {
 
     // MARK: — Load
 
-    /// Groups OCR lines into sentences, then translates each in parallel.
+    /// Groups OCR lines into sentences and translates each via the composite service.
+    /// Use this on pre-iOS-18 where Apple Translation is unavailable.
     func load() async {
+        await loadSourceSentences()
+        await translateAllViaService()
+    }
+
+    /// Step 1 only: groups fragments and populates `sentences` with source text.
+    func loadSourceSentences() async {
         isLoading = true
         loadError = nil
         sentences = []
@@ -72,20 +82,15 @@ final class SentenceTranslationViewModel: ObservableObject {
 
         let service = TranslationServiceFactory.shared.service
         let sourceLanguage = context.language
-        let targetLanguage = UserDefaults.standard.string(forKey: "Learner.targetLanguage") ?? "en"
 
-        // Step 1: group fragments into sentences
-        let groups: [SentenceGroup]
+        // Step 1: group fragments into sentences. Failure isn't fatal — we fall back to
+        // one-per-line below so Apple Translation can still run when Foundation Models
+        // (used for grouping) is unavailable.
+        var groups: [SentenceGroup] = []
         do {
             groups = try await service.groupFragmentsIntoSentences(fragments, language: sourceLanguage)
-        } catch let err as TranslationError {
-            loadError = err
-            isLoading = false
-            return
         } catch {
-            loadError = .networkError(underlying: error)
-            isLoading = false
-            return
+            print("[Learner] sentence grouping unavailable, falling back to one-per-line: \(error)")
         }
 
         // Validate that every input fragment index appears exactly once across groups.
@@ -111,13 +116,21 @@ final class SentenceTranslationViewModel: ObservableObject {
         // Seed sentences array with source text (no translation yet)
         sentences = resolvedGroups.map { SentenceVM(source: $0.combinedText) }
         isLoading = false
+    }
 
-        // Step 2: translate each sentence concurrently
+    /// Step 2: translates each sentence concurrently via the composite service.
+    /// Used on pre-iOS-18 where Apple Translation is unavailable.
+    private func translateAllViaService() async {
+        let service = TranslationServiceFactory.shared.service
+        let sourceLanguage = context.language
+        let targetLanguage = UserDefaults.standard.string(forKey: "Learner.targetLanguage") ?? "en"
+
         await withTaskGroup(of: (Int, String?).self) { group in
-            for (idx, sentenceGroup) in resolvedGroups.enumerated() {
+            for (idx, sentence) in sentences.enumerated() {
+                let text = sentence.source
                 group.addTask {
                     let result = try? await service.translateSentence(
-                        sentenceGroup.combinedText,
+                        text,
                         sourceLanguage: sourceLanguage,
                         targetLanguage: targetLanguage
                     )
@@ -131,6 +144,25 @@ final class SentenceTranslationViewModel: ObservableObject {
             }
         }
     }
+
+    #if canImport(Translation)
+    /// Step 2 using Apple's Translation framework session. Sentences are translated
+    /// sequentially because TranslationSession serialises requests internally.
+    @available(iOS 18.0, *)
+    func translateAll(using session: TranslationSession) async {
+        for idx in sentences.indices {
+            let text = sentences[idx].source
+            do {
+                let response = try await session.translate(text)
+                if idx < sentences.count {
+                    sentences[idx].translation = response.targetText
+                }
+            } catch {
+                print("[Learner] Apple Translation sentence failed: \(error)")
+            }
+        }
+    }
+    #endif
 
     // MARK: — Retry
 

@@ -8,6 +8,9 @@
 
 import Foundation
 import Combine
+#if canImport(Translation)
+import Translation
+#endif
 
 @MainActor
 final class WordLookupViewModel: ObservableObject {
@@ -151,4 +154,33 @@ final class WordLookupViewModel: ObservableObject {
     func requestSentenceTranslation(event: WordTapEvent) {
         LearnerEvents.shared.sentenceTranslateRequested.send(event)
     }
+
+    // MARK: — Apple Translation framework
+
+    #if canImport(Translation)
+    @available(iOS 18.0, *)
+    func loadTranslation(using session: TranslationSession) async {
+        guard translation == nil else { return }
+        isLoading = true
+        loadError = nil
+        do {
+            let response = try await session.translate(lemma)
+            let result = WordTranslation(lemma: lemma, translation: response.targetText)
+            translation = result
+            if isInVocab {
+                _ = CoreDataManager.shared.upsertVocabularyEntry(
+                    language: language,
+                    lemma: lemma,
+                    surfaceForm: surfaceForm,
+                    translation: result.translation,
+                    sourceMangaId: mangaId.isEmpty ? nil : mangaId,
+                    sourceMangaSourceId: sourceId.isEmpty ? nil : sourceId
+                )
+            }
+        } catch {
+            loadError = .networkError(underlying: error)
+        }
+        isLoading = false
+    }
+    #endif
 }
