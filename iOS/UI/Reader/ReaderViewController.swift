@@ -8,6 +8,7 @@
 import UIKit
 import SafariServices
 import SwiftUI
+import Combine
 import AidokuRunner
 
 class ReaderViewController: BaseObservingViewController {
@@ -57,6 +58,9 @@ class ReaderViewController: BaseObservingViewController {
     private var squeezeStartTime: Date?
     private let doubleSqueezeInterval: TimeInterval = 0.3
     private let longSqueezeThreshold: TimeInterval = 0.5
+
+    // MARK: — Learner
+    private var wordTapSubscription: AnyCancellable?
 
     private lazy var descriptionButtonController: UIHostingController<ReaderPageDescriptionButtonView> = {
         let buttonView = ReaderPageDescriptionButtonView(source: source, pages: [])
@@ -307,6 +311,11 @@ class ReaderViewController: BaseObservingViewController {
                 }
             }
         }
+
+        // Subscribe to Learner word-tap events
+        wordTapSubscription = LearnerEvents.shared.wordTapped
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] event in self?.presentWordLookup(event) }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -329,6 +338,7 @@ class ReaderViewController: BaseObservingViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        wordTapSubscription?.cancel()
 
         if !chaptersToRemoveDownload.isEmpty {
             Task {
@@ -497,6 +507,26 @@ class ReaderViewController: BaseObservingViewController {
         )
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .cancel))
         present(alert, animated: true)
+    }
+
+    // MARK: — Learner word lookup
+
+    func presentWordLookup(_ event: WordTapEvent) {
+        // If a sheet is already presented, dismiss it first then re-present.
+        if presentedViewController != nil {
+            dismiss(animated: true) { [weak self] in
+                self?.showWordLookupSheet(event)
+            }
+        } else {
+            showWordLookupSheet(event)
+        }
+    }
+
+    private func showWordLookupSheet(_ event: WordTapEvent) {
+        let vc = UIHostingController(rootView: WordLookupSheet(event: event))
+        vc.sheetPresentationController?.detents = [.medium(), .large()]
+        vc.sheetPresentationController?.prefersGrabberVisible = true
+        present(vc, animated: true)
     }
 
     @objc func openReaderSettings() {
