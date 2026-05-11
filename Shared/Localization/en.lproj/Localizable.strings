@@ -763,3 +763,6 @@
 "LEARNER_VOCABULARY" = "Vocabulary";
 "LEARNER_VOCAB_FAMILIARITY_LEVEL" = "Familiarity";
 "LEARNER_VOCAB_DONE" = "Done";
+"LEARNER_TRANSLATION_UNAVAILABLE" = "Translation unavailable on this device.";
+"LEARNER_TRANSLATION_NETWORK_ERROR" = "Translation request failed. Check your connection.";
+"LEARNER_TRANSLATION_INVALID_KEY" = "Invalid DeepL API key.";
