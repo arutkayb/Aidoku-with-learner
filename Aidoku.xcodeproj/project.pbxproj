@@ -618,6 +618,14 @@
 		LC0001C5000000000000001A /* OCRResultCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C6000000000000001A /* OCRResultCache.swift */; };
 		LC0001C7000000000000001A /* VisionOCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C8000000000000001A /* VisionOCRService.swift */; };
 		LC0001C9000000000000001A /* VisionOCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C8000000000000001A /* VisionOCRService.swift */; };
+		LC0001F8000000000000001A /* LearnerEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000200000000000000001A /* LearnerEvents.swift */; };
+		LC0001F9000000000000001A /* LearnerEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000200000000000000001A /* LearnerEvents.swift */; };
+		LC0001FA000000000000001A /* VocabIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000201000000000000001A /* VocabIndex.swift */; };
+		LC0001FB000000000000001A /* VocabIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000201000000000000001A /* VocabIndex.swift */; };
+		LC0001FC000000000000001A /* LearnerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000202000000000000001A /* LearnerOverlayView.swift */; };
+		LC0001FD000000000000001A /* LearnerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000202000000000000001A /* LearnerOverlayView.swift */; };
+		LC0001FE000000000000001A /* LearnerOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000203000000000000001A /* LearnerOverlayCoordinator.swift */; };
+		LC0001FF000000000000001A /* LearnerOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000203000000000000001A /* LearnerOverlayCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1116,6 +1124,10 @@
 		LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataManager+Vocabulary.swift"; sourceTree = "<group>"; };
 		LC0001F5000000000000001A /* BackupVocabularyEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupVocabularyEntry.swift; sourceTree = "<group>"; };
 		LC0001F7000000000000001A /* 0.9.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.9.0.xcdatamodel; sourceTree = "<group>"; };
+		LC000200000000000000001A /* LearnerEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerEvents.swift; sourceTree = "<group>"; };
+		LC000201000000000000001A /* VocabIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabIndex.swift; sourceTree = "<group>"; };
+		LC000202000000000000001A /* LearnerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerOverlayView.swift; sourceTree = "<group>"; };
+		LC000203000000000000001A /* LearnerOverlayCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerOverlayCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -2384,6 +2396,7 @@
 			children = (
 				LC0001CA000000000000001A /* OCR */,
 				LC0001BF000000000000001A /* Translation */,
+				LC000204000000000000001A /* Reader */,
 			);
 			path = Learner;
 			sourceTree = "<group>";
@@ -2409,6 +2422,17 @@
 				LC0001C8000000000000001A /* VisionOCRService.swift */,
 			);
 			path = OCR;
+			sourceTree = "<group>";
+		};
+		LC000204000000000000001A /* Reader */ = {
+			isa = PBXGroup;
+			children = (
+				LC000200000000000000001A /* LearnerEvents.swift */,
+				LC000201000000000000001A /* VocabIndex.swift */,
+				LC000202000000000000001A /* LearnerOverlayView.swift */,
+				LC000203000000000000001A /* LearnerOverlayCoordinator.swift */,
+			);
+			path = Reader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2917,6 +2941,10 @@
 				LC0001C0000000000000001A /* OCRService.swift in Sources */,
 				LC0001C4000000000000001A /* OCRResultCache.swift in Sources */,
 				LC0001C7000000000000001A /* VisionOCRService.swift in Sources */,
+				LC0001F8000000000000001A /* LearnerEvents.swift in Sources */,
+				LC0001FA000000000000001A /* VocabIndex.swift in Sources */,
+				LC0001FC000000000000001A /* LearnerOverlayView.swift in Sources */,
+				LC0001FE000000000000001A /* LearnerOverlayCoordinator.swift in Sources */,
 				FB4B0ADD285C2C570066A13B /* TrackSearchItem.swift in Sources */,
 				FBED232327BB461D0095D0C0 /* SourceObject.swift in Sources */,
 				FB619E512E9E90F000E3B565 /* SettingHeaderView.swift in Sources */,
@@ -3236,6 +3264,10 @@
 				LC0001C1000000000000001A /* OCRService.swift in Sources */,
 				LC0001C5000000000000001A /* OCRResultCache.swift in Sources */,
 				LC0001C9000000000000001A /* VisionOCRService.swift in Sources */,
+				LC0001F9000000000000001A /* LearnerEvents.swift in Sources */,
+				LC0001FB000000000000001A /* VocabIndex.swift in Sources */,
+				LC0001FD000000000000001A /* LearnerOverlayView.swift in Sources */,
+				LC0001FF000000000000001A /* LearnerOverlayCoordinator.swift in Sources */,
 				FB619E402E94A62000E3B565 /* PageTracker.swift in Sources */,
 				FB82A5C32DF8622700366BC8 /* LocalModels.swift in Sources */,
 			);
