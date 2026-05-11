@@ -590,6 +590,16 @@
 		FBFF58912E7F2642009367B7 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFF58902E7F2641009367B7 /* Settings.swift */; };
 		FBFF58932E7F2BF5009367B7 /* SettingView+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFF58922E7F2BEF009367B7 /* SettingView+Environment.swift */; };
 		FBFF58952E807282009367B7 /* DoneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFF58942E807280009367B7 /* DoneButton.swift */; };
+		LC0001A1000000000000001A /* VocabularyEntryObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F1000000000000001A /* VocabularyEntryObject.swift */; };
+		LC0001A2000000000000001A /* VocabularyEntryObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F1000000000000001A /* VocabularyEntryObject.swift */; };
+		LC0001A3000000000000001A /* FamiliarityProgressObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F2000000000000001A /* FamiliarityProgressObject.swift */; };
+		LC0001A4000000000000001A /* FamiliarityProgressObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F2000000000000001A /* FamiliarityProgressObject.swift */; };
+		LC0001A5000000000000001A /* FlashcardStateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F3000000000000001A /* FlashcardStateObject.swift */; };
+		LC0001A6000000000000001A /* FlashcardStateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F3000000000000001A /* FlashcardStateObject.swift */; };
+		LC0001A7000000000000001A /* CoreDataManager+Vocabulary.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */; };
+		LC0001A8000000000000001A /* CoreDataManager+Vocabulary.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */; };
+		LC0001A9000000000000001A /* BackupVocabularyEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F5000000000000001A /* BackupVocabularyEntry.swift */; };
+		LC0001AA000000000000001A /* BackupVocabularyEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001F5000000000000001A /* BackupVocabularyEntry.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -652,6 +662,7 @@
 		FB077DAD2E7DC85800C9C214 /* BackupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupsView.swift; sourceTree = "<group>"; };
 		FB077DAF2E7DCFF700C9C214 /* String+Highlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Highlight.swift"; sourceTree = "<group>"; };
 		FB0AB8922F50B81800AF1451 /* 0.8.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.8.2.xcdatamodel; sourceTree = "<group>"; };
+		LC0001F7000000000000001A /* 0.9.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.9.0.xcdatamodel; sourceTree = "<group>"; };
 		FB0AB8932F50B98000AF1451 /* BackupCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCategory.swift; sourceTree = "<group>"; };
 		FB0AB8A22F51FD8D00AF1451 /* FilterGroupCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterGroupCreateView.swift; sourceTree = "<group>"; };
 		FB0AB8A42F52046F00AF1451 /* FilterGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterGroup.swift; sourceTree = "<group>"; };
@@ -1073,6 +1084,11 @@
 		FBFF58902E7F2641009367B7 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		FBFF58922E7F2BEF009367B7 /* SettingView+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingView+Environment.swift"; sourceTree = "<group>"; };
 		FBFF58942E807280009367B7 /* DoneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneButton.swift; sourceTree = "<group>"; };
+		LC0001F1000000000000001A /* VocabularyEntryObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyEntryObject.swift; sourceTree = "<group>"; };
+		LC0001F2000000000000001A /* FamiliarityProgressObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamiliarityProgressObject.swift; sourceTree = "<group>"; };
+		LC0001F3000000000000001A /* FlashcardStateObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardStateObject.swift; sourceTree = "<group>"; };
+		LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataManager+Vocabulary.swift"; sourceTree = "<group>"; };
+		LC0001F5000000000000001A /* BackupVocabularyEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupVocabularyEntry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -1255,6 +1271,7 @@
 				FB947CFA2EF1D14F00FC6226 /* CoreDataManager+ReadingSession.swift */,
 				FB05F868296499DE00D1EA2D /* CoreDataManager+Source.swift */,
 				FB4EB4FE28AA959C00FDEA4A /* CoreDataManager+Track.swift */,
+				LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1933,6 +1950,7 @@
 				FB72501B27CAACC00037F1C9 /* BackupChapter.swift */,
 				FB72501E27CAACC90037F1C9 /* BackupHistory.swift */,
 				FBCA1B2C2889AEE0007149C5 /* BackupTrackItem.swift */,
+				LC0001F5000000000000001A /* BackupVocabularyEntry.swift */,
 				FBF059C72EF8330700907B0E /* BackupUpdate.swift */,
 				FBF059CA2EF8330E00907B0E /* BackupReadingSession.swift */,
 				FB3D20772FA4A19E004DAC5E /* BackupSource.swift */,
@@ -2279,6 +2297,9 @@
 				48177B912B75C67300AD41B4 /* MangaUpdateObject.swift */,
 				FBED232227BB461D0095D0C0 /* SourceObject.swift */,
 				FBCA1B232888A910007149C5 /* TrackObject.swift */,
+				LC0001F1000000000000001A /* VocabularyEntryObject.swift */,
+				LC0001F2000000000000001A /* FamiliarityProgressObject.swift */,
+				LC0001F3000000000000001A /* FlashcardStateObject.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -2485,10 +2506,11 @@
 				FB171149296770CC00AD523D /* XCRemoteSwiftPackageReference "Nuke" */,
 				FBE53F0A29CC015E00899601 /* XCRemoteSwiftPackageReference "Texture" */,
 				FB662EDC2DA816CF00007514 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
-				FBFDF5F62DF799180064F603 /* XCRemoteSwiftPackageReference "AidokuRunner" */,
+				FBFDF5F62DF799180064F603 /* XCLocalSwiftPackageReference "../AidokuRunner" */,
 				FBBCB31B2E08D6AF00ED5CAB /* XCRemoteSwiftPackageReference "Gifu" */,
 				FBAED40A2E3A762800B81E74 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 				FB2C83972E43F074003CA85F /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				FBAA00112E5A0001000000AA /* XCLocalSwiftPackageReference "../Wasm3" */,
 			);
 			productRefGroup = FB1B4836277CE1920056D02C /* Products */;
 			projectDirPath = "";
@@ -2821,6 +2843,11 @@
 				FB7F05F62DDCDC910036B116 /* HostingNode.swift in Sources */,
 				FB3DDA0A2ECE4D3A0081232F /* SourceSearchViewModel.swift in Sources */,
 				FB72501F27CAACC90037F1C9 /* BackupHistory.swift in Sources */,
+				LC0001A1000000000000001A /* VocabularyEntryObject.swift in Sources */,
+				LC0001A3000000000000001A /* FamiliarityProgressObject.swift in Sources */,
+				LC0001A5000000000000001A /* FlashcardStateObject.swift in Sources */,
+				LC0001A7000000000000001A /* CoreDataManager+Vocabulary.swift in Sources */,
+				LC0001A9000000000000001A /* BackupVocabularyEntry.swift in Sources */,
 				FB4B0ADD285C2C570066A13B /* TrackSearchItem.swift in Sources */,
 				FBED232327BB461D0095D0C0 /* SourceObject.swift in Sources */,
 				FB619E512E9E90F000E3B565 /* SettingHeaderView.swift in Sources */,
@@ -3126,6 +3153,11 @@
 				FB0AB8952F50B98300AF1451 /* BackupCategory.swift in Sources */,
 				FB4EEBBE27A2F103005081A3 /* MangaObject.swift in Sources */,
 				FB72502027CAACC90037F1C9 /* BackupHistory.swift in Sources */,
+				LC0001A2000000000000001A /* VocabularyEntryObject.swift in Sources */,
+				LC0001A4000000000000001A /* FamiliarityProgressObject.swift in Sources */,
+				LC0001A6000000000000001A /* FlashcardStateObject.swift in Sources */,
+				LC0001A8000000000000001A /* CoreDataManager+Vocabulary.swift in Sources */,
+				LC0001AA000000000000001A /* BackupVocabularyEntry.swift in Sources */,
 				FB619E402E94A62000E3B565 /* PageTracker.swift in Sources */,
 				FB82A5C32DF8622700366BC8 /* LocalModels.swift in Sources */,
 			);
@@ -3345,6 +3377,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = 3N682N99R2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -3365,6 +3398,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.8.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.aidoku.Aidoku-with-learner";
 				PRODUCT_NAME = Aidoku;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -3388,6 +3422,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = 3N682N99R2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
@@ -3408,6 +3443,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.8.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.aidoku.Aidoku-with-learner";
 				PRODUCT_NAME = Aidoku;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -3587,6 +3623,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		FBAA00112E5A0001000000AA /* XCLocalSwiftPackageReference "../Wasm3" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Wasm3;
+		};
+		FBFDF5F62DF799180064F603 /* XCLocalSwiftPackageReference "../AidokuRunner" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../AidokuRunner;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		FB171149296770CC00AD523D /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -3644,14 +3691,6 @@
 				minimumVersion = 3.1.1;
 			};
 		};
-		FBFDF5F62DF799180064F603 /* XCRemoteSwiftPackageReference "AidokuRunner" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Aidoku/AidokuRunner";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3706,12 +3745,12 @@
 		};
 		FBFDF5F72DF799180064F603 /* AidokuRunner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FBFDF5F62DF799180064F603 /* XCRemoteSwiftPackageReference "AidokuRunner" */;
+			package = FBFDF5F62DF799180064F603 /* XCLocalSwiftPackageReference "../AidokuRunner" */;
 			productName = AidokuRunner;
 		};
 		FBFDF5F92DF799340064F603 /* AidokuRunner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FBFDF5F62DF799180064F603 /* XCRemoteSwiftPackageReference "AidokuRunner" */;
+			package = FBFDF5F62DF799180064F603 /* XCLocalSwiftPackageReference "../AidokuRunner" */;
 			productName = AidokuRunner;
 		};
 /* End XCSwiftPackageProductDependency section */
@@ -3720,6 +3759,7 @@
 		FB1B482B277CE18D0056D02C /* Aidoku.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				LC0001F7000000000000001A /* 0.9.0.xcdatamodel */,
 				FB0AB8922F50B81800AF1451 /* 0.8.2.xcdatamodel */,
 				FB947CF92EF1CC4D00FC6226 /* 0.8.xcdatamodel */,
 				FB63D4FF2E37CBEF004FF4DC /* 0.7.1.xcdatamodel */,
@@ -3731,7 +3771,7 @@
 				FBCA1B2228889F1D007149C5 /* 0.5.xcdatamodel */,
 				FB1B482C277CE18D0056D02C /* Shared.xcdatamodel */,
 			);
-			currentVersion = FB0AB8922F50B81800AF1451 /* 0.8.2.xcdatamodel */;
+			currentVersion = LC0001F7000000000000001A /* 0.9.0.xcdatamodel */;
 			path = Aidoku.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

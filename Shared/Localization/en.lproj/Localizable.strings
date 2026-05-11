@@ -758,3 +758,8 @@
 "TOGGLE_BARS" = "Toggle bar visibility";
 "CLOSE_READER" = "Close reader";
 "TOGGLE_PAGE_OFFSET" = "Toggle page offset";
+
+// MARK: — Learner
+"LEARNER_VOCABULARY" = "Vocabulary";
+"LEARNER_VOCAB_FAMILIARITY_LEVEL" = "Familiarity";
+"LEARNER_VOCAB_DONE" = "Done";

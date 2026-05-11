@@ -104,6 +104,7 @@ actor BackupManager {
         let settings: Bool
         let sourceLists: Bool
         let sensitiveSettings: Bool
+        var includeVocabulary: Bool = true
     }
 
     func createBackup(options: BackupOptions) async -> Backup {
@@ -167,6 +168,12 @@ actor BackupManager {
                 nil
             }
 
+            let vocabulary: [BackupVocabularyEntry]? = if options.includeVocabulary {
+                CoreDataManager.shared.getAllVocabulary(context: context).map { BackupVocabularyEntry(object: $0) }
+            } else {
+                nil
+            }
+
             return Backup(
                 library: library,
                 history: history,
@@ -181,7 +188,8 @@ actor BackupManager {
                 settings: settings,
                 date: Date.now,
                 automatic: options.automatic,
-                version: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+                version: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown",
+                vocabulary: vocabulary
             )
         }
     }
@@ -246,6 +254,7 @@ extension BackupManager {
         case updates
         case track
         case sources
+        case vocabulary
 
         var stringValue: String {
             switch self {
@@ -258,6 +267,7 @@ extension BackupManager {
                 case .updates: NSLocalizedString("UPDATES")
                 case .track: NSLocalizedString("TRACKERS")
                 case .sources: NSLocalizedString("SOURCES")
+                case .vocabulary: NSLocalizedString("LEARNER_VOCABULARY")
             }
         }
     }
@@ -530,6 +540,26 @@ extension BackupManager {
             }
         }
 
+        let vocabularyTask = Task {
+            if let backupVocab = backup.vocabulary {
+                let result = await CoreDataManager.shared.container.performBackgroundTask { context in
+                    // Upsert: BackupVocabularyEntry.toObject uses (language, lemma) key
+                    for item in backupVocab {
+                        _ = item.toObject(context: context)
+                    }
+                    do {
+                        try context.save()
+                        return true
+                    } catch {
+                        return false
+                    }
+                }
+                if !result {
+                    throw BackupError.vocabulary
+                }
+            }
+        }
+
         var backupError: Error?
 
         // wait for db changes to finish
@@ -538,6 +568,7 @@ extension BackupManager {
             try await sessionsTask.value
             try await trackTask.value
             try await sourceTask.value
+            try await vocabularyTask.value
         } catch {
             backupError = error
         }

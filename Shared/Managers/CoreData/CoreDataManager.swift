@@ -196,7 +196,8 @@ extension CoreDataManager {
                     HistoryObject.entity().name,
                     LibraryMangaObject.entity().name,
                     MangaObject.entity().name,
-                    TrackObject.entity().name
+                    TrackObject.entity().name,
+                    VocabularyEntryObject.entity().name
                 ]
 
                 for
@@ -267,6 +268,9 @@ extension CoreDataManager {
         } else if let object = object as? TrackObject {
             request = TrackObject.fetchRequest()
             request?.predicate = NSPredicate(format: "id == %@ AND trackerId == %@", object.id ?? "", object.trackerId ?? "")
+        } else if let object = object as? VocabularyEntryObject {
+            request = VocabularyEntryObject.fetchRequest()
+            request?.predicate = NSPredicate(format: "language == %@ AND lemma == %@", object.language, object.lemma)
         } else {
             request = nil
         }
