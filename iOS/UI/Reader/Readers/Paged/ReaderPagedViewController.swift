@@ -158,16 +158,18 @@ class ReaderPagedViewController: BaseObservingViewController {
             self?.setLiveTextButtonHidden(true)
         }
 
-        // Re-process the visible page when the per-manga Learner toggle flips mid-chapter.
+        // Re-process the visible page when either Learner toggle flips mid-chapter.
         // On → coordinator runs OCR and attaches overlay. Off → coordinator deactivates.
         let learnerSourceId = viewModel.source?.key ?? viewModel.manga.sourceKey
         let learnerToggleKey = "Learner.enabled.\(learnerSourceId).\(viewModel.manga.key)"
-        addObserver(forName: learnerToggleKey) { [weak self] _ in
+        let refreshLearner: (Notification) -> Void = { [weak self] _ in
             guard let self,
                   let incoming = pageViewController.viewControllers?.first as? ReaderPageViewController,
                   let pageView = incoming.pageView else { return }
             pageView.notifyLearnerOfImage()
         }
+        addObserver(forName: learnerToggleKey, using: refreshLearner)
+        addObserver(forName: "Learner.globallyEnabled", using: refreshLearner)
     }
 
     func updatePageLayout() {

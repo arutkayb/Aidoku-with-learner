@@ -162,9 +162,11 @@ final class LearnerOverlayCoordinator {
     // MARK: — Helpers
 
     private func isLearnerEnabled(for mangaId: String) -> Bool {
-        let enabled = UserDefaults.standard.bool(forKey: "Learner.enabled.\(mangaId)")
+        let perManga = UserDefaults.standard.bool(forKey: "Learner.enabled.\(mangaId)")
+        let global = UserDefaults.standard.bool(forKey: "Learner.globallyEnabled")
+        let enabled = perManga || global
         if enabled && !UserDefaults.standard.bool(forKey: "Learner.enabledGlobally") {
-            // First time any manga has Learner mode on — flip the global flag so the
+            // First time Learner is active — flip the visibility flag so the
             // Vocabulary tab becomes visible (plan Task 8 Decision #2).
             UserDefaults.standard.set(true, forKey: "Learner.enabledGlobally")
             NotificationCenter.default.post(name: .learnerEnabledGloballyChanged, object: nil)
