@@ -128,6 +128,16 @@ final class LearnerOverlayCoordinator {
         restoreLiveText(on: container)
     }
 
+    /// Returns the most recent OCR result for a page, or nil if not yet computed.
+    func ocrResult(for context: LearnerPageContext) -> OCRResult? {
+        pageStates[PageKey(context)]?.lastOCRResult
+    }
+
+    /// Returns the OCR language used for a manga (first configured language).
+    func ocrLanguage(for mangaId: String) -> String {
+        ocrLanguages().first ?? "de-DE"
+    }
+
     /// Called when the global Learner toggle changes for a manga.
     func setEnabled(_ enabled: Bool, for mangaId: String) {
         if !enabled {

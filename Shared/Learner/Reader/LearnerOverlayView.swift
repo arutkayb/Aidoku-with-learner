@@ -34,6 +34,9 @@ final class LearnerOverlayView: UIView {
         super.init(frame: frame)
         backgroundColor = .clear
         isUserInteractionEnabled = true
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        longPress.minimumPressDuration = 0.6
+        addGestureRecognizer(longPress)
     }
 
     required init?(coder: NSCoder) {
@@ -121,6 +124,18 @@ final class LearnerOverlayView: UIView {
         )
         Task { @MainActor in
             LearnerEvents.shared.wordTapped.send(event)
+        }
+    }
+
+    // MARK: — Long-press (sentence translate)
+
+    @objc private func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
+        guard recognizer.state == .began else { return }
+        // If the touch point is inside a word-region control, let the word tap take precedence.
+        let point = recognizer.location(in: self)
+        for sub in subviews where sub.frame.contains(point) { return }
+        Task { @MainActor in
+            LearnerEvents.shared.sentenceTranslateRequested.send(nil)
         }
     }
 
