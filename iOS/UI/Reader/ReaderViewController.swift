@@ -8,6 +8,7 @@
 import UIKit
 import SafariServices
 import SwiftUI
+import Combine
 import AidokuRunner
 
 class ReaderViewController: BaseObservingViewController {
@@ -57,6 +58,10 @@ class ReaderViewController: BaseObservingViewController {
     private var squeezeStartTime: Date?
     private let doubleSqueezeInterval: TimeInterval = 0.3
     private let longSqueezeThreshold: TimeInterval = 0.5
+
+    // MARK: — Learner
+    private var wordTapSubscription: AnyCancellable?
+    private var sentenceTranslateSubscription: AnyCancellable?
 
     private lazy var descriptionButtonController: UIHostingController<ReaderPageDescriptionButtonView> = {
         let buttonView = ReaderPageDescriptionButtonView(source: source, pages: [])
@@ -307,6 +312,16 @@ class ReaderViewController: BaseObservingViewController {
                 }
             }
         }
+
+        // Subscribe to Learner word-tap events
+        wordTapSubscription = LearnerEvents.shared.wordTapped
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] event in self?.presentWordLookup(event) }
+
+        // Subscribe to sentence-translation requests (from word sheet button or long-press)
+        sentenceTranslateSubscription = LearnerEvents.shared.sentenceTranslateRequested
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] event in self?.presentSentenceTranslation(focusEvent: event) }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -329,6 +344,8 @@ class ReaderViewController: BaseObservingViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        wordTapSubscription?.cancel()
+        sentenceTranslateSubscription?.cancel()
 
         if !chaptersToRemoveDownload.isEmpty {
             Task {
@@ -497,6 +514,71 @@ class ReaderViewController: BaseObservingViewController {
         )
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .cancel))
         present(alert, animated: true)
+    }
+
+    // MARK: — Learner word lookup
+
+    func presentWordLookup(_ event: WordTapEvent) {
+        // If a sheet is already presented, dismiss it first then re-present.
+        if presentedViewController != nil {
+            dismiss(animated: true) { [weak self] in
+                self?.showWordLookupSheet(event)
+            }
+        } else {
+            showWordLookupSheet(event)
+        }
+    }
+
+    private func showWordLookupSheet(_ event: WordTapEvent) {
+        let vc = UIHostingController(rootView: WordLookupSheet(event: event))
+        vc.sheetPresentationController?.detents = [.medium(), .large()]
+        vc.sheetPresentationController?.prefersGrabberVisible = true
+        present(vc, animated: true)
+    }
+
+    // MARK: — Learner sentence translation
+
+    func presentSentenceTranslation(focusEvent: WordTapEvent?) {
+        // Resolve context: prefer the event's context (has exact page), fall back to current page.
+        let context: LearnerPageContext
+        if let eventCtx = focusEvent?.pageContext {
+            context = eventCtx
+        } else {
+            context = LearnerPageContext(
+                sourceId: manga.sourceKey,
+                mangaId: manga.key,
+                chapterId: chapter.key,
+                pageIndex: max(0, currentPage - 1)
+            )
+        }
+
+        guard let ocrResult = LearnerOverlayCoordinator.shared.ocrResult(for: context) else {
+            // No OCR result cached yet — nothing to translate
+            return
+        }
+
+        let focusLemma = focusEvent.map { LearnerStrings.normalizeLemma($0.surfaceForm) }
+        let chapterTitle = chapter.title ?? chapter.key
+        let pageNumber = context.pageIndex + 1
+
+        let sheet = SentenceTranslationSheet(
+            context: context,
+            ocrResult: ocrResult,
+            focusLemma: focusLemma,
+            chapterTitle: chapterTitle,
+            pageNumber: pageNumber
+        )
+        let vc = UIHostingController(rootView: sheet)
+        vc.sheetPresentationController?.detents = [.medium(), .large()]
+        vc.sheetPresentationController?.prefersGrabberVisible = true
+
+        if presentedViewController != nil {
+            dismiss(animated: true) { [weak self] in
+                self?.present(vc, animated: true)
+            }
+        } else {
+            present(vc, animated: true)
+        }
     }
 
     @objc func openReaderSettings() {
