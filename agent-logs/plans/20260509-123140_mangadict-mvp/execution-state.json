@@ -2,7 +2,7 @@
   "base_branch": "main",
   "branch": "plan/20260509-123140_mangadict-mvp",
   "slug": "20260509-123140_mangadict-mvp",
-  "status": "in_progress",
+  "status": "completed",
   "mode": "multi-task",
   "execution_mode": "sequential",
   "started_at": "2026-05-09",
@@ -145,10 +145,17 @@
       "name": "vocab-flashcards",
       "depends_on": [2, 3, 6],
       "parallelizable_with": [],
-      "status": "in_progress",
+      "status": "completed",
       "plan_file": "PLAN-task-8-vocab-flashcards.md",
-      "changes_summary": null,
-      "verification_result": null,
+      "changes_summary": "VocabularyListViewModel (search/sort/group), VocabularyListView (List+swipe-delete+sheet), FlashcardsViewModel (20-card session, gotIt/stillLearning/markDone/summary), FlashcardsView (3D card flip), LearnerTabView (segmented picker), Vocabulary tab in TabBarController (iOS 15+/26+), 13 unit tests",
+      "verification_result": {
+        "verdict": "build-pass",
+        "checks_passed": 1,
+        "checks_failed": 0,
+        "spot_check_passed": true,
+        "retry_count": 0,
+        "log_file": null
+      },
       "error": null,
       "retry_count": 0
     }
