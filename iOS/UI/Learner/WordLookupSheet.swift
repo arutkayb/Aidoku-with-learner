@@ -1,0 +1,193 @@
+//
+//  WordLookupSheet.swift
+//  Aidoku (iOS)
+//
+//  Bottom sheet shown when the user taps a recognized word in the reader.
+//  Displays translation, familiarity picker, and vocab management controls.
+//
+
+import SwiftUI
+
+struct WordLookupSheet: View {
+
+    @StateObject private var viewModel: WordLookupViewModel
+    private let wordTapEvent: WordTapEvent?
+    private let vocabOnly: Bool
+
+    // Init from a reader word-tap event
+    init(event: WordTapEvent) {
+        self._viewModel = StateObject(wrappedValue: WordLookupViewModel(event: event))
+        self.wordTapEvent = event
+        self.vocabOnly = false
+    }
+
+    // Init for vocab-list mode (no sentence translation button)
+    init(entry: VocabularyEntryObject, vocabOnly: Bool = true) {
+        self._viewModel = StateObject(wrappedValue: WordLookupViewModel(entry: entry))
+        self.wordTapEvent = nil
+        self.vocabOnly = vocabOnly
+    }
+
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+
+                    // MARK: — Word header
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(viewModel.surfaceForm)
+                            .font(.largeTitle.bold())
+
+                        if viewModel.lemma != viewModel.surfaceForm.lowercased() {
+                            Text(viewModel.lemma)
+                                .font(.body)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+
+                    Divider()
+
+                    // MARK: — Translation
+                    if viewModel.isLoading {
+                        HStack {
+                            ProgressView()
+                            Text("LOADING_ELLIPSIS".localized)
+                                .foregroundStyle(.secondary)
+                        }
+                    } else if let error = viewModel.loadError {
+                        Text(errorMessage(for: error))
+                            .foregroundStyle(.red)
+                            .font(.body)
+                    } else if let t = viewModel.translation {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text(t.translation)
+                                .font(.title3)
+
+                            if let pos = t.partOfSpeech {
+                                Text(pos)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+
+                            if let example = t.exampleSentence, !example.isEmpty {
+                                Text("\"\(example)\"")
+                                    .font(.body)
+                                    .italic()
+                                    .foregroundStyle(.secondary)
+                                    .padding(.top, 4)
+                            }
+                        }
+                    }
+
+                    Divider()
+
+                    // MARK: — Familiarity picker (if in vocab)
+                    if viewModel.isInVocab {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("LEARNER_VOCAB_FAMILIARITY_LEVEL".localized)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+
+                            HStack(spacing: 12) {
+                                ForEach(0..<4) { level in
+                                    Button {
+                                        Task { await viewModel.setFamiliarity(Int16(level)) }
+                                    } label: {
+                                        Circle()
+                                            .fill(level <= Int(viewModel.familiarity)
+                                                  ? familiarityColor(Int16(level))
+                                                  : Color.gray.opacity(0.3))
+                                            .frame(width: 24, height: 24)
+                                            .overlay(
+                                                Circle()
+                                                    .stroke(Color.primary.opacity(0.2), lineWidth: 1)
+                                            )
+                                    }
+                                    .buttonStyle(.plain)
+                                    .disabled(viewModel.isDone)
+                                }
+                                Spacer()
+                            }
+                        }
+                    }
+
+                    // MARK: — Vocab toggle button
+                    Button {
+                        Task { await viewModel.toggleVocab() }
+                    } label: {
+                        Label(
+                            viewModel.isInVocab
+                                ? "LEARNER_IN_VOCAB".localized
+                                : "LEARNER_ADD_TO_VOCAB".localized,
+                            systemImage: viewModel.isInVocab ? "checkmark.circle.fill" : "plus.circle"
+                        )
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(viewModel.isInVocab ? .green : .accentColor)
+
+                    // MARK: — Mark Done (only if in vocab and not done)
+                    if viewModel.isInVocab && !viewModel.isDone {
+                        Button {
+                            Task { await viewModel.markDone() }
+                        } label: {
+                            Label("LEARNER_MARK_DONE".localized, systemImage: "lock.fill")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(.secondary)
+                    }
+
+                    // MARK: — Translate sentence (hidden in vocab-only mode)
+                    if !vocabOnly, let event = wordTapEvent {
+                        Button {
+                            viewModel.requestSentenceTranslation(event: event)
+                        } label: {
+                            Label("LEARNER_TRANSLATE_SENTENCE".localized, systemImage: "text.bubble")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                    }
+
+                    Spacer(minLength: 20)
+                }
+                .padding()
+            }
+            .navigationTitle("LEARNER_WORD_LOOKUP".localized)
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .navigationViewStyle(.stack)
+        .task { await viewModel.loadTranslation() }
+    }
+
+    // MARK: — Helpers
+
+    private func familiarityColor(_ level: Int16) -> Color {
+        switch level {
+        case 0: return .gray
+        case 1: return .yellow
+        case 2: return .orange
+        case 3: return .green
+        default: return .gray
+        }
+    }
+
+    private func errorMessage(for error: TranslationError) -> String {
+        switch error {
+        case .unavailable:
+            return "LEARNER_TRANSLATION_UNAVAILABLE".localized
+        case .networkError:
+            return "LEARNER_TRANSLATION_NETWORK_ERROR".localized
+        case .invalidKey:
+            return "LEARNER_TRANSLATION_INVALID_KEY".localized
+        default:
+            return "LEARNER_TRANSLATION_NETWORK_ERROR".localized
+        }
+    }
+}
+
+// MARK: — String localization helper
+
+private extension String {
+    var localized: String { NSLocalizedString(self, comment: "") }
+}

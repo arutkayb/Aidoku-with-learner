@@ -626,6 +626,12 @@
 		LC0001FD000000000000001A /* LearnerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000202000000000000001A /* LearnerOverlayView.swift */; };
 		LC0001FE000000000000001A /* LearnerOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000203000000000000001A /* LearnerOverlayCoordinator.swift */; };
 		LC0001FF000000000000001A /* LearnerOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000203000000000000001A /* LearnerOverlayCoordinator.swift */; };
+		LC000209000000000000001A /* WordLookupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000206000000000000001A /* WordLookupSheet.swift */; };
+		LC00020A000000000000001A /* WordLookupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000206000000000000001A /* WordLookupSheet.swift */; };
+		LC00020B000000000000001A /* WordLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000207000000000000001A /* WordLookupViewModel.swift */; };
+		LC00020C000000000000001A /* WordLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000207000000000000001A /* WordLookupViewModel.swift */; };
+		LC00020D000000000000001A /* LearnerStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000208000000000000001A /* LearnerStrings.swift */; };
+		LC00020E000000000000001A /* LearnerStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000208000000000000001A /* LearnerStrings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1128,6 +1134,9 @@
 		LC000201000000000000001A /* VocabIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabIndex.swift; sourceTree = "<group>"; };
 		LC000202000000000000001A /* LearnerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerOverlayView.swift; sourceTree = "<group>"; };
 		LC000203000000000000001A /* LearnerOverlayCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerOverlayCoordinator.swift; sourceTree = "<group>"; };
+		LC000206000000000000001A /* WordLookupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordLookupSheet.swift; sourceTree = "<group>"; };
+		LC000207000000000000001A /* WordLookupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordLookupViewModel.swift; sourceTree = "<group>"; };
+		LC000208000000000000001A /* LearnerStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerStrings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -1209,6 +1218,7 @@
 				FB427509295FB78E00131377 /* Browse */,
 				48177B8C2B75C29200AD41B4 /* Updates */,
 				FB0CAA6828A9BB900024561A /* Reader */,
+				LC000205000000000000001A /* Learner */,
 				FB05F8652964907200D1EA2D /* Source */,
 				FB171144296742C100AD523D /* Migration */,
 			);
@@ -2397,6 +2407,7 @@
 				LC0001CA000000000000001A /* OCR */,
 				LC0001BF000000000000001A /* Translation */,
 				LC000204000000000000001A /* Reader */,
+				LC000208000000000000001A /* LearnerStrings.swift */,
 			);
 			path = Learner;
 			sourceTree = "<group>";
@@ -2433,6 +2444,15 @@
 				LC000203000000000000001A /* LearnerOverlayCoordinator.swift */,
 			);
 			path = Reader;
+			sourceTree = "<group>";
+		};
+		LC000205000000000000001A /* Learner */ = {
+			isa = PBXGroup;
+			children = (
+				LC000206000000000000001A /* WordLookupSheet.swift */,
+				LC000207000000000000001A /* WordLookupViewModel.swift */,
+			);
+			path = Learner;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2945,6 +2965,9 @@
 				LC0001FA000000000000001A /* VocabIndex.swift in Sources */,
 				LC0001FC000000000000001A /* LearnerOverlayView.swift in Sources */,
 				LC0001FE000000000000001A /* LearnerOverlayCoordinator.swift in Sources */,
+				LC000209000000000000001A /* WordLookupSheet.swift in Sources */,
+				LC00020B000000000000001A /* WordLookupViewModel.swift in Sources */,
+				LC00020D000000000000001A /* LearnerStrings.swift in Sources */,
 				FB4B0ADD285C2C570066A13B /* TrackSearchItem.swift in Sources */,
 				FBED232327BB461D0095D0C0 /* SourceObject.swift in Sources */,
 				FB619E512E9E90F000E3B565 /* SettingHeaderView.swift in Sources */,
@@ -3268,6 +3291,9 @@
 				LC0001FB000000000000001A /* VocabIndex.swift in Sources */,
 				LC0001FD000000000000001A /* LearnerOverlayView.swift in Sources */,
 				LC0001FF000000000000001A /* LearnerOverlayCoordinator.swift in Sources */,
+				LC00020A000000000000001A /* WordLookupSheet.swift in Sources */,
+				LC00020C000000000000001A /* WordLookupViewModel.swift in Sources */,
+				LC00020E000000000000001A /* LearnerStrings.swift in Sources */,
 				FB619E402E94A62000E3B565 /* PageTracker.swift in Sources */,
 				FB82A5C32DF8622700366BC8 /* LocalModels.swift in Sources */,
 			);
