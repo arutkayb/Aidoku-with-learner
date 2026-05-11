@@ -117,6 +117,9 @@ class TabBarController: UITabBarController {
         historyViewController.navigationBar.prefersLargeTitles = true
         searchViewController.navigationBar.prefersLargeTitles = true
 
+        let learnerViewController = UIHostingController(rootView: LearnerTabView())
+        learnerViewController.navigationItem.largeTitleDisplayMode = .never
+
         if #available(iOS 26.0, *) {
             let searchTab = UISearchTab { _ in
                 searchViewController
@@ -145,6 +148,13 @@ class TabBarController: UITabBarController {
                     historyViewController
                 },
                 UITab(
+                    title: NSLocalizedString("LEARNER_TAB_TITLE"),
+                    image: UIImage(systemName: "book.closed"),
+                    identifier: "4"
+                ) { _ in
+                    learnerViewController
+                },
+                UITab(
                     title: NSLocalizedString("SETTINGS"),
                     image: UIImage(systemName: "gear"),
                     identifier: "3"
@@ -158,6 +168,11 @@ class TabBarController: UITabBarController {
             }
             tabs = fixedTabs + [searchTab]
         } else {
+            learnerViewController.tabBarItem = UITabBarItem(
+                title: NSLocalizedString("LEARNER_TAB_TITLE", comment: ""),
+                image: UIImage(systemName: "book.closed"),
+                tag: 5
+            )
             libraryViewController.tabBarItem = UITabBarItem(
                 title: NSLocalizedString("LIBRARY", comment: ""),
                 image: UIImage(systemName: "books.vertical.fill"),
@@ -186,6 +201,7 @@ class TabBarController: UITabBarController {
                 browseViewController,
                 historyViewController,
                 searchViewController,
+                learnerViewController,
                 settingsViewController
             ]
         }
@@ -308,9 +324,9 @@ extension TabBarController: UITabBarControllerDelegate {
     private func checkForSettingsPop() {
         let settingsIndex: Int
         if #available(iOS 26.0, *) {
-            settingsIndex = 3
-        } else {
             settingsIndex = 4
+        } else {
+            settingsIndex = 5
         }
         if selectedIndex == previousSelectedIndex && previousSelectedIndex == settingsIndex {
             settingsPath?.navigationController?.popToRootViewController(animated: true)
