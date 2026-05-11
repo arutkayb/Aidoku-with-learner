@@ -766,3 +766,11 @@
 "LEARNER_TRANSLATION_UNAVAILABLE" = "Translation unavailable on this device.";
 "LEARNER_TRANSLATION_NETWORK_ERROR" = "Translation request failed. Check your connection.";
 "LEARNER_TRANSLATION_INVALID_KEY" = "Invalid DeepL API key.";
+
+// MARK: — Learner Mode (Task 5)
+"LEARNER_MODE" = "Learner Mode";
+"LEARNER_MODE_ENABLE" = "Enable Learner Mode";
+"LEARNER_OCR_LANGUAGES" = "OCR Languages";
+"LEARNER_PAGED_ONLY_NOTICE" = "Learner Mode is only available in paged reading mode.";
+"LEARNER_LIVE_TEXT_PAUSED_NOTICE" = "Live Text is paused while Learner Mode is on.";
+"LEARNER_OVERLAY_TOGGLE" = "Learner";
