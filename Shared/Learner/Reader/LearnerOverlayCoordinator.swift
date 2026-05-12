@@ -162,9 +162,8 @@ final class LearnerOverlayCoordinator {
     // MARK: — Helpers
 
     private func isLearnerEnabled(for mangaId: String) -> Bool {
-        let perManga = UserDefaults.standard.bool(forKey: "Learner.enabled.\(mangaId)")
-        let global = UserDefaults.standard.bool(forKey: "Learner.globallyEnabled")
-        let enabled = perManga || global
+        // Migration + tri-state gate (Task 1).
+        let enabled = LearnerGate.isEnabled(mangaId: mangaId)
         if enabled && !UserDefaults.standard.bool(forKey: "Learner.enabledGlobally") {
             // First time Learner is active — flip the visibility flag so the
             // Vocabulary tab becomes visible (plan Task 8 Decision #2).

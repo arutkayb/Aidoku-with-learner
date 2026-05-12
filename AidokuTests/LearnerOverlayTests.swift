@@ -143,7 +143,9 @@ import Testing
     // Test 8: coordinator is a no-op when Learner is disabled for the manga
     @Test @MainActor func imageDidLoad_learnerOff_noOverlay() async {
         let mangaId = "coordinator-test-manga"
-        UserDefaults.standard.set(false, forKey: "Learner.enabled.\(mangaId)")
+        // Use new tri-state key (Task 1)
+        UserDefaults.standard.set("off", forKey: "Learner.mode.\(mangaId)")
+        defer { UserDefaults.standard.removeObject(forKey: "Learner.mode.\(mangaId)") }
 
         let container = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 600))
         let pageView = ReaderPageView()
@@ -160,5 +162,117 @@ import Testing
 
         let overlayCount = pageView.imageView.subviews.filter { $0 is LearnerOverlayView }.count
         #expect(overlayCount == 0)
+    }
+}
+
+// MARK: — LearnerGate tri-state matrix (Task 1)
+
+@Suite struct LearnerGateTests {
+
+    // Helper: clean up UserDefaults keys after each test
+    private func withCleanDefaults(mangaId: String, global: Bool, mode: String?, body: () -> Void) {
+        let modeKey = LearnerGate.modeKey(for: mangaId)
+        UserDefaults.standard.set(global, forKey: "Learner.globallyEnabled")
+        if let mode {
+            UserDefaults.standard.set(mode, forKey: modeKey)
+        } else {
+            UserDefaults.standard.removeObject(forKey: modeKey)
+        }
+        body()
+        UserDefaults.standard.removeObject(forKey: modeKey)
+        UserDefaults.standard.removeObject(forKey: "Learner.globallyEnabled")
+    }
+
+    // 9 combinations: (global ∈ {on, off}) × (perManga ∈ {inherit, on, off})
+    // Note: global=on/inherit, global=off/inherit — inherit means result == global
+
+    @Test func tristate_globalOn_modeInherit_enabled() {
+        withCleanDefaults(mangaId: "m-t1", global: true, mode: nil) {
+            #expect(LearnerGate.isEnabled(mangaId: "m-t1") == true)
+        }
+    }
+
+    @Test func tristate_globalOn_modeOn_enabled() {
+        withCleanDefaults(mangaId: "m-t2", global: true, mode: "on") {
+            #expect(LearnerGate.isEnabled(mangaId: "m-t2") == true)
+        }
+    }
+
+    @Test func tristate_globalOn_modeOff_disabled() {
+        withCleanDefaults(mangaId: "m-t3", global: true, mode: "off") {
+            #expect(LearnerGate.isEnabled(mangaId: "m-t3") == false)
+        }
+    }
+
+    @Test func tristate_globalOff_modeInherit_disabled() {
+        withCleanDefaults(mangaId: "m-t4", global: false, mode: nil) {
+            #expect(LearnerGate.isEnabled(mangaId: "m-t4") == false)
+        }
+    }
+
+    @Test func tristate_globalOff_modeOn_enabled() {
+        withCleanDefaults(mangaId: "m-t5", global: false, mode: "on") {
+            #expect(LearnerGate.isEnabled(mangaId: "m-t5") == true)
+        }
+    }
+
+    @Test func tristate_globalOff_modeOff_disabled() {
+        withCleanDefaults(mangaId: "m-t6", global: false, mode: "off") {
+            #expect(LearnerGate.isEnabled(mangaId: "m-t6") == false)
+        }
+    }
+
+    // Legacy migration: Bool true → mode "on", old key removed
+    @Test func migration_legacyTrue_migratestoOn() {
+        let mangaId = "m-legacy-true"
+        let legacyKey = LearnerGate.legacyBoolKey(for: mangaId)
+        let newKey = LearnerGate.modeKey(for: mangaId)
+        // Setup legacy state
+        UserDefaults.standard.set(true, forKey: legacyKey)
+        UserDefaults.standard.removeObject(forKey: newKey)
+
+        let enabled = LearnerGate.isEnabled(mangaId: mangaId)
+
+        #expect(enabled == true)
+        #expect(UserDefaults.standard.string(forKey: newKey) == "on")
+        #expect(UserDefaults.standard.object(forKey: legacyKey) == nil)
+
+        // Cleanup
+        UserDefaults.standard.removeObject(forKey: newKey)
+    }
+
+    // Legacy migration: Bool false → new key absent (inherit), old key removed
+    @Test func migration_legacyFalse_removesOldKey() {
+        let mangaId = "m-legacy-false"
+        let legacyKey = LearnerGate.legacyBoolKey(for: mangaId)
+        let newKey = LearnerGate.modeKey(for: mangaId)
+        // Setup legacy state
+        UserDefaults.standard.set(false, forKey: legacyKey)
+        UserDefaults.standard.removeObject(forKey: newKey)
+        UserDefaults.standard.set(false, forKey: "Learner.globallyEnabled")
+
+        let enabled = LearnerGate.isEnabled(mangaId: mangaId)
+
+        // false legacy + global off → inherit → disabled
+        #expect(enabled == false)
+        // New key should be absent (inherit, not "off")
+        #expect(UserDefaults.standard.object(forKey: newKey) == nil)
+        // Old key must be gone
+        #expect(UserDefaults.standard.object(forKey: legacyKey) == nil)
+
+        // Cleanup
+        UserDefaults.standard.removeObject(forKey: "Learner.globallyEnabled")
+    }
+
+    // mode() helper returns the correct enum value
+    @Test func mode_returnsCorrectEnum() {
+        let mangaId = "m-mode-enum"
+        let key = LearnerGate.modeKey(for: mangaId)
+        UserDefaults.standard.set("on", forKey: key)
+        #expect(LearnerGate.mode(for: mangaId) == .on)
+        UserDefaults.standard.set("off", forKey: key)
+        #expect(LearnerGate.mode(for: mangaId) == .off)
+        UserDefaults.standard.removeObject(forKey: key)
+        #expect(LearnerGate.mode(for: mangaId) == .inherit)
     }
 }

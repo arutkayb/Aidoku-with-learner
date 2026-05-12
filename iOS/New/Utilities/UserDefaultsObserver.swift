@@ -73,3 +73,28 @@ class UserDefaultsBool: ObservableObject {
             }
     }
 }
+
+class UserDefaultsString: ObservableObject {
+    @Published var value: String {
+        didSet {
+            UserDefaults.standard.set(value, forKey: key)
+        }
+    }
+
+    private let key: String
+    private var cancellable: AnyCancellable?
+
+    init(key: String, defaultValue: String = "") {
+        self.key = key
+        self.value = UserDefaults.standard.string(forKey: key) ?? defaultValue
+
+        cancellable = NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                let newValue = UserDefaults.standard.string(forKey: self.key) ?? defaultValue
+                if self.value != newValue {
+                    self.value = newValue
+                }
+            }
+    }
+}
