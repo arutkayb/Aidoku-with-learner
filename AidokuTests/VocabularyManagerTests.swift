@@ -154,13 +154,14 @@ import Testing
         #expect(levelMap["katze"] == 1)
     }
 
-    // MARK: Test 6 — lemma normalization at insert time (Decision #6)
+    // MARK: Test 6 — lemma normalization at insert time (Task 4: edge punctuation stripped)
 
-    @Test func upsert_normalizesLemma() throws {
+    @Test func upsert_normalizesLemma_edgePunctuationStripped() throws {
         let container = makeInMemoryContainer()
         let ctx = container.viewContext
 
-        // Insert with uppercase + surrounding whitespace; punctuation preserved per Decision #6.
+        // Insert with uppercase + surrounding whitespace + trailing '?'.
+        // Task 4: trailing '?' is now stripped (edge punctuation removal).
         let entry = CoreDataManager.shared.upsertVocabularyEntry(
             language: "de-DE",
             lemma: "  Mädchen?  ",
@@ -170,16 +171,59 @@ import Testing
             sourceMangaSourceId: nil,
             context: ctx
         )
-        // Whitespace trimmed and lowercased; '?' kept.
-        #expect(entry.lemma == "mädchen?")
+        // Whitespace trimmed, trailing '?' stripped, lowercased.
+        #expect(entry.lemma == "mädchen")
 
-        // Fetch with a differently-cased / spaced lemma resolves to the same row.
+        // Fetch with a differently-cased / punctuated form normalizes to same row.
         let same = CoreDataManager.shared.getVocabularyEntry(language: "de-DE", lemma: "MÄDCHEN?", context: ctx)
         #expect(same?.objectID == entry.objectID)
+    }
+}
 
-        // A lemma differing only in punctuation must NOT collide with the normalized one.
-        let other = CoreDataManager.shared.getVocabularyEntry(language: "de-DE", lemma: "mädchen", context: ctx)
-        #expect(other == nil)
+// MARK: — VocabularyEntryObject.normalize unit tests (Task 4)
+
+@Suite struct NormalizeTests {
+
+    @Test func normalize_trailingComma_stripped() {
+        #expect(VocabularyEntryObject.normalize("Tür,") == "tür")
+    }
+
+    @Test func normalize_leadingAndTrailingBangs_stripped() {
+        #expect(VocabularyEntryObject.normalize("!!hello!!") == "hello")
+    }
+
+    @Test func normalize_apostropheInWord_preserved() {
+        #expect(VocabularyEntryObject.normalize("it's") == "it's")
+    }
+
+    @Test func normalize_hyphenInWord_preserved() {
+        #expect(VocabularyEntryObject.normalize("auto-mobile") == "auto-mobile")
+    }
+
+    @Test func normalize_whitespaceOnly_trimmed() {
+        #expect(VocabularyEntryObject.normalize("  foo  ") == "foo")
+    }
+
+    @Test func normalize_trailingPeriod_stripped() {
+        #expect(VocabularyEntryObject.normalize("foo.") == "foo")
+    }
+
+    @Test func normalize_japanesePunctuation_stripped() {
+        // U+3001 IDEOGRAPHIC COMMA — Unicode category Po (punctuation, other)
+        #expect(VocabularyEntryObject.normalize("日本語、") == "日本語")
+    }
+
+    @Test func normalize_allPunctuation_returnsEmpty() {
+        #expect(VocabularyEntryObject.normalize("!!!") == "")
+    }
+
+    @Test func normalize_emptyString_returnsEmpty() {
+        #expect(VocabularyEntryObject.normalize("") == "")
+    }
+
+    @Test func normalize_inWordDash_preserved() {
+        // Leading and trailing dashes are stripped; interior dash preserved
+        #expect(VocabularyEntryObject.normalize("-auto-mobile-") == "auto-mobile")
     }
 }
 

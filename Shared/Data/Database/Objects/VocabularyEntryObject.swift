@@ -31,10 +31,28 @@ public class VocabularyEntryObject: NSManagedObject {
         Identifier(language: language, lemma: lemma)
     }
 
-    /// Normalises a lemma for storage (lowercase + whitespace-trim only).
-    /// Per Decision Register #6: punctuation is preserved.
+    /// Normalises a lemma for storage.
+    /// Strips Unicode punctuation, symbols, and whitespace from the leading and
+    /// trailing edges of the string. In-word characters (e.g. hyphen, apostrophe)
+    /// are preserved because they only appear at interior positions.
+    /// Returns the result lowercased. If the entire string is punctuation/symbols,
+    /// returns an empty string (callers should guard against empty lemmas).
+    /// See Task 4 plan for Decision Register.
     static func normalize(_ lemma: String) -> String {
-        lemma.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        let edgeStrip = CharacterSet.punctuationCharacters
+            .union(.symbols)
+            .union(.whitespacesAndNewlines)
+
+        var scalars = lemma.unicodeScalars
+        // Trim leading edge
+        while let first = scalars.first, edgeStrip.contains(first) {
+            scalars.removeFirst()
+        }
+        // Trim trailing edge
+        while let last = scalars.last, edgeStrip.contains(last) {
+            scalars.removeLast()
+        }
+        return String(scalars).lowercased()
     }
 
     /// Upserts fields from caller-supplied values. Does NOT save the context.

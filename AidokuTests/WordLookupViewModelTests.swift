@@ -41,16 +41,24 @@ private func makeEvent(word: String = "Buch", manga: String = "test-manga-wlvm")
 @Suite struct WordLookupViewModelTests {
 
     // Test 1: normalizeLemma matches VocabularyEntryObject.normalize so the overlay
-    // badge lookup never diverges from the storage key (Decision Register #6).
-    // Whitespace and case are folded; punctuation is preserved.
+    // badge lookup never diverges from the storage key.
+    // Task 4: edge punctuation is now stripped; in-word punctuation preserved.
     @Test func normalizeLemma_matchesStorageRule() {
         #expect(LearnerStrings.normalizeLemma("  Buch  ") == "buch")
         #expect(LearnerStrings.normalizeLemma("BUCH") == "buch")
-        // Punctuation preserved: "Buch." and "Buch" must NOT collide.
-        #expect(LearnerStrings.normalizeLemma("Buch.") == "buch.")
-        #expect(LearnerStrings.normalizeLemma("Buch,") == "buch,")
+        // Edge punctuation stripped: "Buch," and "Buch" both normalize to "buch"
+        #expect(LearnerStrings.normalizeLemma("Buch.") == "buch")
+        #expect(LearnerStrings.normalizeLemma("Buch,") == "buch")
+        // In-word apostrophe preserved
+        #expect(LearnerStrings.normalizeLemma("it's") == "it's")
         // Symmetry with the entity-level normalizer (single source of truth).
-        #expect(LearnerStrings.normalizeLemma("Mädchen?") == VocabularyEntryObject.normalize("Mädchen?"))
+        #expect(LearnerStrings.normalizeLemma("Tür,") == VocabularyEntryObject.normalize("Tür,"))
+    }
+
+    // Test 1b: WordTapEvent with surface "Tür," produces lemma "tür" (no comma). (Task 4)
+    @Test func wordTapEvent_surfaceWithTrailingComma_lemmaStripped() {
+        let event = makeEvent(word: "Tür,")
+        #expect(event.lemma == "tür")
     }
 
     // Test 2: fresh event — not in vocab initially
