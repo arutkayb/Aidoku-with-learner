@@ -7,7 +7,7 @@
 
 // base identifiers
 APP_ID_PREFIX               = app.aidoku
-APP_ID_SUFFIX               = Aidoku
+APP_ID_SUFFIX               = Aidoku-lingo
 
 PRODUCT_BUNDLE_IDENTIFIER   = $(APP_ID_PREFIX).$(APP_ID_SUFFIX)
 

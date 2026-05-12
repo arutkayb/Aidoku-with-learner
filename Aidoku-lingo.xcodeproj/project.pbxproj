@@ -671,9 +671,9 @@
 		7C63F0D62F48FD4B007D1811 /* TextSinglePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSinglePageViewController.swift; sourceTree = "<group>"; };
 		7CF79D392F31E81300BF0800 /* ReaderPagedTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPagedTextViewController.swift; sourceTree = "<group>"; };
 		7CF79D3A2F31E81300BF0800 /* TextPaginator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPaginator.swift; sourceTree = "<group>"; };
-		91D7BEF72DD7E46800898539 /* Aidoku-IOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Aidoku-IOS.xcconfig"; sourceTree = "<group>"; };
-		91D7BEF92DD7E48400898539 /* Aidoku-MACOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Aidoku-MACOS.xcconfig"; sourceTree = "<group>"; };
-		91D7BEFB2DD7E4BB00898539 /* Aidoku.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Aidoku.xcconfig; sourceTree = "<group>"; };
+		91D7BEF72DD7E46800898539 /* Aidoku-lingo-IOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Aidoku-lingo-IOS.xcconfig"; sourceTree = "<group>"; };
+		91D7BEF92DD7E48400898539 /* Aidoku-lingo-MACOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Aidoku-lingo-MACOS.xcconfig"; sourceTree = "<group>"; };
+		91D7BEFB2DD7E4BB00898539 /* Aidoku-lingo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Aidoku-lingo.xcconfig"; sourceTree = "<group>"; };
 		91D7BEFF2DD8881300898539 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB02E1EA288CC1DA00B9E2DE /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		FB02E1F1288D7BE900B9E2DE /* MangaGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaGridCell.swift; sourceTree = "<group>"; };
@@ -1441,7 +1441,7 @@
 		FB1B482A277CE18D0056D02C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				91D7BEFB2DD7E4BB00898539 /* Aidoku.xcconfig */,
+				91D7BEFB2DD7E4BB00898539 /* Aidoku-lingo.xcconfig */,
 				FBE578FE2899840E00F9F1B5 /* Managers */,
 				FB02E1F5288D7C6700B9E2DE /* Models */,
 				FB1B48B2277CF7DC0056D02C /* Extensions */,
@@ -1475,7 +1475,7 @@
 		FB1B483C277CE1920056D02C /* macOS */ = {
 			isa = PBXGroup;
 			children = (
-				91D7BEF92DD7E48400898539 /* Aidoku-MACOS.xcconfig */,
+				91D7BEF92DD7E48400898539 /* Aidoku-lingo-MACOS.xcconfig */,
 				FB1B482D277CE18D0056D02C /* AidokuApp.swift */,
 				FB1B48B1277CF78E0056D02C /* Views */,
 				FB1B483D277CE1920056D02C /* macOS.entitlements */,
@@ -1487,7 +1487,7 @@
 		FB1B4858277CE55B0056D02C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				91D7BEF72DD7E46800898539 /* Aidoku-IOS.xcconfig */,
+				91D7BEF72DD7E46800898539 /* Aidoku-lingo-IOS.xcconfig */,
 				FB1B4852277CE4510056D02C /* AppDelegate.swift */,
 				FB1B4855277CE5560056D02C /* SceneDelegate.swift */,
 				FB662E892DA58B0900007514 /* New */,
@@ -3525,7 +3525,7 @@
 		};
 		FB1B484B277CE1920056D02C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91D7BEF72DD7E46800898539 /* Aidoku-IOS.xcconfig */;
+			baseConfigurationReference = 91D7BEF72DD7E46800898539 /* Aidoku-lingo-IOS.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -3540,7 +3540,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Aidoku;
+				INFOPLIST_KEY_CFBundleDisplayName = "Aidoku Lingo";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Aidoku needs FaceID permissions for user-defined settings";
@@ -3557,8 +3557,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.8.2;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.aidoku.Aidoku-with-learner";
-				PRODUCT_NAME = Aidoku;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.aidoku.Aidoku-lingo";
+				PRODUCT_NAME = "Aidoku-lingo";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -3570,7 +3570,7 @@
 		};
 		FB1B484C277CE1920056D02C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91D7BEF72DD7E46800898539 /* Aidoku-IOS.xcconfig */;
+			baseConfigurationReference = 91D7BEF72DD7E46800898539 /* Aidoku-lingo-IOS.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -3585,7 +3585,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Aidoku;
+				INFOPLIST_KEY_CFBundleDisplayName = "Aidoku Lingo";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Aidoku needs FaceID permissions for user-defined settings";
@@ -3602,8 +3602,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.8.2;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.aidoku.Aidoku-with-learner";
-				PRODUCT_NAME = Aidoku;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.aidoku.Aidoku-lingo";
+				PRODUCT_NAME = "Aidoku-lingo";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -3615,7 +3615,7 @@
 		};
 		FB1B484E277CE1920056D02C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91D7BEF92DD7E48400898539 /* Aidoku-MACOS.xcconfig */;
+			baseConfigurationReference = 91D7BEF92DD7E48400898539 /* Aidoku-lingo-MACOS.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -3640,7 +3640,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 0.1;
-				PRODUCT_NAME = Aidoku;
+				PRODUCT_NAME = "Aidoku-lingo";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -3650,7 +3650,7 @@
 		};
 		FB1B484F277CE1920056D02C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91D7BEF92DD7E48400898539 /* Aidoku-MACOS.xcconfig */;
+			baseConfigurationReference = 91D7BEF92DD7E48400898539 /* Aidoku-lingo-MACOS.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -3675,7 +3675,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 0.1;
-				PRODUCT_NAME = Aidoku;
+				PRODUCT_NAME = "Aidoku-lingo";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

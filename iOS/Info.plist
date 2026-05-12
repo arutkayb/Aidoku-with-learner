@@ -58,7 +58,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>aidoku</string>
+				<string>aidoku-lingo</string>
 			</array>
 		</dict>
 	</array>

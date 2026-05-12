@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FB1B4834277CE1920056D02C"
-               BuildableName = "Aidoku.app"
+               BuildableName = "Aidoku-lingo.app"
                BlueprintName = "Aidoku (iOS)"
-               ReferencedContainer = "container:Aidoku.xcodeproj">
+               ReferencedContainer = "container:Aidoku-lingo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -36,7 +36,7 @@
                BlueprintIdentifier = "FBB44E712EC635620032EFBB"
                BuildableName = "AidokuTests.xctest"
                BlueprintName = "AidokuTests"
-               ReferencedContainer = "container:Aidoku.xcodeproj">
+               ReferencedContainer = "container:Aidoku-lingo.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FB1B4834277CE1920056D02C"
-            BuildableName = "Aidoku.app"
+            BuildableName = "Aidoku-lingo.app"
             BlueprintName = "Aidoku (iOS)"
-            ReferencedContainer = "container:Aidoku.xcodeproj">
+            ReferencedContainer = "container:Aidoku-lingo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -98,9 +98,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FB1B4834277CE1920056D02C"
-            BuildableName = "Aidoku.app"
+            BuildableName = "Aidoku-lingo.app"
             BlueprintName = "Aidoku (iOS)"
-            ReferencedContainer = "container:Aidoku.xcodeproj">
+            ReferencedContainer = "container:Aidoku-lingo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
