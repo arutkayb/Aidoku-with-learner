@@ -108,9 +108,13 @@ class ReaderPageViewController: BaseObservingViewController {
                 pageView.translatesAutoresizingMaskIntoConstraints = false
                 zoomView.addSubview(pageView)
                 zoomView.zoomView = pageView
-                // hide live text button when zoomed in
+                // hide live text button when zoomed in; also rebuild learner overlay
+                // so word-region frames stay aligned after zoom (Task 2)
                 zoomView.onZoomScaleChanged = { [weak self] scale in
                     self?.pageView?.setLiveTextHidden(scale != 1 || (self?.delegate?.barsHidden ?? false))
+                    if let pageView = self?.pageView, let ctx = pageView.learnerContext {
+                        LearnerOverlayCoordinator.shared.zoomChanged(for: ctx, container: pageView)
+                    }
                 }
                 zoomView.doubleTapEnabled = !UserDefaults.standard.bool(forKey: "Reader.disableDoubleTap")
                 view.addSubview(reloadButton)

@@ -63,6 +63,15 @@ class ReaderViewController: BaseObservingViewController {
     private var wordTapSubscription: AnyCancellable?
     private var sentenceTranslateSubscription: AnyCancellable?
 
+    private lazy var reOCRBarButton: UIBarButtonItem = {
+        UIBarButtonItem(
+            image: UIImage(systemName: "text.viewfinder"),
+            style: .plain,
+            target: self,
+            action: #selector(reOCRCurrentPage)
+        )
+    }()
+
     private lazy var descriptionButtonController: UIHostingController<ReaderPageDescriptionButtonView> = {
         let buttonView = ReaderPageDescriptionButtonView(source: source, pages: [])
         let hostingController = UIHostingController(rootView: buttonView)
@@ -154,15 +163,19 @@ class ReaderViewController: BaseObservingViewController {
             action: #selector(openWebView)
         )
         moreButton.isEnabled = chapter.url != nil
-        navigationItem.rightBarButtonItems = [
-            moreButton,
-            UIBarButtonItem(
-                image: UIImage(systemName: "textformat.size"),
-                style: .plain,
-                target: self,
-                action: #selector(openReaderSettings)
-            )
-        ]
+        let settingsButton = UIBarButtonItem(
+            image: UIImage(systemName: "textformat.size"),
+            style: .plain,
+            target: self,
+            action: #selector(openReaderSettings)
+        )
+        let mangaCompositeId = manga.identifier.description
+        var rightItems: [UIBarButtonItem] = [moreButton, settingsButton]
+        if LearnerGate.isEnabled(mangaId: mangaCompositeId) {
+            reOCRBarButton.accessibilityLabel = NSLocalizedString("LEARNER_RE_OCR_PAGE", comment: "")
+            rightItems.append(reOCRBarButton)
+        }
+        navigationItem.rightBarButtonItems = rightItems
 
         // fix navbar being clear
         let navigationBarAppearance = UINavigationBarAppearance()
@@ -210,6 +223,9 @@ class ReaderViewController: BaseObservingViewController {
         view.addSubview(activityIndicator)
 
         // bar toggle tap gesture
+        // Set delegate so word-region touches don't trigger bar-toggle (Task 2)
+        fakeZoomTapGesture.delegate = self
+        barToggleTapGesture.delegate = self
         fakeZoomTapGesture.isEnabled = !UserDefaults.standard.bool(forKey: "Reader.disableDoubleTap")
         view.addGestureRecognizer(fakeZoomTapGesture)
         view.addGestureRecognizer(barToggleTapGesture)
@@ -579,6 +595,21 @@ class ReaderViewController: BaseObservingViewController {
         } else {
             present(vc, animated: true)
         }
+    }
+
+    @objc func reOCRCurrentPage() {
+        // Use composite "{sourceKey}.{mangaKey}" to match ReaderPagedViewController.setPage(targetVC:)
+        // and the gate-key written by ReaderSettingsView via MangaIdentifier.description.
+        let context = LearnerPageContext(
+            sourceId: manga.sourceKey,
+            mangaId: manga.identifier.description,
+            chapterId: chapter.key,
+            pageIndex: max(0, currentPage - 1)
+        )
+        // Resolve the current ReaderPageView by asking the active paged reader.
+        guard let pagedReader = reader as? ReaderPagedViewController,
+              let container = pagedReader.currentPageView else { return }
+        LearnerOverlayCoordinator.shared.reOCR(for: context, container: container)
     }
 
     @objc func openReaderSettings() {
@@ -1220,6 +1251,31 @@ extension ReaderViewController: UIGestureRecognizerDelegate {
         guard let pan = gestureRecognizer as? UIPanGestureRecognizer else { return true }
         let velocity = pan.velocity(in: pan.view)
         return velocity.y > velocity.x && (abs(velocity.x) < 40 || abs(velocity.y) > abs(velocity.x) * 3)
+    }
+
+    /// Block bar-toggle and fake-zoom gestures when the touch lands on a Learner
+    /// word region (WordRegionControl). This prevents the chrome from toggling when
+    /// the user taps a highlighted word. (Task 2)
+    /// Note: the bare `LearnerOverlayView` (empty space between word regions) is NOT
+    /// blocked — that lets the user toggle bars by tapping outside any word, which is
+    /// the reader's expected UX. Only `WordRegionControl` and its subviews (badges, etc.)
+    /// suppress the gesture.
+    func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldReceive touch: UITouch
+    ) -> Bool {
+        // Only filter our two tap recognizers; other recognizers (pan, etc.) pass through
+        guard gestureRecognizer === fakeZoomTapGesture || gestureRecognizer === barToggleTapGesture else {
+            return true
+        }
+        // Walk up the view hierarchy from the touched view; if any ancestor is a
+        // WordRegionControl, suppress the gesture.
+        var view: UIView? = touch.view
+        while let v = view {
+            if v is WordRegionControl { return false }
+            view = v.superview
+        }
+        return true
     }
 }
 

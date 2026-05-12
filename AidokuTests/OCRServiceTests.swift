@@ -90,6 +90,29 @@ import UIKit
 
     // MARK: 5. Cache get/put direct test
 
+    @Test func cache_invalidate_clearsEntry() throws {
+        let cache = OCRResultCache(countLimit: 10)
+        // Render a 1×1 image so pngData() is guaranteed non-nil
+        // (empty UIImage() yields nil PNG data and would mask the test).
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1, height: 1))
+        let dummyImage = renderer.image { ctx in
+            UIColor.black.setFill()
+            ctx.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
+        }
+        let data = try #require(dummyImage.pngData())
+
+        let result = OCRResult(
+            words: [OCRWordBox(text: "Test", boundingBox: .zero, confidence: 1.0, lineIndex: 0)],
+            lines: []
+        )
+        cache.put(imageData: data, languages: ["de-DE"], result: result)
+        #expect(cache.get(imageData: data, languages: ["de-DE"]) != nil)
+
+        cache.invalidate(imageData: data, languages: ["de-DE"])
+        #expect(cache.get(imageData: data, languages: ["de-DE"]) == nil,
+                "Entry should be gone after invalidate")
+    }
+
     @Test func cache_getAndPut_roundTrip() {
         let cache = OCRResultCache(countLimit: 10)
         let dummyImage = UIImage()
@@ -105,6 +128,89 @@ import UIKit
 
         #expect(retrieved != nil)
         #expect(retrieved?.words.first?.text == "Hallo")
+    }
+}
+
+// MARK: — Task 7: OCR language migration + passthrough tests
+
+@Suite struct OCRLanguageMigrationTests {
+
+    // Migration: old Learner.ocrLanguages (String) → new Learner.ocrLanguagesList ([String] JSON)
+    @Test @MainActor func ocrLanguages_migratesLegacyStringKey() {
+        let legacyKey = "Learner.ocrLanguages"
+        let newKey = "Learner.ocrLanguagesList"
+
+        // Setup legacy state
+        UserDefaults.standard.set("ja-JP", forKey: legacyKey)
+        UserDefaults.standard.removeObject(forKey: newKey)
+
+        let result = LearnerOverlayCoordinator.shared.ocrLanguages()
+
+        #expect(result == ["ja-JP"], "Migrated value should be the old single language")
+        #expect(UserDefaults.standard.object(forKey: legacyKey) == nil, "Old key should be removed after migration")
+        #expect(UserDefaults.standard.data(forKey: newKey) != nil, "New key should be written as JSON data")
+
+        // Cleanup
+        UserDefaults.standard.removeObject(forKey: newKey)
+    }
+
+    // Default fallback when no key is set
+    @Test @MainActor func ocrLanguages_defaultsToGerman() {
+        let legacyKey = "Learner.ocrLanguages"
+        let newKey = "Learner.ocrLanguagesList"
+        UserDefaults.standard.removeObject(forKey: legacyKey)
+        UserDefaults.standard.removeObject(forKey: newKey)
+
+        let result = LearnerOverlayCoordinator.shared.ocrLanguages()
+        #expect(result == ["de-DE"])
+    }
+
+    // Multi-language array round-trips correctly
+    @Test @MainActor func ocrLanguages_multipleLanguages_roundTrip() {
+        let newKey = "Learner.ocrLanguagesList"
+        let langs = ["de-DE", "ja-JP"]
+        if let data = try? JSONEncoder().encode(langs) {
+            UserDefaults.standard.set(data, forKey: newKey)
+        }
+
+        let result = LearnerOverlayCoordinator.shared.ocrLanguages()
+        #expect(result == ["de-DE", "ja-JP"])
+
+        UserDefaults.standard.removeObject(forKey: newKey)
+    }
+
+    // Lock-in for review I2: the picker must save selections in display order
+    // (Vision uses recognitionLanguages order as a priority hint).
+    // Alphabetical sort would put "es-ES" before "ja-JP"; display order puts ja-JP first.
+    @Test @MainActor func picker_saveToDefaults_preservesDisplayOrder() throws {
+        let key = LearnerOCRLanguagesPicker.defaultsKey
+        UserDefaults.standard.removeObject(forKey: key)
+
+        // Toggle on in non-alphabetical order: ja-JP, then es-ES.
+        // Alphabetical would yield ["es-ES", "ja-JP"]; display order yields ["ja-JP", "es-ES"].
+        LearnerOCRLanguagesPicker.saveToDefaults(["ja-JP", "es-ES"])
+
+        let data = try #require(UserDefaults.standard.data(forKey: key))
+        let saved = try JSONDecoder().decode([String].self, from: data)
+
+        #expect(saved == ["ja-JP", "es-ES"],
+                "Expected display order [ja-JP, es-ES]; got \(saved)")
+
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
+    // Lock-in: a single-language save retains its single entry.
+    @Test @MainActor func picker_saveToDefaults_singleLanguage() throws {
+        let key = LearnerOCRLanguagesPicker.defaultsKey
+        UserDefaults.standard.removeObject(forKey: key)
+
+        LearnerOCRLanguagesPicker.saveToDefaults(["fr-FR"])
+
+        let data = try #require(UserDefaults.standard.data(forKey: key))
+        let saved = try JSONDecoder().decode([String].self, from: data)
+        #expect(saved == ["fr-FR"])
+
+        UserDefaults.standard.removeObject(forKey: key)
     }
 }
 

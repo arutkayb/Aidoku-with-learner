@@ -16,6 +16,7 @@ struct WordLookupSheet: View {
     @StateObject private var viewModel: WordLookupViewModel
     private let wordTapEvent: WordTapEvent?
     private let vocabOnly: Bool
+    @State private var isEditing: Bool = false
 
     // Init from a reader word-tap event
     init(event: WordTapEvent) {
@@ -38,28 +39,49 @@ struct WordLookupSheet: View {
 
                     // MARK: — Word header
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(viewModel.surfaceForm)
-                            .font(.largeTitle.bold())
-
-                        if viewModel.lemma != viewModel.surfaceForm.lowercased() {
+                        if isEditing {
+                            // The lemma (lookup key) stays immutable, so it's shown read-only
+                            // above the editable surface-form field for context.
                             Text(viewModel.lemma)
-                                .font(.body)
-                                .foregroundStyle(.secondary)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            TextField("LEARNER_EDIT_WORD_PLACEHOLDER".localized,
+                                      text: $viewModel.editableSurfaceForm)
+                                .font(.title2.bold())
+                                .textFieldStyle(.roundedBorder)
+                        } else {
+                            Text(viewModel.surfaceForm)
+                                .font(.largeTitle.bold())
+
+                            if viewModel.lemma != viewModel.surfaceForm.lowercased() {
+                                Text(viewModel.lemma)
+                                    .font(.body)
+                                    .foregroundColor(.secondary)
+                            }
                         }
                     }
 
                     Divider()
 
                     // MARK: — Translation
-                    if viewModel.isLoading {
+                    if isEditing {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("LEARNER_EDIT_TRANSLATION_LABEL".localized)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            TextField("LEARNER_EDIT_TRANSLATION_PLACEHOLDER".localized,
+                                      text: $viewModel.editableTranslation)
+                                .textFieldStyle(.roundedBorder)
+                        }
+                    } else if viewModel.isLoading {
                         HStack {
                             ProgressView()
                             Text("LOADING_ELLIPSIS".localized)
-                                .foregroundStyle(.secondary)
+                                .foregroundColor(.secondary)
                         }
                     } else if let error = viewModel.loadError {
                         Text(errorMessage(for: error))
-                            .foregroundStyle(.red)
+                            .foregroundColor(.red)
                             .font(.body)
                     } else if let t = viewModel.translation {
                         VStack(alignment: .leading, spacing: 6) {
@@ -69,15 +91,41 @@ struct WordLookupSheet: View {
                             if let pos = t.partOfSpeech {
                                 Text(pos)
                                     .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundColor(.secondary)
                             }
 
                             if let example = t.exampleSentence, !example.isEmpty {
                                 Text("\"\(example)\"")
                                     .font(.body)
                                     .italic()
-                                    .foregroundStyle(.secondary)
+                                    .foregroundColor(.secondary)
                                     .padding(.top, 4)
+                            }
+                        }
+                    }
+
+                    // MARK: — Notes (vocab-only mode)
+                    if vocabOnly && viewModel.isInVocab {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("LEARNER_NOTES_LABEL".localized)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            if isEditing {
+                                TextEditor(text: $viewModel.editableNotes)
+                                    .frame(minHeight: 80)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+                                    )
+                            } else if !viewModel.editableNotes.isEmpty {
+                                Text(viewModel.editableNotes)
+                                    .font(.body)
+                                    .foregroundColor(.primary)
+                            } else {
+                                Text("LEARNER_NOTES_EMPTY".localized)
+                                    .font(.body)
+                                    .foregroundColor(.secondary)
+                                    .italic()
                             }
                         }
                     }
@@ -89,7 +137,7 @@ struct WordLookupSheet: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("LEARNER_VOCAB_FAMILIARITY_LEVEL".localized)
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundColor(.secondary)
 
                             HStack(spacing: 12) {
                                 ForEach(0..<4) { level in
@@ -158,6 +206,36 @@ struct WordLookupSheet: View {
             }
             .navigationTitle("LEARNER_WORD_LOOKUP".localized)
             .navigationBarTitleDisplayMode(.inline)
+            // Toolbar items use inner `if` (regular ViewBuilder, iOS 13+) rather
+            // than `if/else` at the ToolbarContent level — that builder's `buildIf`/
+            // `buildEither` are only iOS 16+. Each ToolbarItem is declared once.
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    if vocabOnly && viewModel.isInVocab && isEditing {
+                        Button("CANCEL".localized) {
+                            viewModel.revertEdits()
+                            isEditing = false
+                        }
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    if vocabOnly && viewModel.isInVocab {
+                        if isEditing {
+                            Button("SAVE".localized) {
+                                Task {
+                                    await viewModel.applyEdits()
+                                    isEditing = false
+                                }
+                            }
+                            .font(.body.weight(.semibold))
+                        } else {
+                            Button("EDIT".localized) {
+                                isEditing = true
+                            }
+                        }
+                    }
+                }
+            }
         }
         .navigationViewStyle(.stack)
         .modifier(WordLookupTranslationDriver(viewModel: viewModel))

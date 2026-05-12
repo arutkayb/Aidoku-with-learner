@@ -16,7 +16,7 @@ struct ReaderSettingsView: View {
     @StateObject private var downsampleImages = UserDefaultsBool(key: "Reader.downsampleImages")
     @StateObject private var upscaleImages = UserDefaultsBool(key: "Reader.upscaleImages")
     @StateObject private var splitWideImages = UserDefaultsBool(key: "Reader.splitWideImages")
-    @StateObject private var learnerEnabled: UserDefaultsBool
+    @StateObject private var learnerMode: UserDefaultsString
 
     // All available font families on the system
     private static let availableFonts: [String] = {
@@ -39,8 +39,8 @@ struct ReaderSettingsView: View {
             initialValue: UserDefaults.standard.string(forKey: "Reader.tapZones")
                 .flatMap(DefaultTapZones.init) ?? .disabled
         )
-        self._learnerEnabled = StateObject(
-            wrappedValue: UserDefaultsBool(key: "Learner.enabled.\(mangaId)")
+        self._learnerMode = StateObject(
+            wrappedValue: UserDefaultsString(key: "Learner.mode.\(mangaId)", defaultValue: "inherit")
         )
     }
 
@@ -385,28 +385,54 @@ struct ReaderSettingsView: View {
                 }
 
                 // MARK: — Learner Mode
-                let learnerKey = "Learner.enabled.\(mangaId)"
+                let learnerModeKey = "Learner.mode.\(mangaId)"
                 let isPaged = reader == .paged
+                // Effective active state: computed from the observed mode string so SwiftUI
+                // re-renders when learnerMode.value changes (StateObject drives the update).
+                let globalOn = UserDefaults.standard.bool(forKey: "Learner.globallyEnabled")
+                let learnerEffectivelyOn: Bool = {
+                    switch learnerMode.value {
+                    case "on":      return true
+                    case "off":     return false
+                    default:        return globalOn  // "inherit" or absent
+                    }
+                }()
                 Section {
                     SettingView(
                         setting: .init(
-                            key: learnerKey,
+                            key: learnerModeKey,
                             title: NSLocalizedString("LEARNER_MODE_ENABLE"),
-                            notification: .init(learnerKey),
-                            value: .toggle(.init())
+                            notification: .init(learnerModeKey),
+                            value: .select(.init(
+                                values: ["inherit", "on", "off"],
+                                titles: [
+                                    NSLocalizedString("LEARNER_MODE_INHERIT"),
+                                    NSLocalizedString("LEARNER_MODE_ON"),
+                                    NSLocalizedString("LEARNER_MODE_OFF")
+                                ]
+                            ))
                         )
                     )
                     .disabled(!isPaged)
 
-                    if isPaged && learnerEnabled.value {
+                    if isPaged && learnerEffectivelyOn {
+                        // Multi-select OCR language picker (Task 7) — flattened into the
+                        // outer LEARNER_MODE Section because SwiftUI does not support
+                        // nested Section inside Form.
+                        Text(NSLocalizedString("LEARNER_OCR_LANGUAGES"))
+                            .font(.subheadline.bold())
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        LearnerOCRLanguagesPicker()
+                        Text(NSLocalizedString("LEARNER_OCR_LANGUAGES_FOOTER"))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        // Disable language correction toggle (Task 7)
                         SettingView(
                             setting: .init(
-                                key: "Learner.ocrLanguages",
-                                title: NSLocalizedString("LEARNER_OCR_LANGUAGES"),
-                                value: .select(.init(
-                                    values: ["de-DE", "en-US", "ja-JP", "fr-FR", "es-ES"],
-                                    titles: ["German (de-DE)", "English (en-US)", "Japanese (ja-JP)", "French (fr-FR)", "Spanish (es-ES)"]
-                                ))
+                                key: "Learner.disableLanguageCorrection",
+                                title: NSLocalizedString("LEARNER_DISABLE_LANG_CORRECTION"),
+                                value: .toggle(.init())
                             )
                         )
                     }
@@ -415,7 +441,7 @@ struct ReaderSettingsView: View {
                 } footer: {
                     if !isPaged {
                         Text(NSLocalizedString("LEARNER_PAGED_ONLY_NOTICE"))
-                    } else if learnerEnabled.value {
+                    } else if learnerEffectivelyOn {
                         Text(NSLocalizedString("LEARNER_LIVE_TEXT_PAUSED_NOTICE"))
                     }
                 }

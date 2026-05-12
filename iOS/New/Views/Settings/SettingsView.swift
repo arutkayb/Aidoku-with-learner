@@ -308,7 +308,10 @@ extension SettingsView {
 
     @ViewBuilder
     func customContentHandler(_ setting: Setting) -> some View {
-        if setting.key == "Appearance.layout" {
+        if setting.key == "Learner.ocrLanguagesList" {
+            // Task 7: multi-select OCR language picker
+            LearnerOCRLanguagesPicker()
+        } else if setting.key == "Appearance.layout" {
             LayoutSettingView()
         } else if setting.key == "Library.defaultCategory" {
             let newSetting = {

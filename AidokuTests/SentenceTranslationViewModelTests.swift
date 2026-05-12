@@ -8,6 +8,7 @@
 //
 
 import Foundation
+import CoreGraphics
 import Testing
 @testable import Aidoku
 
@@ -140,7 +141,55 @@ private func makeContext() -> LearnerPageContext {
         #expect(updated?.simplified != nil || updated?.simplifyError != nil)
     }
 
-    // Test 5: retry resets state and re-runs load
+    // Test 5: bubbleGroupedFallback groups adjacent lines into the same bubble (Task 6)
+    // Lines 0 & 1 are vertically close and horizontally overlapping → one group.
+    // Line 2 is far below and non-overlapping → a second group.
+    @Test @MainActor func bubbleGroupedFallback_twoBubbles() {
+        // All boxes normalised to [0,1]. Line heights ~0.05; avgHeight = 0.05.
+        // Bubble 1: lines at y=0.80 and y=0.74 — centre distance ≈ 0.08 = 1.6 × h_avg ← just above threshold.
+        // Use 0.07 to stay safely inside the 1.5 × threshold.
+        let line0 = OCRLineBox(
+            text: "Ich bin",
+            boundingBox: CGRect(x: 0.1, y: 0.80, width: 0.5, height: 0.05),
+            confidence: 1.0
+        )
+        let line1 = OCRLineBox(
+            text: "sehr müde.",
+            boundingBox: CGRect(x: 0.1, y: 0.74, width: 0.5, height: 0.05),
+            confidence: 1.0
+        )
+        // Bubble 2: far below with a different x range (no horizontal overlap).
+        let line2 = OCRLineBox(
+            text: "SFX BOOM",
+            boundingBox: CGRect(x: 0.7, y: 0.20, width: 0.25, height: 0.05),
+            confidence: 1.0
+        )
+
+        let groups = SentenceTranslationViewModel.bubbleGroupedFallback(from: [line0, line1, line2])
+
+        #expect(groups.count == 2, "Expected 2 bubble groups but got \(groups.count)")
+        #expect(groups[0].fragmentIndices == [0, 1])
+        #expect(groups[1].fragmentIndices == [2])
+        #expect(groups[0].combinedText.contains("Ich bin"))
+        #expect(groups[0].combinedText.contains("sehr müde."))
+        #expect(groups[1].combinedText == "SFX BOOM")
+    }
+
+    // Test 5b: bubbleGroupedFallback with a single line → one group (Task 6)
+    @Test @MainActor func bubbleGroupedFallback_singleLine() {
+        let line = OCRLineBox(text: "Hallo", boundingBox: CGRect(x: 0.1, y: 0.5, width: 0.3, height: 0.05), confidence: 1.0)
+        let groups = SentenceTranslationViewModel.bubbleGroupedFallback(from: [line])
+        #expect(groups.count == 1)
+        #expect(groups[0].combinedText == "Hallo")
+    }
+
+    // Test 5c: bubbleGroupedFallback with empty input → empty result (Task 6)
+    @Test @MainActor func bubbleGroupedFallback_emptyInput() {
+        let groups = SentenceTranslationViewModel.bubbleGroupedFallback(from: [])
+        #expect(groups.isEmpty)
+    }
+
+    // Test 6: retry resets state and re-runs load
     @Test @MainActor func retry_resetsAndReloads() async {
         let ocrResult = makeOCRResult(lines: ["Hello world."])
         let vm = SentenceTranslationViewModel(context: makeContext(), ocrResult: ocrResult)

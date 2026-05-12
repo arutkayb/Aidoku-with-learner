@@ -35,6 +35,11 @@ final class OCRResultCache: @unchecked Sendable {
         cache.setObject(OCRResultBox(result), forKey: key(imageData: imageData, languages: languages))
     }
 
+    /// Removes the cached result for the given image + languages combination, if present.
+    func invalidate(imageData: Data, languages: [String]) {
+        cache.removeObject(forKey: key(imageData: imageData, languages: languages))
+    }
+
     // MARK: — Private
 
     private func key(imageData: Data, languages: [String]) -> NSString {

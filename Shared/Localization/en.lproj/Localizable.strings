@@ -776,6 +776,11 @@
 "LEARNER_FAMILIARITY" = "Familiarity";
 "LEARNER_WORD_LOOKUP_ERROR" = "Could not load translation.";
 "LEARNER_TRANSLATE_PAGE" = "Translate Page";
+"LEARNER_EDIT_WORD_PLACEHOLDER" = "Word";
+"LEARNER_EDIT_TRANSLATION_LABEL" = "Translation";
+"LEARNER_EDIT_TRANSLATION_PLACEHOLDER" = "Enter translation…";
+"LEARNER_NOTES_LABEL" = "Notes";
+"LEARNER_NOTES_EMPTY" = "No notes yet.";
 "LEARNER_SIMPLIFIED_LABEL" = "Simplified";
 "LEARNER_SENTENCE_LOAD_ERROR" = "Could not load sentence translation.";
 "LEARNER_RETRY" = "Retry";
@@ -811,7 +816,10 @@
 
 // MARK: — Learner Mode (Task 5)
 "LEARNER_MODE" = "Learner Mode";
-"LEARNER_MODE_ENABLE" = "Enable Learner Mode";
+"LEARNER_MODE_ENABLE" = "Learner Mode";
+"LEARNER_MODE_INHERIT" = "Inherit";
+"LEARNER_MODE_ON" = "On";
+"LEARNER_MODE_OFF" = "Off";
 "LEARNER_OCR_LANGUAGES" = "OCR Languages";
 "LEARNER_PAGED_ONLY_NOTICE" = "Learner Mode is only available in paged reading mode.";
 "LEARNER_LIVE_TEXT_PAUSED_NOTICE" = "Live Text is paused while Learner Mode is on.";
@@ -820,3 +828,6 @@
 "LEARNER_TARGET_LANGUAGE" = "Translate Into";
 "LEARNER_DEEPL_API_KEY" = "DeepL API Key";
 "LEARNER_DEEPL_API_KEY_PLACEHOLDER" = "Paste your DeepL key";
+"LEARNER_DISABLE_LANG_CORRECTION" = "Disable Language Correction";
+"LEARNER_RE_OCR_PAGE" = "Re-OCR This Page";
+"LEARNER_OCR_LANGUAGES_FOOTER" = "Select languages to recognize. More languages may slow OCR and reduce per-language accuracy. Enable \"Disable Language Correction\" if uppercase words with umlauts are mangled.";

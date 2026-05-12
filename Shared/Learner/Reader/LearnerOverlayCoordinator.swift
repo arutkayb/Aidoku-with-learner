@@ -9,7 +9,6 @@
 
 #if canImport(UIKit)
 import UIKit
-import VisionKit
 
 /// Key uniquely identifying one reader page.
 private struct PageKey: Hashable {
@@ -31,9 +30,6 @@ private struct PageState {
     weak var overlay: LearnerOverlayView?
     weak var pageView: ReaderPageView?
     var lastOCRResult: OCRResult?
-    /// Live-text interactions that were detached from the page while Learner was active.
-    /// Re-added on `deactivate` / `restoreLiveText`.
-    var detachedLiveTextInteractions: [UIInteraction] = []
 }
 
 @MainActor
@@ -43,7 +39,8 @@ final class LearnerOverlayCoordinator {
 
     private init() {}
 
-    private let ocr: OCRService = VisionOCRService()
+    private let ocrCache = OCRResultCache()
+    private lazy var ocr: OCRService = VisionOCRService(cache: ocrCache)
     private var pageStates: [PageKey: PageState] = [:]
 
     // MARK: — Public API
@@ -57,7 +54,6 @@ final class LearnerOverlayCoordinator {
         }
 
         let key = PageKey(context)
-        suppressLiveText(on: container, for: key)
 
         // If an overlay already exists from a prior load (same page), reuse it.
         let existingOverlay = pageStates[key]?.overlay
@@ -96,12 +92,10 @@ final class LearnerOverlayCoordinator {
                 pageContext: context
             )
 
-            let detached = pageStates[key]?.detachedLiveTextInteractions ?? []
             pageStates[key] = PageState(
                 overlay: overlay,
                 pageView: container,
-                lastOCRResult: result,
-                detachedLiveTextInteractions: detached
+                lastOCRResult: result
             )
         }
     }
@@ -131,7 +125,6 @@ final class LearnerOverlayCoordinator {
         let key = PageKey(context)
         if let state = pageStates[key] {
             state.overlay?.removeFromSuperview()
-            restoreLiveText(on: container, for: key)
             pageStates.removeValue(forKey: key)
         }
     }
@@ -141,18 +134,34 @@ final class LearnerOverlayCoordinator {
         pageStates[PageKey(context)]?.lastOCRResult
     }
 
+    /// Invalidates the OCR cache for a page and re-runs OCR, refreshing the overlay.
+    /// Called from the reader's Re-OCR menu item. (Task 6)
+    func reOCR(for context: LearnerPageContext, container: ReaderPageView) {
+        let key = PageKey(context)
+        // Evict the cached result so `imageDidLoad` is forced to re-run Vision.
+        if let image = container.imageView.image, let pngData = image.pngData() {
+            ocrCache.invalidate(imageData: pngData, languages: ocrLanguages())
+        }
+        pageStates[key]?.lastOCRResult = nil
+        // Re-run the full OCR + overlay pipeline.
+        if let image = container.imageView.image {
+            imageDidLoad(image, context: context, container: container)
+        }
+    }
+
+    /// Called when the zoom scale of a page's scroll view changes.
+    /// Rebuilds the overlay so word-region frames stay aligned with the zoomed image. (Task 2)
+    func zoomChanged(for context: LearnerPageContext, container: ReaderPageView) {
+        pageStates[PageKey(context)]?.overlay?.setNeedsRebuild()
+    }
+
     /// Called when the global Learner toggle changes for a manga.
     func setEnabled(_ enabled: Bool, for mangaId: String) {
         if !enabled {
             // Remove all overlays for this manga
             let keysToRemove = pageStates.keys.filter { $0.mangaId == mangaId }
             for key in keysToRemove {
-                if let state = pageStates[key] {
-                    state.overlay?.removeFromSuperview()
-                    if let pv = state.pageView {
-                        restoreLiveText(on: pv, for: key)
-                    }
-                }
+                pageStates[key]?.overlay?.removeFromSuperview()
                 pageStates.removeValue(forKey: key)
             }
         }
@@ -162,9 +171,8 @@ final class LearnerOverlayCoordinator {
     // MARK: — Helpers
 
     private func isLearnerEnabled(for mangaId: String) -> Bool {
-        let perManga = UserDefaults.standard.bool(forKey: "Learner.enabled.\(mangaId)")
-        let global = UserDefaults.standard.bool(forKey: "Learner.globallyEnabled")
-        let enabled = perManga || global
+        // Migration + tri-state gate (Task 1).
+        let enabled = LearnerGate.isEnabled(mangaId: mangaId)
         if enabled && !UserDefaults.standard.bool(forKey: "Learner.enabledGlobally") {
             // First time Learner is active — flip the visibility flag so the
             // Vocabulary tab becomes visible (plan Task 8 Decision #2).
@@ -174,41 +182,30 @@ final class LearnerOverlayCoordinator {
         return enabled
     }
 
-    private func ocrLanguages() -> [String] {
-        // Stored as a single string for now (single-select in settings)
-        if let lang = UserDefaults.standard.string(forKey: "Learner.ocrLanguages"), !lang.isEmpty {
-            return [lang]
+    /// Returns the list of OCR recognition languages to use.
+    /// On first call after an upgrade from the old single-select UI, migrates
+    /// `Learner.ocrLanguages` (String) → `Learner.ocrLanguagesList` ([String] JSON).
+    /// Defaults to `["de-DE"]` when no setting is present. (Task 7)
+    func ocrLanguages() -> [String] {
+        let newKey = "Learner.ocrLanguagesList"
+        let legacyKey = "Learner.ocrLanguages"
+
+        // One-shot migration: if the new key is absent and the old String key is present,
+        // copy the old value into the new JSON-encoded array key.
+        if UserDefaults.standard.data(forKey: newKey) == nil,
+           let oldLang = UserDefaults.standard.string(forKey: legacyKey), !oldLang.isEmpty {
+            if let data = try? JSONEncoder().encode([oldLang]) {
+                UserDefaults.standard.set(data, forKey: newKey)
+            }
+            UserDefaults.standard.removeObject(forKey: legacyKey)
+        }
+
+        if let data = UserDefaults.standard.data(forKey: newKey),
+           let langs = try? JSONDecoder().decode([String].self, from: data), !langs.isEmpty {
+            return langs
         }
         return ["de-DE"]
     }
 
-    /// Fully detach the live-text interaction while Learner mode is active for `key`.
-    /// Hiding `isSupplementaryInterfaceHidden` only hides the button — the underlying
-    /// text-selection interaction would still steal long-press touches from the overlay.
-    private func suppressLiveText(on container: ReaderPageView, for key: PageKey) {
-        guard #available(iOS 16.0, *) else { return }
-        var detached: [UIInteraction] = []
-        for interaction in container.imageView.interactions {
-            if let iai = interaction as? ImageAnalysisInteraction {
-                container.imageView.removeInteraction(iai)
-                detached.append(iai)
-            }
-        }
-        if !detached.isEmpty, var state = pageStates[key] {
-            state.detachedLiveTextInteractions = detached
-            pageStates[key] = state
-        } else if !detached.isEmpty {
-            pageStates[key] = PageState(detachedLiveTextInteractions: detached)
-        }
-    }
-
-    private func restoreLiveText(on container: ReaderPageView, for key: PageKey? = nil) {
-        guard #available(iOS 16.0, *) else { return }
-        if let key, let state = pageStates[key] {
-            for interaction in state.detachedLiveTextInteractions {
-                container.imageView.addInteraction(interaction)
-            }
-        }
-    }
 }
 #endif // canImport(UIKit)

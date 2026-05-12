@@ -30,6 +30,12 @@ class ReaderPagedViewController: BaseObservingViewController {
     var pageViewControllers: [ReaderPageViewController] = []
     var currentPage = 0
 
+    /// The ReaderPageView for the currently-displayed page, or nil when a double-page
+    /// spread or info page is visible.
+    var currentPageView: ReaderPageView? {
+        (pageViewController.viewControllers?.first as? ReaderPageViewController)?.pageView
+    }
+
     private var usesDoublePages = false
     private var usesAutoPageLayout = false
     private var pageOffsetEnabled = false
@@ -160,13 +166,21 @@ class ReaderPagedViewController: BaseObservingViewController {
 
         // Re-process the visible page when either Learner toggle flips mid-chapter.
         // On → coordinator runs OCR and attaches overlay. Off → coordinator deactivates.
+        // Key uses the tri-state mode key (Task 1): "Learner.mode.{sourceId}.{mangaKey}".
+        // This matches MangaIdentifier.description used as the settings key.
         let learnerSourceId = viewModel.source?.key ?? viewModel.manga.sourceKey
-        let learnerToggleKey = "Learner.enabled.\(learnerSourceId).\(viewModel.manga.key)"
+        let learnerCompositeId = "\(learnerSourceId).\(viewModel.manga.key)"
+        let learnerToggleKey = "Learner.mode.\(learnerCompositeId)"
         let refreshLearner: (Notification) -> Void = { [weak self] _ in
             guard let self,
                   let incoming = pageViewController.viewControllers?.first as? ReaderPageViewController,
                   let pageView = incoming.pageView else { return }
-            pageView.notifyLearnerOfImage()
+            let compositeId = "\(self.viewModel.source?.key ?? self.viewModel.manga.sourceKey).\(self.viewModel.manga.key)"
+            if LearnerGate.isEnabled(mangaId: compositeId) {
+                pageView.notifyLearnerOfImage()
+            } else if let ctx = pageView.learnerContext {
+                LearnerOverlayCoordinator.shared.deactivate(for: ctx, container: pageView)
+            }
         }
         addObserver(forName: learnerToggleKey, using: refreshLearner)
         addObserver(forName: "Learner.globallyEnabled", using: refreshLearner)

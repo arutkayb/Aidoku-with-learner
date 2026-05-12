@@ -610,13 +610,17 @@ extension Settings {
                 notification: .init("Learner.globallyEnabled"),
                 value: .toggle(.init(subtitle: NSLocalizedString("LEARNER_MODE_GLOBAL_SUBTITLE")))
             ),
+            // Task 7: multi-select OCR languages via custom picker
             .init(
-                key: "Learner.ocrLanguages",
+                key: "Learner.ocrLanguagesList",
                 title: NSLocalizedString("LEARNER_OCR_LANGUAGES"),
-                value: .select(.init(
-                    values: ["de-DE", "en-US", "ja-JP", "fr-FR", "es-ES"],
-                    titles: ["German (de-DE)", "English (en-US)", "Japanese (ja-JP)", "French (fr-FR)", "Spanish (es-ES)"]
-                ))
+                value: .custom
+            ),
+            // Task 7: disable Vision language correction (fixes umlaut mangling)
+            .init(
+                key: "Learner.disableLanguageCorrection",
+                title: NSLocalizedString("LEARNER_DISABLE_LANG_CORRECTION"),
+                value: .toggle(.init())
             ),
             .init(
                 key: "Learner.targetLanguage",

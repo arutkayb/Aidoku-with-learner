@@ -12,24 +12,9 @@ import Combine
 import Testing
 @testable import Aidoku
 
-// MARK: — Stub TranslationService
-
-private struct StubTranslationService: TranslationService {
-    enum Mode { case success, failure }
-    let mode: Mode
-
-    func translateWord(_ word: String, sourceLanguage: String, targetLanguage: String) async throws -> WordTranslation {
-        if mode == .failure { throw TranslationError.unavailable }
-        return WordTranslation(lemma: word, translation: "stub-\(word)", partOfSpeech: "noun")
-    }
-    func translateSentence(_ sentence: String, sourceLanguage: String, targetLanguage: String) async throws -> SentenceTranslation {
-        SentenceTranslation(original: sentence, translation: "translated")
-    }
-    func simplifyToCEFR(_ sentence: String, level: CEFRLevel, language: String) async throws -> String { sentence }
-    func groupFragmentsIntoSentences(_ fragments: [TextFragment], language: String) async throws -> [SentenceGroup] { [] }
-}
-
 // MARK: — Helper
+// (Canonical `StubTranslationService` lives in `TranslationServiceTests.swift`;
+//  duplicating it here triggers an invalid-redeclaration error.)
 
 private func makeEvent(word: String = "Buch", manga: String = "test-manga-wlvm") -> WordTapEvent {
     let ctx = LearnerPageContext(sourceId: "src", mangaId: manga, chapterId: "ch1", pageIndex: 0)
@@ -41,16 +26,24 @@ private func makeEvent(word: String = "Buch", manga: String = "test-manga-wlvm")
 @Suite struct WordLookupViewModelTests {
 
     // Test 1: normalizeLemma matches VocabularyEntryObject.normalize so the overlay
-    // badge lookup never diverges from the storage key (Decision Register #6).
-    // Whitespace and case are folded; punctuation is preserved.
+    // badge lookup never diverges from the storage key.
+    // Task 4: edge punctuation is now stripped; in-word punctuation preserved.
     @Test func normalizeLemma_matchesStorageRule() {
         #expect(LearnerStrings.normalizeLemma("  Buch  ") == "buch")
         #expect(LearnerStrings.normalizeLemma("BUCH") == "buch")
-        // Punctuation preserved: "Buch." and "Buch" must NOT collide.
-        #expect(LearnerStrings.normalizeLemma("Buch.") == "buch.")
-        #expect(LearnerStrings.normalizeLemma("Buch,") == "buch,")
+        // Edge punctuation stripped: "Buch," and "Buch" both normalize to "buch"
+        #expect(LearnerStrings.normalizeLemma("Buch.") == "buch")
+        #expect(LearnerStrings.normalizeLemma("Buch,") == "buch")
+        // In-word apostrophe preserved
+        #expect(LearnerStrings.normalizeLemma("it's") == "it's")
         // Symmetry with the entity-level normalizer (single source of truth).
-        #expect(LearnerStrings.normalizeLemma("Mädchen?") == VocabularyEntryObject.normalize("Mädchen?"))
+        #expect(LearnerStrings.normalizeLemma("Tür,") == VocabularyEntryObject.normalize("Tür,"))
+    }
+
+    // Test 1b: WordTapEvent with surface "Tür," produces lemma "tür" (no comma). (Task 4)
+    @Test func wordTapEvent_surfaceWithTrailingComma_lemmaStripped() {
+        let event = makeEvent(word: "Tür,")
+        #expect(event.lemma == "tür")
     }
 
     // Test 2: fresh event — not in vocab initially
@@ -100,7 +93,64 @@ private func makeEvent(word: String = "Buch", manga: String = "test-manga-wlvm")
         #expect(entry?.progress?.level == 2)
     }
 
-    // Test 5: requestSentenceTranslation emits event
+    // Test 5: applyEdits persists translation + notes (Task 5)
+    @Test @MainActor func applyEdits_persistsTranslationAndNotes() async {
+        _ = makeInMemoryContainer()
+        // Insert a vocab entry to edit
+        let entry = CoreDataManager.shared.upsertVocabularyEntry(
+            language: "de-DE",
+            lemma: "welt",
+            surfaceForm: "Welt",
+            translation: "world",
+            sourceMangaId: nil,
+            sourceMangaSourceId: nil
+        )
+        let vm = WordLookupViewModel(entry: entry)
+        #expect(vm.editableTranslation == "world")
+        #expect(vm.editableNotes == "")
+
+        vm.editableTranslation = "earth"
+        vm.editableNotes = "seen on page 3"
+        await vm.applyEdits()
+
+        let updated = CoreDataManager.shared.getVocabularyEntry(language: "de-DE", lemma: "welt")
+        #expect(updated?.translation == "earth")
+        #expect(updated?.notes == "seen on page 3")
+        #expect(vm.translation?.translation == "earth")
+    }
+
+    // Test 5b: revertEdits restores original values without saving (Task 5)
+    @Test @MainActor func revertEdits_restoresOriginalValues() async {
+        _ = makeInMemoryContainer()
+        let entry = CoreDataManager.shared.upsertVocabularyEntry(
+            language: "de-DE",
+            lemma: "baum",
+            surfaceForm: "Baum",
+            translation: "tree",
+            sourceMangaId: nil,
+            sourceMangaSourceId: nil
+        )
+        let vm = WordLookupViewModel(entry: entry)
+        vm.editableTranslation = "something else"
+        vm.editableNotes = "a note"
+        vm.revertEdits()
+
+        #expect(vm.editableTranslation == "tree")
+        #expect(vm.editableNotes == "")
+    }
+
+    // Test 5c: edit mode is gated to vocab-only init — event init does NOT seed editableEntry (Task 5)
+    @Test @MainActor func applyEdits_eventInit_isNoOp() async {
+        let vm = WordLookupViewModel(event: makeEvent(word: "Feuer"))
+        vm.editableTranslation = "fire"
+        // applyEdits should be a no-op since editableEntry is nil (event init path)
+        await vm.applyEdits()
+        // No crash, no DB row written for this word via applyEdits
+        let entry = CoreDataManager.shared.getVocabularyEntry(language: "de-DE", lemma: "feuer")
+        #expect(entry == nil)
+    }
+
+    // Test 6 (original): requestSentenceTranslation emits event
     @Test @MainActor func requestSentenceTranslation_emitsEvent() async {
         let vm = WordLookupViewModel(event: makeEvent())
         let event = makeEvent()

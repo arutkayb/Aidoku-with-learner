@@ -154,13 +154,14 @@ import Testing
         #expect(levelMap["katze"] == 1)
     }
 
-    // MARK: Test 6 — lemma normalization at insert time (Decision #6)
+    // MARK: Test 6 — lemma normalization at insert time (Task 4: edge punctuation stripped)
 
-    @Test func upsert_normalizesLemma() throws {
+    @Test func upsert_normalizesLemma_edgePunctuationStripped() throws {
         let container = makeInMemoryContainer()
         let ctx = container.viewContext
 
-        // Insert with uppercase + surrounding whitespace; punctuation preserved per Decision #6.
+        // Insert with uppercase + surrounding whitespace + trailing '?'.
+        // Task 4: trailing '?' is now stripped (edge punctuation removal).
         let entry = CoreDataManager.shared.upsertVocabularyEntry(
             language: "de-DE",
             lemma: "  Mädchen?  ",
@@ -170,16 +171,94 @@ import Testing
             sourceMangaSourceId: nil,
             context: ctx
         )
-        // Whitespace trimmed and lowercased; '?' kept.
-        #expect(entry.lemma == "mädchen?")
+        // Whitespace trimmed, trailing '?' stripped, lowercased.
+        #expect(entry.lemma == "mädchen")
 
-        // Fetch with a differently-cased / spaced lemma resolves to the same row.
+        // Fetch with a differently-cased / punctuated form normalizes to same row.
         let same = CoreDataManager.shared.getVocabularyEntry(language: "de-DE", lemma: "MÄDCHEN?", context: ctx)
         #expect(same?.objectID == entry.objectID)
+    }
+}
 
-        // A lemma differing only in punctuation must NOT collide with the normalized one.
-        let other = CoreDataManager.shared.getVocabularyEntry(language: "de-DE", lemma: "mädchen", context: ctx)
-        #expect(other == nil)
+// MARK: — VocabularyEntryObject.normalize unit tests (Task 4)
+
+@Suite struct NormalizeTests {
+
+    @Test func normalize_trailingComma_stripped() {
+        #expect(VocabularyEntryObject.normalize("Tür,") == "tür")
+    }
+
+    @Test func normalize_leadingAndTrailingBangs_stripped() {
+        #expect(VocabularyEntryObject.normalize("!!hello!!") == "hello")
+    }
+
+    @Test func normalize_apostropheInWord_preserved() {
+        #expect(VocabularyEntryObject.normalize("it's") == "it's")
+    }
+
+    @Test func normalize_hyphenInWord_preserved() {
+        #expect(VocabularyEntryObject.normalize("auto-mobile") == "auto-mobile")
+    }
+
+    @Test func normalize_whitespaceOnly_trimmed() {
+        #expect(VocabularyEntryObject.normalize("  foo  ") == "foo")
+    }
+
+    @Test func normalize_trailingPeriod_stripped() {
+        #expect(VocabularyEntryObject.normalize("foo.") == "foo")
+    }
+
+    @Test func normalize_japanesePunctuation_stripped() {
+        // U+3001 IDEOGRAPHIC COMMA — Unicode category Po (punctuation, other)
+        #expect(VocabularyEntryObject.normalize("日本語、") == "日本語")
+    }
+
+    @Test func normalize_allPunctuation_returnsEmpty() {
+        #expect(VocabularyEntryObject.normalize("!!!") == "")
+    }
+
+    @Test func normalize_emptyString_returnsEmpty() {
+        #expect(VocabularyEntryObject.normalize("") == "")
+    }
+
+    @Test func normalize_inWordDash_preserved() {
+        // Leading and trailing dashes are stripped; interior dash preserved
+        #expect(VocabularyEntryObject.normalize("-auto-mobile-") == "auto-mobile")
+    }
+
+    // Bug-report follow-up: stutter/ellipsis inside a tap surface form leaves an
+    // unusable lemma when only the edges are stripped. The longest-segment rule
+    // discards the leading single-letter stutter.
+    @Test func normalize_stutterDoubleDotsPlusBang_keepsLongestSegment() {
+        #expect(VocabularyEntryObject.normalize("F..FURCHTBAR!") == "furchtbar")
+    }
+
+    @Test func normalize_stutterEllipsis_keepsLongestSegment() {
+        // Single Unicode ellipsis character (U+2026) is punctuation (Po) — splits the lemma.
+        #expect(VocabularyEntryObject.normalize("N\u{2026}NEIN") == "nein")
+    }
+
+    @Test func normalize_interiorComma_keepsLongerHalf() {
+        // OCR sometimes inserts a comma in the middle of a word; the longer half wins
+        // (segments are ["Hel", "lo"] → longest "Hel" → "hel"). Documents the rule.
+        #expect(VocabularyEntryObject.normalize("Hel,lo") == "hel")
+    }
+
+    // cleanSurfaceForm: the case-preserving sibling of normalize, used to store
+    // the user-visible surface form on a vocab entry.
+    @Test func cleanSurfaceForm_stutterAndBang_preservesCase() {
+        #expect(VocabularyEntryObject.cleanSurfaceForm("NEIN..!") == "NEIN")
+        #expect(VocabularyEntryObject.cleanSurfaceForm("F..FURCHTBAR!") == "FURCHTBAR")
+    }
+
+    @Test func cleanSurfaceForm_preservesInWordPunctuation() {
+        #expect(VocabularyEntryObject.cleanSurfaceForm("It's") == "It's")
+        #expect(VocabularyEntryObject.cleanSurfaceForm("Auto-Mobile") == "Auto-Mobile")
+    }
+
+    @Test func cleanSurfaceForm_emptyAfterStrip_returnsEmpty() {
+        #expect(VocabularyEntryObject.cleanSurfaceForm("!!!") == "")
+        #expect(VocabularyEntryObject.cleanSurfaceForm("") == "")
     }
 }
 

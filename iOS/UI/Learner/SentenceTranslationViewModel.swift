@@ -106,11 +106,10 @@ final class SentenceTranslationViewModel: ObservableObject {
             resolvedGroups = groups
         } else {
             if !groups.isEmpty {
-                print("[Learner] sentence grouping returned invalid fragment indices; falling back to one-per-line")
+                print("[Learner] sentence grouping returned invalid fragment indices; falling back to bubble-adjacency heuristic")
             }
-            resolvedGroups = fragments.map { frag in
-                SentenceGroup(fragmentIndices: [frag.index], combinedText: frag.text)
-            }
+            // Use bounding-box adjacency to group lines belonging to the same speech bubble.
+            resolvedGroups = SentenceTranslationViewModel.bubbleGroupedFallback(from: ocrResult.lines)
         }
 
         // Seed sentences array with source text (no translation yet)
@@ -188,6 +187,68 @@ final class SentenceTranslationViewModel: ObservableObject {
             sentences[idx].simplifyError = nil
         } catch {
             sentences[idx].simplifyError = "LEARNER_SENTENCE_LOAD_ERROR".localized
+        }
+    }
+}
+
+// MARK: — Bubble-adjacency fallback grouping
+
+extension SentenceTranslationViewModel {
+
+    /// Groups OCR lines into sentence fragments using a bounding-box adjacency heuristic.
+    /// Two consecutive lines are considered part of the same speech bubble when:
+    ///   - The vertical distance between their centres ≤ 1.5 × average line height, AND
+    ///   - Their horizontal ranges overlap by ≥ 50% of the narrower line's width.
+    ///
+    /// Vision bounding boxes are in normalised coordinates (origin = bottom-left).
+    /// The algorithm is purely geometric so it works without the LLM service.
+    ///
+    /// Marked `internal` so `SentenceTranslationViewModelTests` can call it directly.
+    static func bubbleGroupedFallback(from lines: [OCRLineBox]) -> [SentenceGroup] {
+        guard !lines.isEmpty else { return [] }
+
+        // Thresholds — conservative to err on the side of more (smaller) groups.
+        let verticalFactor: CGFloat = 1.5
+        let horizontalOverlapFactor: CGFloat = 0.5
+
+        let avgHeight = lines.map(\.boundingBox.height).reduce(0, +) / CGFloat(lines.count)
+
+        var groups: [[Int]] = []   // each element = list of line indices in one group
+        var currentGroup: [Int] = [0]
+
+        for i in 1 ..< lines.count {
+            let prev = lines[i - 1].boundingBox
+            let curr = lines[i].boundingBox
+
+            // Vertical centre distance (Vision uses bottom-left origin, so centre.y = minY + height/2)
+            let prevCentreY = prev.minY + prev.height / 2
+            let currCentreY = curr.minY + curr.height / 2
+            let vertDist = abs(prevCentreY - currCentreY)
+
+            // Horizontal overlap
+            let overlapLeft = max(prev.minX, curr.minX)
+            let overlapRight = min(prev.maxX, curr.maxX)
+            let overlap = max(0, overlapRight - overlapLeft)
+            let minWidth = min(prev.width, curr.width)
+            let hOverlapRatio = minWidth > 0 ? overlap / minWidth : 0
+
+            let sameBubble = vertDist <= verticalFactor * avgHeight
+                && hOverlapRatio >= horizontalOverlapFactor
+
+            if sameBubble {
+                currentGroup.append(i)
+            } else {
+                groups.append(currentGroup)
+                currentGroup = [i]
+            }
+        }
+        groups.append(currentGroup)
+
+        // Convert index groups → SentenceGroup values.
+        // Fragment indices map 1-to-1 with line indices so we reuse them directly.
+        return groups.enumerated().map { _, indices in
+            let text = indices.map { lines[$0].text }.joined(separator: " ")
+            return SentenceGroup(fragmentIndices: indices, combinedText: text)
         }
     }
 }

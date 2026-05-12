@@ -31,10 +31,40 @@ public class VocabularyEntryObject: NSManagedObject {
         Identifier(language: language, lemma: lemma)
     }
 
-    /// Normalises a lemma for storage (lowercase + whitespace-trim only).
-    /// Per Decision Register #6: punctuation is preserved.
+    /// Returns the largest "word-shaped" segment of `raw`, preserving case.
+    /// Splits on any character that is not a letter, digit, apostrophe, or hyphen,
+    /// keeps the longest remaining segment, and trims edge apostrophes/hyphens.
+    /// Used for the visible surface form on a vocab entry — strips OCR/stutter
+    /// junk like "NEIN..!" → "NEIN" while keeping "auto-mobile", "it's" intact.
+    /// Returns an empty string if `raw` contains no usable letter/digit run.
+    static func cleanSurfaceForm(_ raw: String) -> String {
+        let inWord: Set<Unicode.Scalar> = ["'", "\u{2019}", "-"]
+        var segments: [String] = []
+        var current = String.UnicodeScalarView()
+        for scalar in raw.unicodeScalars {
+            let isWordChar = CharacterSet.letters.contains(scalar)
+                || CharacterSet.decimalDigits.contains(scalar)
+                || inWord.contains(scalar)
+            if isWordChar {
+                current.append(scalar)
+            } else if !current.isEmpty {
+                segments.append(String(current))
+                current.removeAll()
+            }
+        }
+        if !current.isEmpty { segments.append(String(current)) }
+        guard let longest = segments.max(by: { $0.unicodeScalars.count < $1.unicodeScalars.count }) else {
+            return ""
+        }
+        let edgeChars = CharacterSet(charactersIn: "'\u{2019}-")
+        return longest.trimmingCharacters(in: edgeChars)
+    }
+
+    /// Normalises a lemma for storage: same split/longest-segment rule as
+    /// `cleanSurfaceForm` but lowercased. Used as the row's primary lookup key
+    /// (case-insensitive identity).
     static func normalize(_ lemma: String) -> String {
-        lemma.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        cleanSurfaceForm(lemma).lowercased()
     }
 
     /// Upserts fields from caller-supplied values. Does NOT save the context.
@@ -71,6 +101,7 @@ extension VocabularyEntryObject {
     @NSManaged public var dateLastSeen: Date
     @NSManaged public var sourceMangaId: String?
     @NSManaged public var sourceMangaSourceId: String?
+    @NSManaged public var notes: String?
 
     @NSManaged public var progress: FamiliarityProgressObject?
     @NSManaged public var flashcardState: FlashcardStateObject?

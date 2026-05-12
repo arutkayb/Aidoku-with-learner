@@ -78,6 +78,11 @@ extension CoreDataManager {
     ) -> VocabularyEntryObject {
         let ctx = context ?? self.context
         let normalizedLemma = VocabularyEntryObject.normalize(lemma)
+        // Clean the surface form so OCR/stutter junk like "NEIN..!" is stored as
+        // "NEIN" (case preserved). Falls back to the raw input if the clean version
+        // would be empty — never blank out the display column.
+        let cleanedSurface = VocabularyEntryObject.cleanSurfaceForm(surfaceForm)
+        let displaySurface = cleanedSurface.isEmpty ? surfaceForm : cleanedSurface
         let existing = getVocabularyEntry(language: language, lemma: normalizedLemma, context: ctx)
         let entry = existing ?? VocabularyEntryObject(context: ctx)
         if existing == nil {
@@ -94,13 +99,44 @@ extension CoreDataManager {
         entry.load(
             language: language,
             lemma: normalizedLemma,
-            surfaceForm: surfaceForm,
+            surfaceForm: displaySurface,
             translation: translation,
             sourceMangaId: sourceMangaId,
             sourceMangaSourceId: sourceMangaSourceId
         )
         try? ctx.save()
         return entry
+    }
+
+    /// Returns true if at least one vocab entry exists in the store. Used by the
+    /// tab bar to decide whether to show the Learner tab regardless of the global
+    /// toggle (a user with saved vocab should always be able to reach it).
+    func hasAnyVocabulary(context: NSManagedObjectContext? = nil) -> Bool {
+        let ctx = context ?? self.context
+        let request = VocabularyEntryObject.fetchRequest()
+        request.fetchLimit = 1
+        return ((try? ctx.count(for: request)) ?? 0) > 0
+    }
+
+    /// Update the mutable fields of an existing vocab entry.
+    /// `translation`, `notes`, and the display `surfaceForm` may be changed; the
+    /// `lemma`/`language` pair remains immutable since it's the row identity.
+    /// Passing `nil` for `surfaceForm` leaves the existing value untouched.
+    func updateVocabularyEntry(
+        _ entry: VocabularyEntryObject,
+        translation: String?,
+        notes: String?,
+        surfaceForm: String? = nil,
+        context: NSManagedObjectContext? = nil
+    ) {
+        let ctx = context ?? self.context
+        let entryInCtx = ctx.object(with: entry.objectID) as? VocabularyEntryObject ?? entry
+        entryInCtx.translation = translation
+        entryInCtx.notes = notes
+        if let surfaceForm, !surfaceForm.isEmpty {
+            entryInCtx.surfaceForm = surfaceForm
+        }
+        try? ctx.save()
     }
 
     /// Remove a vocab entry (cascades to progress and flashcard state).

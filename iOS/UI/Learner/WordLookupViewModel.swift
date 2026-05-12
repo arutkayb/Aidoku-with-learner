@@ -15,9 +15,11 @@ import Translation
 @MainActor
 final class WordLookupViewModel: ObservableObject {
 
-    // MARK: — Inputs (immutable after init)
+    // MARK: — Inputs
 
-    let surfaceForm: String
+    /// The displayed surface form. Mutable in vocab-only mode so `applyEdits()`
+    /// can refresh the header after the user edits the word itself.
+    @Published var surfaceForm: String
     let lemma: String
     let language: String
     let mangaId: String
@@ -31,6 +33,17 @@ final class WordLookupViewModel: ObservableObject {
     @Published var isDone: Bool = false
     @Published var loadError: TranslationError?
     @Published var isLoading: Bool = false
+
+    // MARK: — Edit state (vocab-only mode)
+
+    /// Editable copy of the displayed surface form. Seeded in `init(entry:)` only.
+    @Published var editableSurfaceForm: String = ""
+    /// Editable copy of the entry's translation. Seeded in `init(entry:)` only.
+    @Published var editableTranslation: String = ""
+    /// Editable copy of the entry's notes field. Seeded in `init(entry:)` only.
+    @Published var editableNotes: String = ""
+    /// Weak reference used by `applyEdits()` to locate the CoreData row.
+    private weak var editableEntry: VocabularyEntryObject?
 
     // MARK: — Init
 
@@ -57,6 +70,11 @@ final class WordLookupViewModel: ObservableObject {
         if let t = entry.translation {
             self.translation = WordTranslation(lemma: entry.lemma, translation: t)
         }
+        // Seed editable fields
+        self.editableSurfaceForm = entry.surfaceForm
+        self.editableTranslation = entry.translation ?? ""
+        self.editableNotes = entry.notes ?? ""
+        self.editableEntry = entry
     }
 
     // MARK: — Vocab state
@@ -147,6 +165,41 @@ final class WordLookupViewModel: ObservableObject {
         isDone = true
         familiarity = 3
         LearnerEvents.shared.vocabChanged.send()
+    }
+
+    // MARK: — Edit (vocab-only mode)
+
+    /// Persists `editableSurfaceForm`, `editableTranslation`, and `editableNotes`
+    /// to CoreData. The lemma stays immutable (it's the row's identity);
+    /// surfaceForm is the user-visible spelling and is freely editable.
+    /// Call from the sheet's "Save" toolbar action.
+    func applyEdits() async {
+        guard let entry = editableEntry else { return }
+        let newTranslation = editableTranslation.isEmpty ? nil : editableTranslation
+        let newNotes = editableNotes.isEmpty ? nil : editableNotes
+        let trimmedSurface = editableSurfaceForm.trimmingCharacters(in: .whitespacesAndNewlines)
+        let newSurface = trimmedSurface.isEmpty ? nil : trimmedSurface
+        CoreDataManager.shared.updateVocabularyEntry(
+            entry,
+            translation: newTranslation,
+            notes: newNotes,
+            surfaceForm: newSurface
+        )
+        // Refresh published state so the header + list re-render immediately.
+        if let s = newSurface { surfaceForm = s }
+        if let t = newTranslation {
+            translation = WordTranslation(lemma: lemma, translation: t)
+        } else {
+            translation = nil
+        }
+        LearnerEvents.shared.vocabChanged.send()
+    }
+
+    /// Reverts editable fields to the persisted values (Cancel action).
+    func revertEdits() {
+        editableSurfaceForm = editableEntry?.surfaceForm ?? surfaceForm
+        editableTranslation = editableEntry?.translation ?? ""
+        editableNotes = editableEntry?.notes ?? ""
     }
 
     // MARK: — Sentence translation hand-off

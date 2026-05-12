@@ -110,6 +110,8 @@ struct SentenceTranslationSheet: View {
 
     // MARK: — Sentence list
 
+    @State private var highlightedId: UUID?
+
     private var sentenceList: some View {
         ScrollViewReader { proxy in
             ScrollView {
@@ -118,7 +120,8 @@ struct SentenceTranslationSheet: View {
                         SentenceRowView(
                             sentence: $sentence,
                             language: viewModel.context.language,
-                            pageContext: viewModel.context
+                            pageContext: viewModel.context,
+                            isHighlighted: highlightedId == sentence.id
                         ) {
                             Task { await viewModel.simplify(id: sentence.id) }
                         }
@@ -127,10 +130,19 @@ struct SentenceTranslationSheet: View {
                 }
                 .padding(.vertical, 8)
             }
-            .onAppear {
-                if let lemma = viewModel.focusLemma,
-                   let target = viewModel.sentences.first(where: { $0.source.localizedCaseInsensitiveContains(lemma) }) {
-                    proxy.scrollTo(target.id, anchor: .top)
+            .task(id: viewModel.sentences.count) {
+                // Re-trigger when sentences arrive (they populate asynchronously).
+                guard let lemma = viewModel.focusLemma, !viewModel.sentences.isEmpty else { return }
+                let normalised = lemma.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+                if let target = viewModel.sentences.first(where: {
+                    $0.source.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+                        .contains(normalised)
+                }) {
+                    withAnimation { proxy.scrollTo(target.id, anchor: .center) }
+                    highlightedId = target.id
+                    // Fade the highlight after 1.5 s
+                    try? await Task.sleep(nanoseconds: 1_500_000_000)
+                    withAnimation(.easeOut(duration: 0.5)) { highlightedId = nil }
                 }
             }
         }
@@ -157,6 +169,7 @@ private struct SentenceRowView: View {
     @Binding var sentence: SentenceVM
     let language: String
     let pageContext: LearnerPageContext
+    var isHighlighted: Bool = false
     let onExpand: () -> Void
 
     var body: some View {
@@ -229,6 +242,8 @@ private struct SentenceRowView: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity, alignment: .leading)
+        .background(isHighlighted ? Color.accentColor.opacity(0.15) : Color.clear)
+        .animation(.easeOut(duration: 0.5), value: isHighlighted)
     }
 }
 

@@ -30,17 +30,13 @@ final class LearnerOverlayView: UIView {
 
     // MARK: — Init
 
-    private var longPressRecognizer: UILongPressGestureRecognizer?
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
         isUserInteractionEnabled = true
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
-        longPress.minimumPressDuration = 0.6
-        longPress.delegate = self
-        addGestureRecognizer(longPress)
-        longPressRecognizer = longPress
+        // Note: long-press recognizer removed (Task 3). Sentence translation is
+        // triggered from WordLookupSheet's "Translate sentence" button only.
+        // This allows VisionKit Live Text to coexist without gesture conflicts.
     }
 
     required init?(coder: NSCoder) {
@@ -70,6 +66,23 @@ final class LearnerOverlayView: UIView {
         rebuild()
     }
 
+    /// Triggers an immediate rebuild of word regions after a zoom-scale change.
+    /// Called by LearnerOverlayCoordinator.zoomChanged(for:container:). (Task 2)
+    func setNeedsRebuild() {
+        rebuild()
+    }
+
+    // MARK: — Hit-testing
+
+    /// Passes touches through to the underlying imageView when they don't land on a
+    /// WordRegionControl. Without this, the overlay covers the entire image rect and
+    /// swallows taps on Live Text's supplementary button + the reader's chrome-toggle.
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard let hit = super.hitTest(point, with: event) else { return nil }
+        if hit === self { return nil }
+        return hit
+    }
+
     // MARK: — Layout
 
     private var lastRebuildBounds: CGRect = .zero
@@ -83,13 +96,6 @@ final class LearnerOverlayView: UIView {
             rebuild()
         }
     }
-
-    // MARK: — Hit-test passthrough
-
-    /// Word regions intercept their own touches via `UIControl.touchUpInside`.
-    /// Empty-space taps still reach this view so the attached `UILongPressGestureRecognizer`
-    /// can fire — the chrome-toggle's `UITapGestureRecognizer` only triggers if no other
-    /// recognizer claims the touch sequence first, which a long-press correctly does.
 
     // MARK: — Build regions
 
@@ -141,15 +147,6 @@ final class LearnerOverlayView: UIView {
         )
         Task { @MainActor in
             LearnerEvents.shared.wordTapped.send(event)
-        }
-    }
-
-    // MARK: — Long-press (sentence translate)
-
-    @objc private func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
-        guard recognizer.state == .began else { return }
-        Task { @MainActor in
-            LearnerEvents.shared.sentenceTranslateRequested.send(nil)
         }
     }
 
@@ -218,25 +215,12 @@ final class LearnerOverlayView: UIView {
     }
 }
 
-// MARK: — UIGestureRecognizerDelegate
-
-extension LearnerOverlayView: UIGestureRecognizerDelegate {
-    /// Refuse the long-press if the touch begins on a word region — let the per-word
-    /// UIControl claim the touch sequence instead (plan Task 7 Approach line 107).
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        guard gestureRecognizer === longPressRecognizer else { return true }
-        let point = touch.location(in: self)
-        for sub in subviews where sub.frame.contains(point) {
-            return false
-        }
-        return true
-    }
-}
-
 // MARK: — WordRegionControl
 
 /// UIControl subclass that holds a reference to its OCRWordBox for tap callbacks.
-private final class WordRegionControl: UIControl {
+/// Internal (not private) so ReaderViewController can type-check touches for gesture-delegate
+/// filtering without a back-reference to the overlay. (Task 2)
+final class WordRegionControl: UIControl {
     let wordBox: OCRWordBox
 
     init(wordBox: OCRWordBox) {
