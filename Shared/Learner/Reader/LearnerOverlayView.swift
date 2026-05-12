@@ -72,6 +72,17 @@ final class LearnerOverlayView: UIView {
         rebuild()
     }
 
+    // MARK: — Hit-testing
+
+    /// Passes touches through to the underlying imageView when they don't land on a
+    /// WordRegionControl. Without this, the overlay covers the entire image rect and
+    /// swallows taps on Live Text's supplementary button + the reader's chrome-toggle.
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard let hit = super.hitTest(point, with: event) else { return nil }
+        if hit === self { return nil }
+        return hit
+    }
+
     // MARK: — Layout
 
     private var lastRebuildBounds: CGRect = .zero
