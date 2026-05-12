@@ -42,6 +42,10 @@ class ReaderPageView: UIView {
     private var currentPage: Page?
     private var currentImageRequest: ImageRequest?
 
+    // MARK: — Learner
+    /// Set by ReaderPageViewController before calling setPage; used by LearnerOverlayCoordinator.
+    var learnerContext: LearnerPageContext?
+
     init() {
         super.init(frame: .zero)
         configure()
@@ -115,6 +119,7 @@ class ReaderPageView: UIView {
             imageView.image = image
             fixImageSize()
             startLiveTextAnalysis()
+            notifyLearnerOfImage()
             return true
         } else if let zipURL = page.zipURL, let url = URL(string: zipURL), let filePath = page.imageURL {
             return await setPageImage(zipURL: url, filePath: filePath)
@@ -232,6 +237,7 @@ class ReaderPageView: UIView {
             }
             fixImageSize()
             startLiveTextAnalysis()
+            notifyLearnerOfImage()
             completion?(true)
             return true
         } catch {
@@ -290,6 +296,7 @@ class ReaderPageView: UIView {
             imageView.image = imageContainer?.image
             fixImageSize()
             startLiveTextAnalysis()
+            notifyLearnerOfImage()
             return true
         }
 
@@ -327,6 +334,7 @@ class ReaderPageView: UIView {
         imageView.image = image
         fixImageSize()
         startLiveTextAnalysis()
+        notifyLearnerOfImage()
 
         return true
     }
@@ -352,6 +360,7 @@ class ReaderPageView: UIView {
             imageView.image = imageContainer?.image
             fixImageSize()
             startLiveTextAnalysis()
+            notifyLearnerOfImage()
             return true
         }
 
@@ -422,6 +431,7 @@ class ReaderPageView: UIView {
         }
         fixImageSize()
         startLiveTextAnalysis()
+        notifyLearnerOfImage()
 
         return true
     }
@@ -545,6 +555,11 @@ class ReaderPageView: UIView {
         liveTextTask = nil
         guard #available(iOS 16.0, *) else { return }
         imageAnalaysisInteraction?.analysis = nil
+    }
+
+    func notifyLearnerOfImage() {
+        guard let ctx = learnerContext, let image = imageView.image else { return }
+        Task { await LearnerOverlayCoordinator.shared.imageDidLoad(image, context: ctx, container: self) }
     }
 }
 
