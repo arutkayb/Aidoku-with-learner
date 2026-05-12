@@ -603,15 +603,12 @@
 		LC0001AB000000000000001A /* TranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B1000000000000001A /* TranslationService.swift */; };
 		LC0001AC000000000000001A /* TranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B1000000000000001A /* TranslationService.swift */; };
 		LC0001AD000000000000001A /* FoundationModelsTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B2000000000000001A /* FoundationModelsTranslationService.swift */; };
-		LC0001AE000000000000001A /* FoundationModelsTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B2000000000000001A /* FoundationModelsTranslationService.swift */; };
 		LC0001AF000000000000001A /* DeepLTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B3000000000000001A /* DeepLTranslationService.swift */; };
 		LC0001B0000000000000001A /* DeepLTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B3000000000000001A /* DeepLTranslationService.swift */; };
 		LC0001B4000000000000001A /* CompositeTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B8000000000000001A /* CompositeTranslationService.swift */; };
-		LC0001B5000000000000001A /* CompositeTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B8000000000000001A /* CompositeTranslationService.swift */; };
 		LC0001B6000000000000001A /* CachingTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B9000000000000001A /* CachingTranslationService.swift */; };
 		LC0001B7000000000000001A /* CachingTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001B9000000000000001A /* CachingTranslationService.swift */; };
 		LC0001BA000000000000001A /* TranslationServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001BB000000000000001A /* TranslationServiceFactory.swift */; };
-		LC0001BC000000000000001A /* TranslationServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001BB000000000000001A /* TranslationServiceFactory.swift */; };
 		LC0001C0000000000000001A /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C3000000000000001A /* OCRService.swift */; };
 		LC0001C1000000000000001A /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C3000000000000001A /* OCRService.swift */; };
 		LC0001C4000000000000001A /* OCRResultCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC0001C6000000000000001A /* OCRResultCache.swift */; };
@@ -627,27 +624,17 @@
 		LC0001FE000000000000001A /* LearnerOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000203000000000000001A /* LearnerOverlayCoordinator.swift */; };
 		LC0001FF000000000000001A /* LearnerOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000203000000000000001A /* LearnerOverlayCoordinator.swift */; };
 		LC000209000000000000001A /* WordLookupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000206000000000000001A /* WordLookupSheet.swift */; };
-		LC00020A000000000000001A /* WordLookupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000206000000000000001A /* WordLookupSheet.swift */; };
 		LC00020B000000000000001A /* WordLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000207000000000000001A /* WordLookupViewModel.swift */; };
-		LC00020C000000000000001A /* WordLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000207000000000000001A /* WordLookupViewModel.swift */; };
 		LC00020D000000000000001A /* LearnerStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000208000000000000001A /* LearnerStrings.swift */; };
 		LC00020E000000000000001A /* LearnerStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000208000000000000001A /* LearnerStrings.swift */; };
 		LC000211000000000000001A /* SentenceTranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC00020F000000000000001A /* SentenceTranslationSheet.swift */; };
-		LC000212000000000000001A /* SentenceTranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC00020F000000000000001A /* SentenceTranslationSheet.swift */; };
 		LC000225000000000000001A /* LearnerOCRLanguagesPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000224000000000000001A /* LearnerOCRLanguagesPicker.swift */; };
-		LC000226000000000000001A /* LearnerOCRLanguagesPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000224000000000000001A /* LearnerOCRLanguagesPicker.swift */; };
 		LC000213000000000000001A /* SentenceTranslationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000210000000000000001A /* SentenceTranslationViewModel.swift */; };
-		LC000214000000000000001A /* SentenceTranslationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000210000000000000001A /* SentenceTranslationViewModel.swift */; };
 		LC00021A000000000000001A /* VocabularyListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000215000000000000001A /* VocabularyListViewModel.swift */; };
-		LC00021B000000000000001A /* VocabularyListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000215000000000000001A /* VocabularyListViewModel.swift */; };
 		LC00021C000000000000001A /* VocabularyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000216000000000000001A /* VocabularyListView.swift */; };
-		LC00021D000000000000001A /* VocabularyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000216000000000000001A /* VocabularyListView.swift */; };
 		LC00021E000000000000001A /* FlashcardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000217000000000000001A /* FlashcardsViewModel.swift */; };
-		LC00021F000000000000001A /* FlashcardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000217000000000000001A /* FlashcardsViewModel.swift */; };
 		LC000220000000000000001A /* FlashcardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000218000000000000001A /* FlashcardsView.swift */; };
-		LC000221000000000000001A /* FlashcardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000218000000000000001A /* FlashcardsView.swift */; };
 		LC000222000000000000001A /* LearnerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000219000000000000001A /* LearnerTabView.swift */; };
-		LC000223000000000000001A /* LearnerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000219000000000000001A /* LearnerTabView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3320,11 +3307,8 @@
 				LC0001A8000000000000001A /* CoreDataManager+Vocabulary.swift in Sources */,
 				LC0001AA000000000000001A /* BackupVocabularyEntry.swift in Sources */,
 				LC0001AC000000000000001A /* TranslationService.swift in Sources */,
-				LC0001AE000000000000001A /* FoundationModelsTranslationService.swift in Sources */,
 				LC0001B0000000000000001A /* DeepLTranslationService.swift in Sources */,
-				LC0001B5000000000000001A /* CompositeTranslationService.swift in Sources */,
 				LC0001B7000000000000001A /* CachingTranslationService.swift in Sources */,
-				LC0001BC000000000000001A /* TranslationServiceFactory.swift in Sources */,
 				LC0001C1000000000000001A /* OCRService.swift in Sources */,
 				LC0001C5000000000000001A /* OCRResultCache.swift in Sources */,
 				LC0001C9000000000000001A /* VisionOCRService.swift in Sources */,
@@ -3332,17 +3316,7 @@
 				LC0001FB000000000000001A /* VocabIndex.swift in Sources */,
 				LC0001FD000000000000001A /* LearnerOverlayView.swift in Sources */,
 				LC0001FF000000000000001A /* LearnerOverlayCoordinator.swift in Sources */,
-				LC00020A000000000000001A /* WordLookupSheet.swift in Sources */,
-				LC00020C000000000000001A /* WordLookupViewModel.swift in Sources */,
 				LC00020E000000000000001A /* LearnerStrings.swift in Sources */,
-				LC000212000000000000001A /* SentenceTranslationSheet.swift in Sources */,
-				LC000214000000000000001A /* SentenceTranslationViewModel.swift in Sources */,
-				LC000226000000000000001A /* LearnerOCRLanguagesPicker.swift in Sources */,
-				LC00021B000000000000001A /* VocabularyListViewModel.swift in Sources */,
-				LC00021D000000000000001A /* VocabularyListView.swift in Sources */,
-				LC00021F000000000000001A /* FlashcardsViewModel.swift in Sources */,
-				LC000221000000000000001A /* FlashcardsView.swift in Sources */,
-				LC000223000000000000001A /* LearnerTabView.swift in Sources */,
 				FB619E402E94A62000E3B565 /* PageTracker.swift in Sources */,
 				FB82A5C32DF8622700366BC8 /* LocalModels.swift in Sources */,
 			);
