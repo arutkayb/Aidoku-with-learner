@@ -16,6 +16,7 @@ struct WordLookupSheet: View {
     @StateObject private var viewModel: WordLookupViewModel
     private let wordTapEvent: WordTapEvent?
     private let vocabOnly: Bool
+    @State private var isEditing: Bool = false
 
     // Init from a reader word-tap event
     init(event: WordTapEvent) {
@@ -51,7 +52,16 @@ struct WordLookupSheet: View {
                     Divider()
 
                     // MARK: — Translation
-                    if viewModel.isLoading {
+                    if isEditing {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("LEARNER_EDIT_TRANSLATION_LABEL".localized)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            TextField("LEARNER_EDIT_TRANSLATION_PLACEHOLDER".localized,
+                                      text: $viewModel.editableTranslation)
+                                .textFieldStyle(.roundedBorder)
+                        }
+                    } else if viewModel.isLoading {
                         HStack {
                             ProgressView()
                             Text("LOADING_ELLIPSIS".localized)
@@ -78,6 +88,32 @@ struct WordLookupSheet: View {
                                     .italic()
                                     .foregroundStyle(.secondary)
                                     .padding(.top, 4)
+                            }
+                        }
+                    }
+
+                    // MARK: — Notes (vocab-only mode)
+                    if vocabOnly && viewModel.isInVocab {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("LEARNER_NOTES_LABEL".localized)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            if isEditing {
+                                TextEditor(text: $viewModel.editableNotes)
+                                    .frame(minHeight: 80)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+                                    )
+                            } else if !viewModel.editableNotes.isEmpty {
+                                Text(viewModel.editableNotes)
+                                    .font(.body)
+                                    .foregroundStyle(.primary)
+                            } else {
+                                Text("LEARNER_NOTES_EMPTY".localized)
+                                    .font(.body)
+                                    .foregroundStyle(.secondary)
+                                    .italic()
                             }
                         }
                     }
@@ -158,6 +194,33 @@ struct WordLookupSheet: View {
             }
             .navigationTitle("LEARNER_WORD_LOOKUP".localized)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                if vocabOnly && viewModel.isInVocab {
+                    if isEditing {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button("CANCEL".localized) {
+                                viewModel.revertEdits()
+                                isEditing = false
+                            }
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button("SAVE".localized) {
+                                Task {
+                                    await viewModel.applyEdits()
+                                    isEditing = false
+                                }
+                            }
+                            .bold()
+                        }
+                    } else {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button("EDIT".localized) {
+                                isEditing = true
+                            }
+                        }
+                    }
+                }
+            }
         }
         .navigationViewStyle(.stack)
         .modifier(WordLookupTranslationDriver(viewModel: viewModel))

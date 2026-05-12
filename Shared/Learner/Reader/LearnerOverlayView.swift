@@ -30,17 +30,13 @@ final class LearnerOverlayView: UIView {
 
     // MARK: — Init
 
-    private var longPressRecognizer: UILongPressGestureRecognizer?
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
         isUserInteractionEnabled = true
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
-        longPress.minimumPressDuration = 0.6
-        longPress.delegate = self
-        addGestureRecognizer(longPress)
-        longPressRecognizer = longPress
+        // Note: long-press recognizer removed (Task 3). Sentence translation is
+        // triggered from WordLookupSheet's "Translate sentence" button only.
+        // This allows VisionKit Live Text to coexist without gesture conflicts.
     }
 
     required init?(coder: NSCoder) {
@@ -150,15 +146,6 @@ final class LearnerOverlayView: UIView {
         }
     }
 
-    // MARK: — Long-press (sentence translate)
-
-    @objc private func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
-        guard recognizer.state == .began else { return }
-        Task { @MainActor in
-            LearnerEvents.shared.sentenceTranslateRequested.send(nil)
-        }
-    }
-
     // MARK: — Badge
 
     private func addBadge(to frame: CGRect, level: FamiliarityLevel, done: Bool) {
@@ -221,21 +208,6 @@ final class LearnerOverlayView: UIView {
             let x = (size.width - w) / 2
             return CGRect(x: x, y: 0, width: w, height: size.height)
         }
-    }
-}
-
-// MARK: — UIGestureRecognizerDelegate
-
-extension LearnerOverlayView: UIGestureRecognizerDelegate {
-    /// Refuse the long-press if the touch begins on a word region — let the per-word
-    /// UIControl claim the touch sequence instead (plan Task 7 Approach line 107).
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        guard gestureRecognizer === longPressRecognizer else { return true }
-        let point = touch.location(in: self)
-        for sub in subviews where sub.frame.contains(point) {
-            return false
-        }
-        return true
     }
 }
 

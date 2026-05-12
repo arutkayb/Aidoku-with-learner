@@ -30,6 +30,12 @@ class ReaderPagedViewController: BaseObservingViewController {
     var pageViewControllers: [ReaderPageViewController] = []
     var currentPage = 0
 
+    /// The ReaderPageView for the currently-displayed page, or nil when a double-page
+    /// spread or info page is visible.
+    var currentPageView: ReaderPageView? {
+        (pageViewController.viewControllers?.first as? ReaderPageViewController)?.pageView
+    }
+
     private var usesDoublePages = false
     private var usesAutoPageLayout = false
     private var pageOffsetEnabled = false

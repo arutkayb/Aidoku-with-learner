@@ -90,6 +90,23 @@ import UIKit
 
     // MARK: 5. Cache get/put direct test
 
+    @Test func cache_invalidate_clearsEntry() {
+        let cache = OCRResultCache(countLimit: 10)
+        let dummyImage = UIImage()
+        guard let data = dummyImage.pngData() else { return }
+
+        let result = OCRResult(
+            words: [OCRWordBox(text: "Test", boundingBox: .zero, confidence: 1.0, lineIndex: 0)],
+            lines: []
+        )
+        cache.put(imageData: data, languages: ["de-DE"], result: result)
+        #expect(cache.get(imageData: data, languages: ["de-DE"]) != nil)
+
+        cache.invalidate(imageData: data, languages: ["de-DE"])
+        #expect(cache.get(imageData: data, languages: ["de-DE"]) == nil,
+                "Entry should be gone after invalidate")
+    }
+
     @Test func cache_getAndPut_roundTrip() {
         let cache = OCRResultCache(countLimit: 10)
         let dummyImage = UIImage()

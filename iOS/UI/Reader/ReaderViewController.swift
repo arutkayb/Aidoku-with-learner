@@ -63,6 +63,15 @@ class ReaderViewController: BaseObservingViewController {
     private var wordTapSubscription: AnyCancellable?
     private var sentenceTranslateSubscription: AnyCancellable?
 
+    private lazy var reOCRBarButton: UIBarButtonItem = {
+        UIBarButtonItem(
+            image: UIImage(systemName: "text.viewfinder"),
+            style: .plain,
+            target: self,
+            action: #selector(reOCRCurrentPage)
+        )
+    }()
+
     private lazy var descriptionButtonController: UIHostingController<ReaderPageDescriptionButtonView> = {
         let buttonView = ReaderPageDescriptionButtonView(source: source, pages: [])
         let hostingController = UIHostingController(rootView: buttonView)
@@ -154,15 +163,19 @@ class ReaderViewController: BaseObservingViewController {
             action: #selector(openWebView)
         )
         moreButton.isEnabled = chapter.url != nil
-        navigationItem.rightBarButtonItems = [
-            moreButton,
-            UIBarButtonItem(
-                image: UIImage(systemName: "textformat.size"),
-                style: .plain,
-                target: self,
-                action: #selector(openReaderSettings)
-            )
-        ]
+        let settingsButton = UIBarButtonItem(
+            image: UIImage(systemName: "textformat.size"),
+            style: .plain,
+            target: self,
+            action: #selector(openReaderSettings)
+        )
+        let mangaCompositeId = "\(manga.sourceKey).\(manga.key)"
+        var rightItems: [UIBarButtonItem] = [moreButton, settingsButton]
+        if LearnerGate.isEnabled(mangaId: mangaCompositeId) {
+            reOCRBarButton.accessibilityLabel = NSLocalizedString("LEARNER_RE_OCR_PAGE", comment: "")
+            rightItems.append(reOCRBarButton)
+        }
+        navigationItem.rightBarButtonItems = rightItems
 
         // fix navbar being clear
         let navigationBarAppearance = UINavigationBarAppearance()
@@ -582,6 +595,19 @@ class ReaderViewController: BaseObservingViewController {
         } else {
             present(vc, animated: true)
         }
+    }
+
+    @objc func reOCRCurrentPage() {
+        let context = LearnerPageContext(
+            sourceId: manga.sourceKey,
+            mangaId: manga.key,
+            chapterId: chapter.key,
+            pageIndex: max(0, currentPage - 1)
+        )
+        // Resolve the current ReaderPageView by asking the active paged reader.
+        guard let pagedReader = reader as? ReaderPagedViewController,
+              let container = pagedReader.currentPageView else { return }
+        LearnerOverlayCoordinator.shared.reOCR(for: context, container: container)
     }
 
     @objc func openReaderSettings() {

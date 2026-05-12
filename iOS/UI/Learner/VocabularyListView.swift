@@ -115,6 +115,12 @@ private struct VocabRowView: View {
 
             Spacer()
 
+            if let notes = entry.notes, !notes.isEmpty {
+                Image(systemName: "note.text")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
             if let mangaId = entry.sourceMangaId, !mangaId.isEmpty {
                 Text(mangaId)
                     .font(.caption2)
