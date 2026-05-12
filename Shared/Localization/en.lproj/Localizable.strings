@@ -776,6 +776,7 @@
 "LEARNER_FAMILIARITY" = "Familiarity";
 "LEARNER_WORD_LOOKUP_ERROR" = "Could not load translation.";
 "LEARNER_TRANSLATE_PAGE" = "Translate Page";
+"LEARNER_EDIT_WORD_PLACEHOLDER" = "Word";
 "LEARNER_EDIT_TRANSLATION_LABEL" = "Translation";
 "LEARNER_EDIT_TRANSLATION_PLACEHOLDER" = "Enter translation…";
 "LEARNER_NOTES_LABEL" = "Notes";

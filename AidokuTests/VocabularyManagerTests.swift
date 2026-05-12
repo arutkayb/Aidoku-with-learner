@@ -243,5 +243,22 @@ import Testing
         // (segments are ["Hel", "lo"] → longest "Hel" → "hel"). Documents the rule.
         #expect(VocabularyEntryObject.normalize("Hel,lo") == "hel")
     }
+
+    // cleanSurfaceForm: the case-preserving sibling of normalize, used to store
+    // the user-visible surface form on a vocab entry.
+    @Test func cleanSurfaceForm_stutterAndBang_preservesCase() {
+        #expect(VocabularyEntryObject.cleanSurfaceForm("NEIN..!") == "NEIN")
+        #expect(VocabularyEntryObject.cleanSurfaceForm("F..FURCHTBAR!") == "FURCHTBAR")
+    }
+
+    @Test func cleanSurfaceForm_preservesInWordPunctuation() {
+        #expect(VocabularyEntryObject.cleanSurfaceForm("It's") == "It's")
+        #expect(VocabularyEntryObject.cleanSurfaceForm("Auto-Mobile") == "Auto-Mobile")
+    }
+
+    @Test func cleanSurfaceForm_emptyAfterStrip_returnsEmpty() {
+        #expect(VocabularyEntryObject.cleanSurfaceForm("!!!") == "")
+        #expect(VocabularyEntryObject.cleanSurfaceForm("") == "")
+    }
 }
 

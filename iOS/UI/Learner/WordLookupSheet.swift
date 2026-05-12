@@ -39,13 +39,25 @@ struct WordLookupSheet: View {
 
                     // MARK: — Word header
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(viewModel.surfaceForm)
-                            .font(.largeTitle.bold())
-
-                        if viewModel.lemma != viewModel.surfaceForm.lowercased() {
+                        if isEditing {
+                            // The lemma (lookup key) stays immutable, so it's shown read-only
+                            // above the editable surface-form field for context.
                             Text(viewModel.lemma)
-                                .font(.body)
+                                .font(.caption)
                                 .foregroundColor(.secondary)
+                            TextField("LEARNER_EDIT_WORD_PLACEHOLDER".localized,
+                                      text: $viewModel.editableSurfaceForm)
+                                .font(.title2.bold())
+                                .textFieldStyle(.roundedBorder)
+                        } else {
+                            Text(viewModel.surfaceForm)
+                                .font(.largeTitle.bold())
+
+                            if viewModel.lemma != viewModel.surfaceForm.lowercased() {
+                                Text(viewModel.lemma)
+                                    .font(.body)
+                                    .foregroundColor(.secondary)
+                            }
                         }
                     }
 

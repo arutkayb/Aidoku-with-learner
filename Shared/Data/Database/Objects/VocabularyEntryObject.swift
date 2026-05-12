@@ -31,19 +31,17 @@ public class VocabularyEntryObject: NSManagedObject {
         Identifier(language: language, lemma: lemma)
     }
 
-    /// Normalises a lemma for storage.
-    /// Splits the input on any character that is not a letter, digit, apostrophe,
-    /// or hyphen, then returns the longest resulting segment, lowercased and with
-    /// leading/trailing apostrophes or hyphens trimmed. This preserves in-word
-    /// hyphens ("auto-mobile") and apostrophes ("it's"), strips edge punctuation
-    /// ("Tür,"→"tür", "foo."→"foo"), and discards stutter/ellipsis artifacts that
-    /// would otherwise leave junk inside the lemma ("F..FURCHTBAR!"→"furchtbar").
-    /// Returns an empty string if no usable segment exists.
-    static func normalize(_ lemma: String) -> String {
+    /// Returns the largest "word-shaped" segment of `raw`, preserving case.
+    /// Splits on any character that is not a letter, digit, apostrophe, or hyphen,
+    /// keeps the longest remaining segment, and trims edge apostrophes/hyphens.
+    /// Used for the visible surface form on a vocab entry — strips OCR/stutter
+    /// junk like "NEIN..!" → "NEIN" while keeping "auto-mobile", "it's" intact.
+    /// Returns an empty string if `raw` contains no usable letter/digit run.
+    static func cleanSurfaceForm(_ raw: String) -> String {
         let inWord: Set<Unicode.Scalar> = ["'", "\u{2019}", "-"]
         var segments: [String] = []
         var current = String.UnicodeScalarView()
-        for scalar in lemma.unicodeScalars {
+        for scalar in raw.unicodeScalars {
             let isWordChar = CharacterSet.letters.contains(scalar)
                 || CharacterSet.decimalDigits.contains(scalar)
                 || inWord.contains(scalar)
@@ -59,7 +57,14 @@ public class VocabularyEntryObject: NSManagedObject {
             return ""
         }
         let edgeChars = CharacterSet(charactersIn: "'\u{2019}-")
-        return longest.trimmingCharacters(in: edgeChars).lowercased()
+        return longest.trimmingCharacters(in: edgeChars)
+    }
+
+    /// Normalises a lemma for storage: same split/longest-segment rule as
+    /// `cleanSurfaceForm` but lowercased. Used as the row's primary lookup key
+    /// (case-insensitive identity).
+    static func normalize(_ lemma: String) -> String {
+        cleanSurfaceForm(lemma).lowercased()
     }
 
     /// Upserts fields from caller-supplied values. Does NOT save the context.
