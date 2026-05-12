@@ -416,14 +416,20 @@ struct ReaderSettingsView: View {
                     .disabled(!isPaged)
 
                     if isPaged && learnerEffectivelyOn {
+                        // Multi-select OCR language picker (Task 7)
+                        Section {
+                            LearnerOCRLanguagesPicker()
+                        } header: {
+                            Text(NSLocalizedString("LEARNER_OCR_LANGUAGES"))
+                        } footer: {
+                            Text(NSLocalizedString("LEARNER_OCR_LANGUAGES_FOOTER"))
+                        }
+                        // Disable language correction toggle (Task 7)
                         SettingView(
                             setting: .init(
-                                key: "Learner.ocrLanguagesList",
-                                title: NSLocalizedString("LEARNER_OCR_LANGUAGES"),
-                                value: .select(.init(
-                                    values: ["de-DE", "en-US", "ja-JP", "fr-FR", "es-ES"],
-                                    titles: ["German (de-DE)", "English (en-US)", "Japanese (ja-JP)", "French (fr-FR)", "Spanish (es-ES)"]
-                                ))
+                                key: "Learner.disableLanguageCorrection",
+                                title: NSLocalizedString("LEARNER_DISABLE_LANG_CORRECTION"),
+                                value: .toggle(.init())
                             )
                         )
                     }

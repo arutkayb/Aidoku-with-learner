@@ -114,7 +114,10 @@ final class VisionOCRService: OCRService {
 
                 request.recognitionLevel = .accurate
                 request.recognitionLanguages = languages
-                request.usesLanguageCorrection = true
+                // Task 7: allow disabling language correction to fix umlaut mangling
+                // e.g. "ÜBERTROFFEN" → "BERTROFFEN" with correction on.
+                let disableCorrection = UserDefaults.standard.bool(forKey: "Learner.disableLanguageCorrection")
+                request.usesLanguageCorrection = !disableCorrection
 
                 let handler = VNImageRequestHandler(cgImage: cgImage, orientation: .up)
                 do {

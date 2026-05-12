@@ -108,6 +108,55 @@ import UIKit
     }
 }
 
+// MARK: — Task 7: OCR language migration + passthrough tests
+
+@Suite struct OCRLanguageMigrationTests {
+
+    // Migration: old Learner.ocrLanguages (String) → new Learner.ocrLanguagesList ([String] JSON)
+    @Test @MainActor func ocrLanguages_migratesLegacyStringKey() {
+        let legacyKey = "Learner.ocrLanguages"
+        let newKey = "Learner.ocrLanguagesList"
+
+        // Setup legacy state
+        UserDefaults.standard.set("ja-JP", forKey: legacyKey)
+        UserDefaults.standard.removeObject(forKey: newKey)
+
+        let result = LearnerOverlayCoordinator.shared.ocrLanguages()
+
+        #expect(result == ["ja-JP"], "Migrated value should be the old single language")
+        #expect(UserDefaults.standard.object(forKey: legacyKey) == nil, "Old key should be removed after migration")
+        #expect(UserDefaults.standard.data(forKey: newKey) != nil, "New key should be written as JSON data")
+
+        // Cleanup
+        UserDefaults.standard.removeObject(forKey: newKey)
+    }
+
+    // Default fallback when no key is set
+    @Test @MainActor func ocrLanguages_defaultsToGerman() {
+        let legacyKey = "Learner.ocrLanguages"
+        let newKey = "Learner.ocrLanguagesList"
+        UserDefaults.standard.removeObject(forKey: legacyKey)
+        UserDefaults.standard.removeObject(forKey: newKey)
+
+        let result = LearnerOverlayCoordinator.shared.ocrLanguages()
+        #expect(result == ["de-DE"])
+    }
+
+    // Multi-language array round-trips correctly
+    @Test @MainActor func ocrLanguages_multipleLanguages_roundTrip() {
+        let newKey = "Learner.ocrLanguagesList"
+        let langs = ["de-DE", "ja-JP"]
+        if let data = try? JSONEncoder().encode(langs) {
+            UserDefaults.standard.set(data, forKey: newKey)
+        }
+
+        let result = LearnerOverlayCoordinator.shared.ocrLanguages()
+        #expect(result == ["de-DE", "ja-JP"])
+
+        UserDefaults.standard.removeObject(forKey: newKey)
+    }
+}
+
 // MARK: — Helpers
 
 private func loadFixture(named name: String) -> UIImage? {

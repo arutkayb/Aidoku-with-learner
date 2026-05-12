@@ -179,10 +179,27 @@ final class LearnerOverlayCoordinator {
         return enabled
     }
 
-    private func ocrLanguages() -> [String] {
-        // Stored as a single string for now (single-select in settings)
-        if let lang = UserDefaults.standard.string(forKey: "Learner.ocrLanguages"), !lang.isEmpty {
-            return [lang]
+    /// Returns the list of OCR recognition languages to use.
+    /// On first call after an upgrade from the old single-select UI, migrates
+    /// `Learner.ocrLanguages` (String) → `Learner.ocrLanguagesList` ([String] JSON).
+    /// Defaults to `["de-DE"]` when no setting is present. (Task 7)
+    func ocrLanguages() -> [String] {
+        let newKey = "Learner.ocrLanguagesList"
+        let legacyKey = "Learner.ocrLanguages"
+
+        // One-shot migration: if the new key is absent and the old String key is present,
+        // copy the old value into the new JSON-encoded array key.
+        if UserDefaults.standard.data(forKey: newKey) == nil,
+           let oldLang = UserDefaults.standard.string(forKey: legacyKey), !oldLang.isEmpty {
+            if let data = try? JSONEncoder().encode([oldLang]) {
+                UserDefaults.standard.set(data, forKey: newKey)
+            }
+            UserDefaults.standard.removeObject(forKey: legacyKey)
+        }
+
+        if let data = UserDefaults.standard.data(forKey: newKey),
+           let langs = try? JSONDecoder().decode([String].self, from: data), !langs.isEmpty {
+            return langs
         }
         return ["de-DE"]
     }
