@@ -1146,6 +1146,7 @@
 		LC0001F4000000000000001A /* CoreDataManager+Vocabulary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataManager+Vocabulary.swift"; sourceTree = "<group>"; };
 		LC0001F5000000000000001A /* BackupVocabularyEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupVocabularyEntry.swift; sourceTree = "<group>"; };
 		LC0001F7000000000000001A /* 0.9.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.9.0.xcdatamodel; sourceTree = "<group>"; };
+		LC000227000000000000001A /* 0.9.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.9.1.xcdatamodel; sourceTree = "<group>"; };
 		LC000200000000000000001A /* LearnerEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerEvents.swift; sourceTree = "<group>"; };
 		LC000201000000000000001A /* VocabIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabIndex.swift; sourceTree = "<group>"; };
 		LC000202000000000000001A /* LearnerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerOverlayView.swift; sourceTree = "<group>"; };
@@ -3943,6 +3944,7 @@
 		FB1B482B277CE18D0056D02C /* Aidoku.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				LC000227000000000000001A /* 0.9.1.xcdatamodel */,
 				LC0001F7000000000000001A /* 0.9.0.xcdatamodel */,
 				FB0AB8922F50B81800AF1451 /* 0.8.2.xcdatamodel */,
 				FB947CF92EF1CC4D00FC6226 /* 0.8.xcdatamodel */,
@@ -3955,7 +3957,7 @@
 				FBCA1B2228889F1D007149C5 /* 0.5.xcdatamodel */,
 				FB1B482C277CE18D0056D02C /* Shared.xcdatamodel */,
 			);
-			currentVersion = LC0001F7000000000000001A /* 0.9.0.xcdatamodel */;
+			currentVersion = LC000227000000000000001A /* 0.9.1.xcdatamodel */;
 			path = Aidoku.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

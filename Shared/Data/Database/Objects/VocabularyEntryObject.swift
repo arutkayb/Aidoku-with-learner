@@ -96,6 +96,7 @@ extension VocabularyEntryObject {
     @NSManaged public var dateLastSeen: Date
     @NSManaged public var sourceMangaId: String?
     @NSManaged public var sourceMangaSourceId: String?
+    @NSManaged public var notes: String?
 
     @NSManaged public var progress: FamiliarityProgressObject?
     @NSManaged public var flashcardState: FlashcardStateObject?

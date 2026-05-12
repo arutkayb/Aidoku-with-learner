@@ -16,6 +16,7 @@ struct WordLookupSheet: View {
     @StateObject private var viewModel: WordLookupViewModel
     private let wordTapEvent: WordTapEvent?
     private let vocabOnly: Bool
+    @State private var isEditing: Bool = false
 
     // Init from a reader word-tap event
     init(event: WordTapEvent) {
@@ -51,7 +52,16 @@ struct WordLookupSheet: View {
                     Divider()
 
                     // MARK: — Translation
-                    if viewModel.isLoading {
+                    if isEditing {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("LEARNER_EDIT_TRANSLATION_LABEL".localized)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            TextField("LEARNER_EDIT_TRANSLATION_PLACEHOLDER".localized,
+                                      text: $viewModel.editableTranslation)
+                                .textFieldStyle(.roundedBorder)
+                        }
+                    } else if viewModel.isLoading {
                         HStack {
                             ProgressView()
                             Text("LOADING_ELLIPSIS".localized)
@@ -78,6 +88,32 @@ struct WordLookupSheet: View {
                                     .italic()
                                     .foregroundColor(.secondary)
                                     .padding(.top, 4)
+                            }
+                        }
+                    }
+
+                    // MARK: — Notes (vocab-only mode)
+                    if vocabOnly && viewModel.isInVocab {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("LEARNER_NOTES_LABEL".localized)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            if isEditing {
+                                TextEditor(text: $viewModel.editableNotes)
+                                    .frame(minHeight: 80)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+                                    )
+                            } else if !viewModel.editableNotes.isEmpty {
+                                Text(viewModel.editableNotes)
+                                    .font(.body)
+                                    .foregroundColor(.primary)
+                            } else {
+                                Text("LEARNER_NOTES_EMPTY".localized)
+                                    .font(.body)
+                                    .foregroundColor(.secondary)
+                                    .italic()
                             }
                         }
                     }
@@ -158,6 +194,36 @@ struct WordLookupSheet: View {
             }
             .navigationTitle("LEARNER_WORD_LOOKUP".localized)
             .navigationBarTitleDisplayMode(.inline)
+            // Toolbar items use inner `if` (regular ViewBuilder, iOS 13+) rather
+            // than `if/else` at the ToolbarContent level — that builder's `buildIf`/
+            // `buildEither` are only iOS 16+. Each ToolbarItem is declared once.
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    if vocabOnly && viewModel.isInVocab && isEditing {
+                        Button("CANCEL".localized) {
+                            viewModel.revertEdits()
+                            isEditing = false
+                        }
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    if vocabOnly && viewModel.isInVocab {
+                        if isEditing {
+                            Button("SAVE".localized) {
+                                Task {
+                                    await viewModel.applyEdits()
+                                    isEditing = false
+                                }
+                            }
+                            .font(.body.weight(.semibold))
+                        } else {
+                            Button("EDIT".localized) {
+                                isEditing = true
+                            }
+                        }
+                    }
+                }
+            }
         }
         .navigationViewStyle(.stack)
         .modifier(WordLookupTranslationDriver(viewModel: viewModel))

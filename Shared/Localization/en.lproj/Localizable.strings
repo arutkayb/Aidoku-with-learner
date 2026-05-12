@@ -776,6 +776,10 @@
 "LEARNER_FAMILIARITY" = "Familiarity";
 "LEARNER_WORD_LOOKUP_ERROR" = "Could not load translation.";
 "LEARNER_TRANSLATE_PAGE" = "Translate Page";
+"LEARNER_EDIT_TRANSLATION_LABEL" = "Translation";
+"LEARNER_EDIT_TRANSLATION_PLACEHOLDER" = "Enter translation…";
+"LEARNER_NOTES_LABEL" = "Notes";
+"LEARNER_NOTES_EMPTY" = "No notes yet.";
 "LEARNER_SIMPLIFIED_LABEL" = "Simplified";
 "LEARNER_SENTENCE_LOAD_ERROR" = "Could not load sentence translation.";
 "LEARNER_RETRY" = "Retry";

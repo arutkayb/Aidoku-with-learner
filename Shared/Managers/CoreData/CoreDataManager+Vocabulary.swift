@@ -113,6 +113,21 @@ extension CoreDataManager {
         return ((try? ctx.count(for: request)) ?? 0) > 0
     }
 
+    /// Update the mutable fields of an existing vocab entry.
+    /// Only `translation` and `notes` may be changed; lemma/language/surfaceForm remain immutable.
+    func updateVocabularyEntry(
+        _ entry: VocabularyEntryObject,
+        translation: String?,
+        notes: String?,
+        context: NSManagedObjectContext? = nil
+    ) {
+        let ctx = context ?? self.context
+        let entryInCtx = ctx.object(with: entry.objectID) as? VocabularyEntryObject ?? entry
+        entryInCtx.translation = translation
+        entryInCtx.notes = notes
+        try? ctx.save()
+    }
+
     /// Remove a vocab entry (cascades to progress and flashcard state).
     func removeVocabularyEntry(
         _ entry: VocabularyEntryObject,
