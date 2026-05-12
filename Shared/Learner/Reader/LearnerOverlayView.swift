@@ -70,6 +70,12 @@ final class LearnerOverlayView: UIView {
         rebuild()
     }
 
+    /// Triggers an immediate rebuild of word regions after a zoom-scale change.
+    /// Called by LearnerOverlayCoordinator.zoomChanged(for:container:). (Task 2)
+    func setNeedsRebuild() {
+        rebuild()
+    }
+
     // MARK: — Layout
 
     private var lastRebuildBounds: CGRect = .zero
@@ -236,7 +242,9 @@ extension LearnerOverlayView: UIGestureRecognizerDelegate {
 // MARK: — WordRegionControl
 
 /// UIControl subclass that holds a reference to its OCRWordBox for tap callbacks.
-private final class WordRegionControl: UIControl {
+/// Internal (not private) so ReaderViewController can type-check touches for gesture-delegate
+/// filtering without a back-reference to the overlay. (Task 2)
+final class WordRegionControl: UIControl {
     let wordBox: OCRWordBox
 
     init(wordBox: OCRWordBox) {

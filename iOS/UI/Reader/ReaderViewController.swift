@@ -210,6 +210,9 @@ class ReaderViewController: BaseObservingViewController {
         view.addSubview(activityIndicator)
 
         // bar toggle tap gesture
+        // Set delegate so word-region touches don't trigger bar-toggle (Task 2)
+        fakeZoomTapGesture.delegate = self
+        barToggleTapGesture.delegate = self
         fakeZoomTapGesture.isEnabled = !UserDefaults.standard.bool(forKey: "Reader.disableDoubleTap")
         view.addGestureRecognizer(fakeZoomTapGesture)
         view.addGestureRecognizer(barToggleTapGesture)
@@ -1220,6 +1223,28 @@ extension ReaderViewController: UIGestureRecognizerDelegate {
         guard let pan = gestureRecognizer as? UIPanGestureRecognizer else { return true }
         let velocity = pan.velocity(in: pan.view)
         return velocity.y > velocity.x && (abs(velocity.x) < 40 || abs(velocity.y) > abs(velocity.x) * 3)
+    }
+
+    /// Block bar-toggle and fake-zoom gestures when the touch lands on a Learner
+    /// word region (WordRegionControl). This prevents the chrome from toggling when
+    /// the user taps a highlighted word. (Task 2)
+    func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldReceive touch: UITouch
+    ) -> Bool {
+        // Only filter our two tap recognizers; other recognizers (pan, etc.) pass through
+        guard gestureRecognizer === fakeZoomTapGesture || gestureRecognizer === barToggleTapGesture else {
+            return true
+        }
+        // Walk up the view hierarchy from the touched view; if any ancestor is a
+        // WordRegionControl or LearnerOverlayView, suppress the gesture.
+        var view: UIView? = touch.view
+        while let v = view {
+            if v is WordRegionControl { return false }
+            if v is LearnerOverlayView { return false }
+            view = v.superview
+        }
+        return true
     }
 }
 

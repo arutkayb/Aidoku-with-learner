@@ -141,6 +141,12 @@ final class LearnerOverlayCoordinator {
         pageStates[PageKey(context)]?.lastOCRResult
     }
 
+    /// Called when the zoom scale of a page's scroll view changes.
+    /// Rebuilds the overlay so word-region frames stay aligned with the zoomed image. (Task 2)
+    func zoomChanged(for context: LearnerPageContext, container: ReaderPageView) {
+        pageStates[PageKey(context)]?.overlay?.setNeedsRebuild()
+    }
+
     /// Called when the global Learner toggle changes for a manga.
     func setEnabled(_ enabled: Bool, for mangaId: String) {
         if !enabled {
