@@ -32,27 +32,34 @@ public class VocabularyEntryObject: NSManagedObject {
     }
 
     /// Normalises a lemma for storage.
-    /// Strips Unicode punctuation, symbols, and whitespace from the leading and
-    /// trailing edges of the string. In-word characters (e.g. hyphen, apostrophe)
-    /// are preserved because they only appear at interior positions.
-    /// Returns the result lowercased. If the entire string is punctuation/symbols,
-    /// returns an empty string (callers should guard against empty lemmas).
-    /// See Task 4 plan for Decision Register.
+    /// Splits the input on any character that is not a letter, digit, apostrophe,
+    /// or hyphen, then returns the longest resulting segment, lowercased and with
+    /// leading/trailing apostrophes or hyphens trimmed. This preserves in-word
+    /// hyphens ("auto-mobile") and apostrophes ("it's"), strips edge punctuation
+    /// ("Tür,"→"tür", "foo."→"foo"), and discards stutter/ellipsis artifacts that
+    /// would otherwise leave junk inside the lemma ("F..FURCHTBAR!"→"furchtbar").
+    /// Returns an empty string if no usable segment exists.
     static func normalize(_ lemma: String) -> String {
-        let edgeStrip = CharacterSet.punctuationCharacters
-            .union(.symbols)
-            .union(.whitespacesAndNewlines)
-
-        var scalars = lemma.unicodeScalars
-        // Trim leading edge
-        while let first = scalars.first, edgeStrip.contains(first) {
-            scalars.removeFirst()
+        let inWord: Set<Unicode.Scalar> = ["'", "\u{2019}", "-"]
+        var segments: [String] = []
+        var current = String.UnicodeScalarView()
+        for scalar in lemma.unicodeScalars {
+            let isWordChar = CharacterSet.letters.contains(scalar)
+                || CharacterSet.decimalDigits.contains(scalar)
+                || inWord.contains(scalar)
+            if isWordChar {
+                current.append(scalar)
+            } else if !current.isEmpty {
+                segments.append(String(current))
+                current.removeAll()
+            }
         }
-        // Trim trailing edge
-        while let last = scalars.last, edgeStrip.contains(last) {
-            scalars.removeLast()
+        if !current.isEmpty { segments.append(String(current)) }
+        guard let longest = segments.max(by: { $0.unicodeScalars.count < $1.unicodeScalars.count }) else {
+            return ""
         }
-        return String(scalars).lowercased()
+        let edgeChars = CharacterSet(charactersIn: "'\u{2019}-")
+        return longest.trimmingCharacters(in: edgeChars).lowercased()
     }
 
     /// Upserts fields from caller-supplied values. Does NOT save the context.
@@ -89,7 +96,6 @@ extension VocabularyEntryObject {
     @NSManaged public var dateLastSeen: Date
     @NSManaged public var sourceMangaId: String?
     @NSManaged public var sourceMangaSourceId: String?
-    @NSManaged public var notes: String?
 
     @NSManaged public var progress: FamiliarityProgressObject?
     @NSManaged public var flashcardState: FlashcardStateObject?

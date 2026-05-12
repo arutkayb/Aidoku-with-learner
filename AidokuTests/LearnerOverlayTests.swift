@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Combine
+import UIKit
 import Testing
 @testable import Aidoku
 
@@ -86,12 +88,10 @@ import Testing
     // Test 4: wordTapped publisher fires
     @Test @MainActor func wordTapped_publisherFires() async {
         let expectationMet = await withCheckedContinuation { continuation in
-            var cancellable: (any Sendable)?
-            let sub = LearnerEvents.shared.wordTapped
+            var cancellable: AnyCancellable?
+            cancellable = LearnerEvents.shared.wordTapped
                 .first()
                 .sink { _ in continuation.resume(returning: true) }
-            // Keep subscription alive briefly
-            cancellable = sub as? any Sendable
             _ = cancellable
 
             let ctx = LearnerPageContext(sourceId: "s", mangaId: "m", chapterId: "c", pageIndex: 0)
@@ -104,11 +104,10 @@ import Testing
     // Test 5: vocabChanged publisher fires
     @Test @MainActor func vocabChanged_publisherFires() async {
         let expectationMet = await withCheckedContinuation { continuation in
-            var cancellable: (any Sendable)?
-            let sub = LearnerEvents.shared.vocabChanged
+            var cancellable: AnyCancellable?
+            cancellable = LearnerEvents.shared.vocabChanged
                 .first()
                 .sink { _ in continuation.resume(returning: true) }
-            cancellable = sub as? any Sendable
             _ = cancellable
 
             LearnerEvents.shared.vocabChanged.send()

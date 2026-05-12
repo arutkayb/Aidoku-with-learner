@@ -103,19 +103,14 @@ extension CoreDataManager {
         return entry
     }
 
-    /// Update the mutable fields of an existing vocab entry.
-    /// Only `translation` and `notes` may be changed; lemma/language/surfaceForm remain immutable.
-    func updateVocabularyEntry(
-        _ entry: VocabularyEntryObject,
-        translation: String?,
-        notes: String?,
-        context: NSManagedObjectContext? = nil
-    ) {
+    /// Returns true if at least one vocab entry exists in the store. Used by the
+    /// tab bar to decide whether to show the Learner tab regardless of the global
+    /// toggle (a user with saved vocab should always be able to reach it).
+    func hasAnyVocabulary(context: NSManagedObjectContext? = nil) -> Bool {
         let ctx = context ?? self.context
-        let entryInCtx = ctx.object(with: entry.objectID) as? VocabularyEntryObject ?? entry
-        entryInCtx.translation = translation
-        entryInCtx.notes = notes
-        try? ctx.save()
+        let request = VocabularyEntryObject.fetchRequest()
+        request.fetchLimit = 1
+        return ((try? ctx.count(for: request)) ?? 0) > 0
     }
 
     /// Remove a vocab entry (cascades to progress and flashcard state).

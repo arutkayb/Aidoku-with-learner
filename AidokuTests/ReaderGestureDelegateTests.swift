@@ -21,12 +21,12 @@ import Testing
 
     /// Mirrors the suppress logic from ReaderViewController's
     /// gestureRecognizer(_:shouldReceive:) — returns false when the touch lands
-    /// on a WordRegionControl or any descendant view inside a LearnerOverlayView.
+    /// on a WordRegionControl (or descendant). The bare LearnerOverlayView is NOT
+    /// blocked so empty-space taps reach the bar-toggle gesture.
     private func shouldReceiveTouch(on touchedView: UIView?) -> Bool {
         var view: UIView? = touchedView
         while let v = view {
             if v is WordRegionControl { return false }
-            if v is LearnerOverlayView { return false }
             view = v.superview
         }
         return true
@@ -56,12 +56,11 @@ import Testing
         #expect(shouldReceiveTouch(on: child) == false)
     }
 
-    // Tapping directly on the LearnerOverlayView background (empty space) should suppress
-    // because the overlay handles its own empty-space hit; we don't want the bar to toggle
-    // when the user taps the overlay's background area either.
-    @Test @MainActor func learnerOverlayViewBackground_shouldNotReceive() {
+    // Tapping the bare LearnerOverlayView background (empty space between word regions)
+    // MUST receive the gesture so the bar-toggle still works on empty taps.
+    @Test @MainActor func learnerOverlayViewBackground_shouldReceive() {
         let overlay = LearnerOverlayView(frame: CGRect(x: 0, y: 0, width: 400, height: 600))
-        #expect(shouldReceiveTouch(on: overlay) == false)
+        #expect(shouldReceiveTouch(on: overlay) == true)
     }
 
     // A plain UIView that is NOT inside a LearnerOverlayView should pass through

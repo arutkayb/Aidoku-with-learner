@@ -8,6 +8,7 @@
 //
 
 import Foundation
+import CoreGraphics
 import Testing
 @testable import Aidoku
 
@@ -143,7 +144,7 @@ private func makeContext() -> LearnerPageContext {
     // Test 5: bubbleGroupedFallback groups adjacent lines into the same bubble (Task 6)
     // Lines 0 & 1 are vertically close and horizontally overlapping → one group.
     // Line 2 is far below and non-overlapping → a second group.
-    @Test func bubbleGroupedFallback_twoBubbles() {
+    @Test @MainActor func bubbleGroupedFallback_twoBubbles() {
         // All boxes normalised to [0,1]. Line heights ~0.05; avgHeight = 0.05.
         // Bubble 1: lines at y=0.80 and y=0.74 — centre distance ≈ 0.08 = 1.6 × h_avg ← just above threshold.
         // Use 0.07 to stay safely inside the 1.5 × threshold.
@@ -175,7 +176,7 @@ private func makeContext() -> LearnerPageContext {
     }
 
     // Test 5b: bubbleGroupedFallback with a single line → one group (Task 6)
-    @Test func bubbleGroupedFallback_singleLine() {
+    @Test @MainActor func bubbleGroupedFallback_singleLine() {
         let line = OCRLineBox(text: "Hallo", boundingBox: CGRect(x: 0.1, y: 0.5, width: 0.3, height: 0.05), confidence: 1.0)
         let groups = SentenceTranslationViewModel.bubbleGroupedFallback(from: [line])
         #expect(groups.count == 1)
@@ -183,7 +184,7 @@ private func makeContext() -> LearnerPageContext {
     }
 
     // Test 5c: bubbleGroupedFallback with empty input → empty result (Task 6)
-    @Test func bubbleGroupedFallback_emptyInput() {
+    @Test @MainActor func bubbleGroupedFallback_emptyInput() {
         let groups = SentenceTranslationViewModel.bubbleGroupedFallback(from: [])
         #expect(groups.isEmpty)
     }

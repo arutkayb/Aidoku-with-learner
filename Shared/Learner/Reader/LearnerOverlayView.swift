@@ -86,13 +86,6 @@ final class LearnerOverlayView: UIView {
         }
     }
 
-    // MARK: — Hit-test passthrough
-
-    /// Word regions intercept their own touches via `UIControl.touchUpInside`.
-    /// Empty-space taps still reach this view so the attached `UILongPressGestureRecognizer`
-    /// can fire — the chrome-toggle's `UITapGestureRecognizer` only triggers if no other
-    /// recognizer claims the touch sequence first, which a long-press correctly does.
-
     // MARK: — Build regions
 
     private func rebuild() {

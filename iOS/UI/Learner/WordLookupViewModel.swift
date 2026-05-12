@@ -32,15 +32,6 @@ final class WordLookupViewModel: ObservableObject {
     @Published var loadError: TranslationError?
     @Published var isLoading: Bool = false
 
-    // MARK: — Edit state (vocab-only mode)
-
-    /// Editable copy of the entry's translation. Seeded in `init(entry:)` only.
-    @Published var editableTranslation: String = ""
-    /// Editable copy of the entry's notes field. Seeded in `init(entry:)` only.
-    @Published var editableNotes: String = ""
-    /// Weak reference used by `applyEdits()` to locate the CoreData row.
-    private weak var editableEntry: VocabularyEntryObject?
-
     // MARK: — Init
 
     init(event: WordTapEvent) {
@@ -66,10 +57,6 @@ final class WordLookupViewModel: ObservableObject {
         if let t = entry.translation {
             self.translation = WordTranslation(lemma: entry.lemma, translation: t)
         }
-        // Seed editable fields
-        self.editableTranslation = entry.translation ?? ""
-        self.editableNotes = entry.notes ?? ""
-        self.editableEntry = entry
     }
 
     // MARK: — Vocab state
@@ -160,30 +147,6 @@ final class WordLookupViewModel: ObservableObject {
         isDone = true
         familiarity = 3
         LearnerEvents.shared.vocabChanged.send()
-    }
-
-    // MARK: — Edit (vocab-only mode)
-
-    /// Persists `editableTranslation` and `editableNotes` to CoreData.
-    /// Call from the sheet's "Save" toolbar action.
-    func applyEdits() async {
-        guard let entry = editableEntry else { return }
-        let newTranslation = editableTranslation.isEmpty ? nil : editableTranslation
-        let newNotes = editableNotes.isEmpty ? nil : editableNotes
-        CoreDataManager.shared.updateVocabularyEntry(entry, translation: newTranslation, notes: newNotes)
-        // Refresh the displayed translation
-        if let t = newTranslation {
-            translation = WordTranslation(lemma: lemma, translation: t)
-        } else {
-            translation = nil
-        }
-        LearnerEvents.shared.vocabChanged.send()
-    }
-
-    /// Reverts editable fields to the persisted values (Cancel action).
-    func revertEdits() {
-        editableTranslation = editableEntry?.translation ?? ""
-        editableNotes = editableEntry?.notes ?? ""
     }
 
     // MARK: — Sentence translation hand-off

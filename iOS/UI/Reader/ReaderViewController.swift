@@ -169,7 +169,7 @@ class ReaderViewController: BaseObservingViewController {
             target: self,
             action: #selector(openReaderSettings)
         )
-        let mangaCompositeId = "\(manga.sourceKey).\(manga.key)"
+        let mangaCompositeId = manga.identifier.description
         var rightItems: [UIBarButtonItem] = [moreButton, settingsButton]
         if LearnerGate.isEnabled(mangaId: mangaCompositeId) {
             reOCRBarButton.accessibilityLabel = NSLocalizedString("LEARNER_RE_OCR_PAGE", comment: "")
@@ -598,9 +598,11 @@ class ReaderViewController: BaseObservingViewController {
     }
 
     @objc func reOCRCurrentPage() {
+        // Use composite "{sourceKey}.{mangaKey}" to match ReaderPagedViewController.setPage(targetVC:)
+        // and the gate-key written by ReaderSettingsView via MangaIdentifier.description.
         let context = LearnerPageContext(
             sourceId: manga.sourceKey,
-            mangaId: manga.key,
+            mangaId: manga.identifier.description,
             chapterId: chapter.key,
             pageIndex: max(0, currentPage - 1)
         )
@@ -1254,6 +1256,10 @@ extension ReaderViewController: UIGestureRecognizerDelegate {
     /// Block bar-toggle and fake-zoom gestures when the touch lands on a Learner
     /// word region (WordRegionControl). This prevents the chrome from toggling when
     /// the user taps a highlighted word. (Task 2)
+    /// Note: the bare `LearnerOverlayView` (empty space between word regions) is NOT
+    /// blocked — that lets the user toggle bars by tapping outside any word, which is
+    /// the reader's expected UX. Only `WordRegionControl` and its subviews (badges, etc.)
+    /// suppress the gesture.
     func gestureRecognizer(
         _ gestureRecognizer: UIGestureRecognizer,
         shouldReceive touch: UITouch
@@ -1263,11 +1269,10 @@ extension ReaderViewController: UIGestureRecognizerDelegate {
             return true
         }
         // Walk up the view hierarchy from the touched view; if any ancestor is a
-        // WordRegionControl or LearnerOverlayView, suppress the gesture.
+        // WordRegionControl, suppress the gesture.
         var view: UIView? = touch.view
         while let v = view {
             if v is WordRegionControl { return false }
-            if v is LearnerOverlayView { return false }
             view = v.superview
         }
         return true

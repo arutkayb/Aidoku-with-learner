@@ -225,5 +225,23 @@ import Testing
         // Leading and trailing dashes are stripped; interior dash preserved
         #expect(VocabularyEntryObject.normalize("-auto-mobile-") == "auto-mobile")
     }
+
+    // Bug-report follow-up: stutter/ellipsis inside a tap surface form leaves an
+    // unusable lemma when only the edges are stripped. The longest-segment rule
+    // discards the leading single-letter stutter.
+    @Test func normalize_stutterDoubleDotsPlusBang_keepsLongestSegment() {
+        #expect(VocabularyEntryObject.normalize("F..FURCHTBAR!") == "furchtbar")
+    }
+
+    @Test func normalize_stutterEllipsis_keepsLongestSegment() {
+        // Single Unicode ellipsis character (U+2026) is punctuation (Po) — splits the lemma.
+        #expect(VocabularyEntryObject.normalize("N\u{2026}NEIN") == "nein")
+    }
+
+    @Test func normalize_interiorComma_keepsLongerHalf() {
+        // OCR sometimes inserts a comma in the middle of a word; the longer half wins
+        // (segments are ["Hel", "lo"] → longest "Hel" → "hel"). Documents the rule.
+        #expect(VocabularyEntryObject.normalize("Hel,lo") == "hel")
+    }
 }
 

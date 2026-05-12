@@ -16,7 +16,8 @@ struct LearnerOCRLanguagesPicker: View {
 
     // Available language codes and their display names (must stay in sync with
     // coordinator's default and ReaderSettingsView's old select list).
-    private static let languages: [(code: String, display: String)] = [
+    // `internal` so tests can verify ordering behaviour.
+    static let languages: [(code: String, display: String)] = [
         ("de-DE", "German (de-DE)"),
         ("en-US", "English (en-US)"),
         ("ja-JP", "Japanese (ja-JP)"),
@@ -24,7 +25,7 @@ struct LearnerOCRLanguagesPicker: View {
         ("es-ES", "Spanish (es-ES)")
     ]
 
-    private static let defaultsKey = "Learner.ocrLanguagesList"
+    static let defaultsKey = "Learner.ocrLanguagesList"
 
     @State private var selected: Set<String>
 
@@ -59,8 +60,9 @@ struct LearnerOCRLanguagesPicker: View {
     }
 
     // MARK: — Persistence helpers
+    // (internal access so unit tests can verify ordering and migration behaviour.)
 
-    private static func loadFromDefaults() -> Set<String> {
+    static func loadFromDefaults() -> Set<String> {
         if let data = UserDefaults.standard.data(forKey: defaultsKey),
            let langs = try? JSONDecoder().decode([String].self, from: data), !langs.isEmpty {
             return Set(langs)
@@ -68,10 +70,12 @@ struct LearnerOCRLanguagesPicker: View {
         return ["de-DE"]
     }
 
-    private static func saveToDefaults(_ langs: Set<String>) {
+    static func saveToDefaults(_ langs: Set<String>) {
         guard !langs.isEmpty else { return }
-        let sorted = langs.sorted()  // stable order for deterministic reads
-        if let data = try? JSONEncoder().encode(sorted) {
+        // Preserve the display order (Vision uses recognitionLanguages order as a
+        // priority hint; alphabetical sort would drop that intent).
+        let ordered = Self.languages.map(\.code).filter { langs.contains($0) }
+        if let data = try? JSONEncoder().encode(ordered) {
             UserDefaults.standard.set(data, forKey: defaultsKey)
         }
     }

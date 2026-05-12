@@ -634,6 +634,8 @@
 		LC00020E000000000000001A /* LearnerStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000208000000000000001A /* LearnerStrings.swift */; };
 		LC000211000000000000001A /* SentenceTranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC00020F000000000000001A /* SentenceTranslationSheet.swift */; };
 		LC000212000000000000001A /* SentenceTranslationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC00020F000000000000001A /* SentenceTranslationSheet.swift */; };
+		LC000225000000000000001A /* LearnerOCRLanguagesPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000224000000000000001A /* LearnerOCRLanguagesPicker.swift */; };
+		LC000226000000000000001A /* LearnerOCRLanguagesPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000224000000000000001A /* LearnerOCRLanguagesPicker.swift */; };
 		LC000213000000000000001A /* SentenceTranslationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000210000000000000001A /* SentenceTranslationViewModel.swift */; };
 		LC000214000000000000001A /* SentenceTranslationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000210000000000000001A /* SentenceTranslationViewModel.swift */; };
 		LC00021A000000000000001A /* VocabularyListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = LC000215000000000000001A /* VocabularyListViewModel.swift */; };
@@ -1153,6 +1155,7 @@
 		LC000208000000000000001A /* LearnerStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerStrings.swift; sourceTree = "<group>"; };
 		LC00020F000000000000001A /* SentenceTranslationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceTranslationSheet.swift; sourceTree = "<group>"; };
 		LC000210000000000000001A /* SentenceTranslationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceTranslationViewModel.swift; sourceTree = "<group>"; };
+		LC000224000000000000001A /* LearnerOCRLanguagesPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerOCRLanguagesPicker.swift; sourceTree = "<group>"; };
 		LC000215000000000000001A /* VocabularyListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyListViewModel.swift; sourceTree = "<group>"; };
 		LC000216000000000000001A /* VocabularyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyListView.swift; sourceTree = "<group>"; };
 		LC000217000000000000001A /* FlashcardsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardsViewModel.swift; sourceTree = "<group>"; };
@@ -2474,6 +2477,7 @@
 				LC000207000000000000001A /* WordLookupViewModel.swift */,
 				LC00020F000000000000001A /* SentenceTranslationSheet.swift */,
 				LC000210000000000000001A /* SentenceTranslationViewModel.swift */,
+				LC000224000000000000001A /* LearnerOCRLanguagesPicker.swift */,
 				LC000215000000000000001A /* VocabularyListViewModel.swift */,
 				LC000216000000000000001A /* VocabularyListView.swift */,
 				LC000217000000000000001A /* FlashcardsViewModel.swift */,
@@ -2998,6 +3002,7 @@
 				LC00020D000000000000001A /* LearnerStrings.swift in Sources */,
 				LC000211000000000000001A /* SentenceTranslationSheet.swift in Sources */,
 				LC000213000000000000001A /* SentenceTranslationViewModel.swift in Sources */,
+				LC000225000000000000001A /* LearnerOCRLanguagesPicker.swift in Sources */,
 				LC00021A000000000000001A /* VocabularyListViewModel.swift in Sources */,
 				LC00021C000000000000001A /* VocabularyListView.swift in Sources */,
 				LC00021E000000000000001A /* FlashcardsViewModel.swift in Sources */,
@@ -3331,6 +3336,7 @@
 				LC00020E000000000000001A /* LearnerStrings.swift in Sources */,
 				LC000212000000000000001A /* SentenceTranslationSheet.swift in Sources */,
 				LC000214000000000000001A /* SentenceTranslationViewModel.swift in Sources */,
+				LC000226000000000000001A /* LearnerOCRLanguagesPicker.swift in Sources */,
 				LC00021B000000000000001A /* VocabularyListViewModel.swift in Sources */,
 				LC00021D000000000000001A /* VocabularyListView.swift in Sources */,
 				LC00021F000000000000001A /* FlashcardsViewModel.swift in Sources */,

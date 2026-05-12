@@ -90,10 +90,16 @@ import UIKit
 
     // MARK: 5. Cache get/put direct test
 
-    @Test func cache_invalidate_clearsEntry() {
+    @Test func cache_invalidate_clearsEntry() throws {
         let cache = OCRResultCache(countLimit: 10)
-        let dummyImage = UIImage()
-        guard let data = dummyImage.pngData() else { return }
+        // Render a 1×1 image so pngData() is guaranteed non-nil
+        // (empty UIImage() yields nil PNG data and would mask the test).
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1, height: 1))
+        let dummyImage = renderer.image { ctx in
+            UIColor.black.setFill()
+            ctx.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
+        }
+        let data = try #require(dummyImage.pngData())
 
         let result = OCRResult(
             words: [OCRWordBox(text: "Test", boundingBox: .zero, confidence: 1.0, lineIndex: 0)],
@@ -171,6 +177,40 @@ import UIKit
         #expect(result == ["de-DE", "ja-JP"])
 
         UserDefaults.standard.removeObject(forKey: newKey)
+    }
+
+    // Lock-in for review I2: the picker must save selections in display order
+    // (Vision uses recognitionLanguages order as a priority hint).
+    // Alphabetical sort would put "es-ES" before "ja-JP"; display order puts ja-JP first.
+    @Test @MainActor func picker_saveToDefaults_preservesDisplayOrder() throws {
+        let key = LearnerOCRLanguagesPicker.defaultsKey
+        UserDefaults.standard.removeObject(forKey: key)
+
+        // Toggle on in non-alphabetical order: ja-JP, then es-ES.
+        // Alphabetical would yield ["es-ES", "ja-JP"]; display order yields ["ja-JP", "es-ES"].
+        LearnerOCRLanguagesPicker.saveToDefaults(["ja-JP", "es-ES"])
+
+        let data = try #require(UserDefaults.standard.data(forKey: key))
+        let saved = try JSONDecoder().decode([String].self, from: data)
+
+        #expect(saved == ["ja-JP", "es-ES"],
+                "Expected display order [ja-JP, es-ES]; got \(saved)")
+
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
+    // Lock-in: a single-language save retains its single entry.
+    @Test @MainActor func picker_saveToDefaults_singleLanguage() throws {
+        let key = LearnerOCRLanguagesPicker.defaultsKey
+        UserDefaults.standard.removeObject(forKey: key)
+
+        LearnerOCRLanguagesPicker.saveToDefaults(["fr-FR"])
+
+        let data = try #require(UserDefaults.standard.data(forKey: key))
+        let saved = try JSONDecoder().decode([String].self, from: data)
+        #expect(saved == ["fr-FR"])
+
+        UserDefaults.standard.removeObject(forKey: key)
     }
 }
 

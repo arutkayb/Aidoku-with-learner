@@ -416,14 +416,17 @@ struct ReaderSettingsView: View {
                     .disabled(!isPaged)
 
                     if isPaged && learnerEffectivelyOn {
-                        // Multi-select OCR language picker (Task 7)
-                        Section {
-                            LearnerOCRLanguagesPicker()
-                        } header: {
-                            Text(NSLocalizedString("LEARNER_OCR_LANGUAGES"))
-                        } footer: {
-                            Text(NSLocalizedString("LEARNER_OCR_LANGUAGES_FOOTER"))
-                        }
+                        // Multi-select OCR language picker (Task 7) — flattened into the
+                        // outer LEARNER_MODE Section because SwiftUI does not support
+                        // nested Section inside Form.
+                        Text(NSLocalizedString("LEARNER_OCR_LANGUAGES"))
+                            .font(.subheadline.bold())
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        LearnerOCRLanguagesPicker()
+                        Text(NSLocalizedString("LEARNER_OCR_LANGUAGES_FOOTER"))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         // Disable language correction toggle (Task 7)
                         SettingView(
                             setting: .init(

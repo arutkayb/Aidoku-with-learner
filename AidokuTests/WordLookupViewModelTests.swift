@@ -12,23 +12,6 @@ import Combine
 import Testing
 @testable import Aidoku
 
-// MARK: — Stub TranslationService
-
-private struct StubTranslationService: TranslationService {
-    enum Mode { case success, failure }
-    let mode: Mode
-
-    func translateWord(_ word: String, sourceLanguage: String, targetLanguage: String) async throws -> WordTranslation {
-        if mode == .failure { throw TranslationError.unavailable }
-        return WordTranslation(lemma: word, translation: "stub-\(word)", partOfSpeech: "noun")
-    }
-    func translateSentence(_ sentence: String, sourceLanguage: String, targetLanguage: String) async throws -> SentenceTranslation {
-        SentenceTranslation(original: sentence, translation: "translated")
-    }
-    func simplifyToCEFR(_ sentence: String, level: CEFRLevel, language: String) async throws -> String { sentence }
-    func groupFragmentsIntoSentences(_ fragments: [TextFragment], language: String) async throws -> [SentenceGroup] { [] }
-}
-
 // MARK: — Helper
 
 private func makeEvent(word: String = "Buch", manga: String = "test-manga-wlvm") -> WordTapEvent {
@@ -106,63 +89,6 @@ private func makeEvent(word: String = "Buch", manga: String = "test-manga-wlvm")
             language: vm.language, lemma: vm.lemma, context: ctx.viewContext
         )
         #expect(entry?.progress?.level == 2)
-    }
-
-    // Test 5: applyEdits persists translation + notes (Task 5)
-    @Test @MainActor func applyEdits_persistsTranslationAndNotes() async {
-        _ = makeInMemoryContainer()
-        // Insert a vocab entry to edit
-        let entry = CoreDataManager.shared.upsertVocabularyEntry(
-            language: "de-DE",
-            lemma: "welt",
-            surfaceForm: "Welt",
-            translation: "world",
-            sourceMangaId: nil,
-            sourceMangaSourceId: nil
-        )
-        let vm = WordLookupViewModel(entry: entry)
-        #expect(vm.editableTranslation == "world")
-        #expect(vm.editableNotes == "")
-
-        vm.editableTranslation = "earth"
-        vm.editableNotes = "seen on page 3"
-        await vm.applyEdits()
-
-        let updated = CoreDataManager.shared.getVocabularyEntry(language: "de-DE", lemma: "welt")
-        #expect(updated?.translation == "earth")
-        #expect(updated?.notes == "seen on page 3")
-        #expect(vm.translation?.translation == "earth")
-    }
-
-    // Test 5b: revertEdits restores original values without saving (Task 5)
-    @Test @MainActor func revertEdits_restoresOriginalValues() async {
-        _ = makeInMemoryContainer()
-        let entry = CoreDataManager.shared.upsertVocabularyEntry(
-            language: "de-DE",
-            lemma: "baum",
-            surfaceForm: "Baum",
-            translation: "tree",
-            sourceMangaId: nil,
-            sourceMangaSourceId: nil
-        )
-        let vm = WordLookupViewModel(entry: entry)
-        vm.editableTranslation = "something else"
-        vm.editableNotes = "a note"
-        vm.revertEdits()
-
-        #expect(vm.editableTranslation == "tree")
-        #expect(vm.editableNotes == "")
-    }
-
-    // Test 5c: edit mode is gated to vocab-only init — event init does NOT seed editableEntry (Task 5)
-    @Test @MainActor func applyEdits_eventInit_isNoOp() async {
-        let vm = WordLookupViewModel(event: makeEvent(word: "Feuer"))
-        vm.editableTranslation = "fire"
-        // applyEdits should be a no-op since editableEntry is nil (event init path)
-        await vm.applyEdits()
-        // No crash, no DB row written for this word via applyEdits
-        let entry = CoreDataManager.shared.getVocabularyEntry(language: "de-DE", lemma: "feuer")
-        #expect(entry == nil)
     }
 
     // Test 6 (original): requestSentenceTranslation emits event

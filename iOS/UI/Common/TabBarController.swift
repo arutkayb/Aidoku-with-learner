@@ -122,8 +122,7 @@ class TabBarController: UITabBarController {
         learnerViewController.navigationItem.largeTitleDisplayMode = .never
         self.learnerViewController = learnerViewController
 
-        let learnerVisible = UserDefaults.standard.bool(forKey: "Learner.enabledGlobally")
-            || UserDefaults.standard.bool(forKey: "Learner.globallyEnabled")
+        let learnerVisible = Self.shouldShowLearnerTab()
 
         if #available(iOS 26.0, *) {
             let searchTab = UISearchTab { _ in
@@ -231,6 +230,16 @@ class TabBarController: UITabBarController {
             }
             .store(in: &cancellables)
 
+        // Show the tab as soon as the user has any saved vocabulary, even if the
+        // global toggle is off — otherwise the first vocab entry seems to vanish
+        // until the app is relaunched.
+        LearnerEvents.shared.vocabChanged
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.refreshLearnerTabVisibility()
+            }
+            .store(in: &cancellables)
+
         let updateCount = UserDefaults.standard.integer(forKey: "Browse.updateCount")
         browseViewController.tabBarItem.badgeValue = updateCount > 0 ? String(updateCount) : nil
 
@@ -241,12 +250,19 @@ class TabBarController: UITabBarController {
             .store(in: &cancellables)
     }
 
-    /// Inserts the Learner tab if `Learner.enabledGlobally` flipped on at runtime.
-    /// Called from a notification observer; idempotent — if the tab is already present, does nothing.
-    private func refreshLearnerTabVisibility() {
-        let visible = UserDefaults.standard.bool(forKey: "Learner.enabledGlobally")
+    /// Returns true when the Learner tab should be present:
+    /// the user has Learner enabled globally, or has saved vocabulary worth surfacing.
+    static func shouldShowLearnerTab() -> Bool {
+        let globalOn = UserDefaults.standard.bool(forKey: "Learner.enabledGlobally")
             || UserDefaults.standard.bool(forKey: "Learner.globallyEnabled")
-        guard visible else { return }
+        return globalOn || CoreDataManager.shared.hasAnyVocabulary()
+    }
+
+    /// Inserts the Learner tab if `Learner.enabledGlobally` flipped on at runtime,
+    /// or if the user added their first vocabulary entry this session.
+    /// Idempotent — if the tab is already present, does nothing.
+    private func refreshLearnerTabVisibility() {
+        guard Self.shouldShowLearnerTab() else { return }
         guard let learnerViewController else { return }
 
         if #available(iOS 26.0, *) {
