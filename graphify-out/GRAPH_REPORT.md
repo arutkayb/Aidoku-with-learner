@@ -5,12 +5,12 @@
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 5659 nodes · 8685 edges · 421 communities (243 shown, 178 thin omitted)
+- 5659 nodes · 8685 edges · 416 communities (237 shown, 179 thin omitted)
 - Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 716 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5b0eb8e4`
+- Built from commit: `c5928f1e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -107,9 +107,9 @@
 - [[_COMMUNITY_Community 89|Community 89]]
 - [[_COMMUNITY_Community 90|Community 90]]
 - [[_COMMUNITY_Community 91|Community 91]]
+- [[_COMMUNITY_Community 92|Community 92]]
 - [[_COMMUNITY_Community 93|Community 93]]
 - [[_COMMUNITY_Community 94|Community 94]]
-- [[_COMMUNITY_Community 95|Community 95]]
 - [[_COMMUNITY_Community 96|Community 96]]
 - [[_COMMUNITY_Community 97|Community 97]]
 - [[_COMMUNITY_Community 98|Community 98]]
@@ -247,6 +247,7 @@
 - [[_COMMUNITY_Community 231|Community 231]]
 - [[_COMMUNITY_Community 232|Community 232]]
 - [[_COMMUNITY_Community 233|Community 233]]
+- [[_COMMUNITY_Community 234|Community 234]]
 - [[_COMMUNITY_Community 235|Community 235]]
 - [[_COMMUNITY_Community 236|Community 236]]
 - [[_COMMUNITY_Community 237|Community 237]]
@@ -272,13 +273,13 @@
 - [[_COMMUNITY_Community 257|Community 257]]
 - [[_COMMUNITY_Community 258|Community 258]]
 - [[_COMMUNITY_Community 259|Community 259]]
-- [[_COMMUNITY_Community 260|Community 260]]
 - [[_COMMUNITY_Community 261|Community 261]]
 - [[_COMMUNITY_Community 262|Community 262]]
 - [[_COMMUNITY_Community 263|Community 263]]
 - [[_COMMUNITY_Community 264|Community 264]]
 - [[_COMMUNITY_Community 265|Community 265]]
 - [[_COMMUNITY_Community 266|Community 266]]
+- [[_COMMUNITY_Community 267|Community 267]]
 - [[_COMMUNITY_Community 268|Community 268]]
 - [[_COMMUNITY_Community 269|Community 269]]
 - [[_COMMUNITY_Community 270|Community 270]]
@@ -296,6 +297,7 @@
 - [[_COMMUNITY_Community 282|Community 282]]
 - [[_COMMUNITY_Community 283|Community 283]]
 - [[_COMMUNITY_Community 284|Community 284]]
+- [[_COMMUNITY_Community 285|Community 285]]
 - [[_COMMUNITY_Community 286|Community 286]]
 - [[_COMMUNITY_Community 287|Community 287]]
 - [[_COMMUNITY_Community 288|Community 288]]
@@ -349,7 +351,6 @@
 - [[_COMMUNITY_Community 336|Community 336]]
 - [[_COMMUNITY_Community 337|Community 337]]
 - [[_COMMUNITY_Community 338|Community 338]]
-- [[_COMMUNITY_Community 339|Community 339]]
 - [[_COMMUNITY_Community 340|Community 340]]
 - [[_COMMUNITY_Community 341|Community 341]]
 - [[_COMMUNITY_Community 342|Community 342]]
@@ -422,11 +423,6 @@
 - [[_COMMUNITY_Community 409|Community 409]]
 - [[_COMMUNITY_Community 410|Community 410]]
 - [[_COMMUNITY_Community 411|Community 411]]
-- [[_COMMUNITY_Community 412|Community 412]]
-- [[_COMMUNITY_Community 413|Community 413]]
-- [[_COMMUNITY_Community 414|Community 414]]
-- [[_COMMUNITY_Community 415|Community 415]]
-- [[_COMMUNITY_Community 416|Community 416]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `NSLocalizedString()` - 137 edges
@@ -452,7 +448,7 @@
 - `makeInMemoryContainer()` --calls--> `NSPersistentContainer`  [INFERRED]
   /Users/rutkay/workspace/mangadict/Aidoku-with-learner/AidokuTests/TestHelpers.swift → /Users/rutkay/workspace/mangadict/Aidoku-with-learner/Shared/Extensions/NSPersistentContainer.swift
 
-## Communities (421 total, 178 thin omitted)
+## Communities (416 total, 179 thin omitted)
 
 ### Community 0 - "Reader UI Base Components"
 Cohesion: 0.05
@@ -475,60 +471,56 @@ Cohesion: 0.05
 Nodes (14): AnyObject, MiniModalDelegate, MiniModalViewController, SourceCellDelegate, SourceTableViewCell, LibraryCategorySelectionHeader, LibraryCategorySelectionHeaderDelegate, Section (+6 more)
 
 ### Community 5 - "Manga Detail ViewModels"
+Cohesion: 0.07
+Nodes (19): Filter<Any?>, Filter<Bool?>, Filter<Int>, Filter<SortSelection>, Filter<String>, NSCopying, AuthorFilter, CheckFilter (+11 more)
+
+### Community 6 - "Reader Legacy UIKit Views"
 Cohesion: 0.06
 Nodes (10): CoreDataManager, BackupTrackItem, ChapterTitleDisplayMode, chapter, `default`, volume, TrackItem, TrackObject (+2 more)
 
-### Community 6 - "Reader Legacy UIKit Views"
+### Community 7 - "Add Source Flow"
 Cohesion: 0.04
 Nodes (32): SourceInfoHeaderView, SourceInfoViewController, SettingsTableViewController, CodingKeys, authToDisable, authToOpen, autocapitalizationType, autocorrectionType (+24 more)
-
-### Community 7 - "Add Source Flow"
-Cohesion: 0.1
-Nodes (3): UIImage, LibraryViewController, LibraryCategorySelectionHeaderDelegate
 
 ### Community 8 - "Texture (AsyncDisplayKit) Cells"
 Cohesion: 0.08
 Nodes (17): ChapterResult, allLocked, allRead, chapter, none, MangaView, MangaView.ViewModel, ViewModel (+9 more)
 
-### Community 9 - "Manga Grid Styles"
+### Community 10 - "Zoomable Reader Nodes"
+Cohesion: 0.05
+Nodes (16): BackupCreateView, ExternalSourceTableCell, SourceTableCell, ErrorView, LargeButton, MangaGridItem, DownloadedMangaRow, DownloadsView (+8 more)
+
+### Community 11 - "Komga Source Models"
 Cohesion: 0.08
 Nodes (9): EmptyPageStackView, UIFont, LockedPageStackView, PaginationConfig, PaginationResult, TextPage, TextPaginator, LogViewController (+1 more)
 
-### Community 10 - "Zoomable Reader Nodes"
+### Community 12 - "Library View Controller"
 Cohesion: 0.06
 Nodes (12): AnyUIHostingViewController, HostingController, UIHostingController, UIViewController, FilterCell, FilterModalViewController, SelectedFilters, FilterStackView (+4 more)
 
-### Community 11 - "Komga Source Models"
-Cohesion: 0.05
-Nodes (16): BackupCreateView, ExternalSourceTableCell, SourceTableCell, DoneButton, LargeButton, ListDivider, MoreIcon, DownloadedMangaRow (+8 more)
-
-### Community 12 - "Library View Controller"
+### Community 13 - "Circular Progress View"
 Cohesion: 0.05
 Nodes (41): Acceptance Criteria Status, Anti-Skip Confirmation, C1. `reOCRCurrentPage` builds `LearnerPageContext` with non-composite `mangaId`, breaking PageKey lookup [Introduced], C2. Working tree reverts `.xccurrentversion` to `0.9.0.xcdatamodel`, leaving `@NSManaged var notes` undeclared in active schema [Introduced via working tree], Code Review — Learner Bugfix Batch (Tasks 1–7), code:block1 (iOS/UI/Reader/ReaderViewController.swift), Conclusion, Context (+33 more)
-
-### Community 13 - "Circular Progress View"
-Cohesion: 0.09
-Nodes (14): Filter<Any?>, Filter<Bool?>, Filter<Int>, Filter<SortSelection>, Filter<String>, AuthorFilter, CheckFilter, GenreFilter (+6 more)
 
 ### Community 14 - "Local Source File Manager"
 Cohesion: 0.11
 Nodes (3): ReaderTextView, ChapterSection, ReaderTextViewController
 
 ### Community 15 - "Backup Schema"
-Cohesion: 0.09
-Nodes (10): BundleLocator, CountingOCRService, loadFixture(), OCRLanguageMigrationTests, OCRServiceTests, OCRResultBox, OCRResultCache, VisionOCRService (+2 more)
+Cohesion: 0.11
+Nodes (3): AidokuRunner.Chapter, NSLocalizedString(), SettingView
 
 ### Community 16 - "Reader Text View"
 Cohesion: 0.09
-Nodes (11): ImageProcessingModel, MLFeatureProvider, config, ImageModel, ModelInfo, ModelList, ModelManager, CGImage (+3 more)
+Nodes (10): BundleLocator, CountingOCRService, loadFixture(), OCRLanguageMigrationTests, OCRServiceTests, OCRResultBox, OCRResultCache, VisionOCRService (+2 more)
 
 ### Community 17 - "Source Filter UI"
-Cohesion: 0.06
-Nodes (36): KavitaFilterField, ageRating, averageRating, characters, collectionTags, colorist, coverArtist, editor (+28 more)
+Cohesion: 0.09
+Nodes (11): ImageProcessingModel, MLFeatureProvider, config, ImageModel, ModelInfo, ModelList, ModelManager, CGImage (+3 more)
 
 ### Community 18 - "CoreData Track Manager"
-Cohesion: 0.11
-Nodes (6): PreferenceKey, MultiSelectDestination, ScrollOffsetPreferenceKey, SelectDestination, SettingPageDestination, SettingView
+Cohesion: 0.06
+Nodes (36): KavitaFilterField, ageRating, averageRating, characters, collectionTags, colorist, coverArtist, editor (+28 more)
 
 ### Community 19 - "AniList Tracker Models"
 Cohesion: 0.06
@@ -539,12 +531,12 @@ Cohesion: 0.06
 Nodes (34): Acceptance Criteria Status, Anti-Skip Confirmation, Code Review — Rebrand to Aidoku Lingo, code:xml (<array>), code:yaml (cp -r build/Aidoku-lingo.xcarchive/Products/Applications/Aid), code:block3 (INFOPLIST_KEY_NSFaceIDUsageDescription      = "Aidoku needs ), code:block4 (FB1B4835277CE1920056D02C /* Aidoku.app */ = {... path = Aido), Conclusion (+26 more)
 
 ### Community 21 - "Kavita Filters"
-Cohesion: 0.1
-Nodes (3): ReaderViewController, ReaderHoldingDelegate, UIPencilInteractionDelegate
-
-### Community 22 - "Local File Import"
 Cohesion: 0.09
 Nodes (6): BrowseViewModel, DownloadsView, DownloadsView.ViewModel, ViewModel, zip, SemanticVersion
+
+### Community 22 - "Local File Import"
+Cohesion: 0.08
+Nodes (21): Field, name, password, server, username, KavitaSetupView, KomgaSetupView, LoginMethod (+13 more)
 
 ### Community 23 - "Browse View Controller"
 Cohesion: 0.09
@@ -555,292 +547,292 @@ Cohesion: 0.06
 Nodes (31): Acknowledgements & license, Aidoku Lingo, code:block1 (mangadict/), code:sh (# Clone all three into the same parent directory), Features, How to use, Learner mode, Learner mode (this fork) (+23 more)
 
 ### Community 25 - "Image Upscaling Models"
+Cohesion: 0.08
+Nodes (15): HttpMethod, CONNECT, DELETE, GET, HEAD, OPTIONS, PATCH, POST (+7 more)
+
+### Community 26 - "Settings View (SwiftUI)"
+Cohesion: 0.11
+Nodes (9): BrowseViewController, Section, external, installed, pinned, updates, SourceCellDataSource, SourceCellDelegate (+1 more)
+
+### Community 27 - "Backup Data Models"
 Cohesion: 0.09
 Nodes (3): CoreDataManager, progress, MangaManager
 
-### Community 26 - "Settings View (SwiftUI)"
-Cohesion: 0.13
-Nodes (4): BrowseViewController, AidokuRunner.Chapter, NSLocalizedString(), SourceCellDelegate
-
-### Community 27 - "Backup Data Models"
+### Community 28 - "CoreData Manga Manager"
 Cohesion: 0.07
 Nodes (28): Acceptance Criteria, Approach, code:block1 (ReaderViewController                          (existing — ad), code:swift (@MainActor), code:swift (LearnerOverlayCoordinator.shared.imageDidLoad(image, on: sel), code:swift (LearnerOverlayCoordinator.shared.pageDidBecomeVisible(contro), code:swift (Section(header: Text(NSLocalizedString("LEARNER_MODE"))) {), code:swift (if let ctx = learnerContext, let img = imageView.image {) (+20 more)
 
-### Community 28 - "CoreData Manga Manager"
+### Community 29 - "CoreData Source Manager"
+Cohesion: 0.11
+Nodes (3): ReaderViewController, ReaderHoldingDelegate, UIPencilInteractionDelegate
+
+### Community 30 - "Layout Utilities (WrappingHStack)"
 Cohesion: 0.08
 Nodes (17): BasicStats, CoreDataManager, Month, april, august, december, february, january (+9 more)
 
-### Community 29 - "CoreData Source Manager"
+### Community 31 - "Download Manager"
 Cohesion: 0.07
 Nodes (27): Acceptance Criteria Status, Anti-Skip Confirmation, Code Review — Task 2 (data-model) — `20260509-123140_mangadict-mvp`, code:block1 (FB1B482B277CE18D0056D02C /* Aidoku.xcdatamodeld */ = {), code:bash (sudo xcode-select -s /Applications/Xcode.app/Contents/Develo), code:block2 (<entity name="VocabularyEntry"      ... codeGenerationType="), code:swift (@objc(VocabularyEntryObject)), code:swift (@Test func setFamiliarity_capsAtThree() throws {) (+19 more)
 
-### Community 30 - "Layout Utilities (WrappingHStack)"
+### Community 32 - "SwiftUI / UIKit Bridge"
 Cohesion: 0.12
 Nodes (4): DownloadQueue, register(), setBackgroundTask(), DownloadTaskDelegate
 
-### Community 31 - "Download Manager"
+### Community 34 - "Source Manager"
 Cohesion: 0.1
 Nodes (9): AidokuRunner.Source, HomeListingType, keepReading, onDeck, recentlyAddedBooks, recentlyAddedSeries, recentlyReadBooks, recentlyUpdatedSeries (+1 more)
 
-### Community 32 - "SwiftUI / UIKit Bridge"
+### Community 35 - "CoreData Categories Manager"
 Cohesion: 0.1
 Nodes (5): TestableTracker, TrackerSyncTests, Tracker, EnhancedTracker, OAuthTracker
 
-### Community 33 - "Setting Item Schema"
+### Community 36 - "Download Queue"
 Cohesion: 0.08
 Nodes (26): CodingKeys, ageRating, allOf, anyOf, author, collectionId, complete, deleted (+18 more)
 
-### Community 34 - "Source Manager"
-Cohesion: 0.11
-Nodes (11): Section, SettingPath, SettingSearchResult, Layout, compact, custom, standard, LayoutSettingView (+3 more)
-
-### Community 35 - "CoreData Categories Manager"
+### Community 37 - "AidokuRunner Chapter Extensions"
 Cohesion: 0.12
 Nodes (4): ImportFileView, NewSourceViewController, method, UINavigationControllerDelegate
 
-### Community 36 - "Download Queue"
+### Community 38 - "Home Big Scroller"
+Cohesion: 0.17
+Nodes (22): Codable, Chapter, File, KavitaDashComponent, KavitaErrorResponse, KavitaFilterV2, KavitaGenre, KavitaLibrary (+14 more)
+
+### Community 39 - "Backup Views (SwiftUI)"
 Cohesion: 0.14
 Nodes (6): AidokuRunner.Source, AuthKey, FilterItem, KavitaSourceRunner, LoginResponse, Runner
 
-### Community 37 - "AidokuRunner Chapter Extensions"
+### Community 40 - "README Concepts & Integrations"
 Cohesion: 0.1
-Nodes (13): HttpMethod, CONNECT, DELETE, GET, HEAD, OPTIONS, PATCH, POST (+5 more)
+Nodes (5): SpyTranslationService, StubTranslationService, DeepLTranslationService, SentenceTranslation, TranslationService
 
-### Community 38 - "Home Big Scroller"
+### Community 41 - "Kavita Source Runner"
 Cohesion: 0.11
 Nodes (3): ClearFieldButton, FilterListView, ascending
 
-### Community 39 - "Backup Views (SwiftUI)"
+### Community 42 - "Highlight Button & List"
 Cohesion: 0.1
 Nodes (5): AidokuRunner.Runner, AidokuRunner.Source, LocalSourceRunner, AidokuRunner.Source, LegacySourceRunner
 
-### Community 40 - "README Concepts & Integrations"
+### Community 43 - "Source Filter Menu"
 Cohesion: 0.1
 Nodes (22): CodingKeys, comments, finishDate, id, isRereading, mainPicture, mediaType, myListStatus (+14 more)
 
-### Community 41 - "Kavita Source Runner"
+### Community 44 - "Manga Updates View"
 Cohesion: 0.13
 Nodes (19): Decodable, Cover, MangaBakaContentRating, erotica, pornographic, safe, suggestive, MangaBakaIssue (+11 more)
 
-### Community 42 - "Highlight Button & List"
+### Community 45 - "Tracker Sync Tests"
 Cohesion: 0.13
 Nodes (6): ASCollectionDataSource, ASCollectionDelegate, ReaderReaderDelegate, UIContextMenuInteractionDelegate, ReaderWebtoonViewController, ZoomableCollectionViewController
 
-### Community 43 - "Source Filter Menu"
-Cohesion: 0.1
-Nodes (8): HomeBigScrollerView, PlaceholderMangaHomeBigScroller, HomeFiltersView, PlaceholderHomeFiltersView, HomeImageScrollerView, PlaceholderHomeImageScrollerView, HomeLinksView, PlaceholderHomeLinksView
+### Community 46 - "Legacy Chapter Models"
+Cohesion: 0.12
+Nodes (11): Section, SettingPath, SettingSearchResult, Layout, compact, custom, standard, LayoutSettingView (+3 more)
 
-### Community 44 - "Manga Updates View"
-Cohesion: 0.11
-Nodes (19): Field, name, password, username, KavitaSetupView, KomgaSetupView, LoginMethod, apiKey (+11 more)
-
-### Community 45 - "Tracker Sync Tests"
+### Community 47 - "Tracker Adapters (AniList/Bangumi)"
 Cohesion: 0.15
 Nodes (4): MangaListSelectionHeaderDelegate, MiniModalDelegate, OldMangaCollectionViewController, SourceViewController
 
-### Community 46 - "Legacy Chapter Models"
+### Community 48 - "UIKit / AppKit Shim"
+Cohesion: 0.13
+Nodes (7): ContentView, HighlightButtonStyle, ListView, LocalFileImportView, LocalFileImportView.ContentView, PresentationDetentHandler, TextFieldWrapper
+
+### Community 49 - "JsonAnyValue Codable"
+Cohesion: 0.13
+Nodes (11): Equatable, ChapterCellView, MangaView, OpenAction, read, readLatest, readNext, RefreshController (+3 more)
+
+### Community 50 - "Download Errors & Tasks"
 Cohesion: 0.1
 Nodes (10): JsonAnyType, array, bool, double, int, intArray, null, object (+2 more)
 
-### Community 47 - "Tracker Adapters (AniList/Bangumi)"
-Cohesion: 0.21
-Nodes (19): Codable, Chapter, Combination, and, or, File, KavitaDashComponent, KavitaErrorResponse (+11 more)
-
-### Community 48 - "UIKit / AppKit Shim"
-Cohesion: 0.12
-Nodes (21): BangumiCollection, BangumiCollectionStatus, collect, doing, dropped, on_hold, wish, BangumiCollectionUpdate (+13 more)
-
-### Community 49 - "JsonAnyValue Codable"
-Cohesion: 0.09
-Nodes (23): Int, KavitaSortField, averageRating, createdDate, lastChapterAdded, lastModifiedDate, random, readProgress (+15 more)
-
-### Community 50 - "Download Errors & Tasks"
+### Community 51 - "Old Source View Controller"
 Cohesion: 0.23
 Nodes (21): ALPage, AniListDate, AniListMediaStatusResponse, AniListMediaStatusVars, AniListQueries, AniListSearchResponse, AniListSearchVars, AniListUpdateMediaVars (+13 more)
 
-### Community 51 - "Old Source View Controller"
+### Community 52 - "AidokuRunner Manga Models"
+Cohesion: 0.12
+Nodes (21): BangumiCollection, BangumiCollectionStatus, collect, doing, dropped, on_hold, wish, BangumiCollectionUpdate (+13 more)
+
+### Community 53 - "History ViewModel"
 Cohesion: 0.09
 Nodes (21): Acceptance Criteria, Approach, code:swift (struct VocabularyListView: View {), code:swift (struct FlashcardsView: View {), code:swift (@Observable), code:sql (-- pseudo), Decision Register, Files Touched (+13 more)
 
-### Community 52 - "AidokuRunner Manga Models"
+### Community 54 - "Kavita API"
 Cohesion: 0.11
 Nodes (4): CoreDataManager, BackupUpdate, MangaUpdateItem, MangaUpdateObject
 
-### Community 53 - "History ViewModel"
-Cohesion: 0.11
-Nodes (16): CEFRLevel, a1, a2, b1, b2, c1, c2, SentenceTranslation (+8 more)
-
-### Community 54 - "Kavita API"
-Cohesion: 0.09
-Nodes (5): WasmAidoku, WasmDefaults, WasmHtml, WasmJson, WasmImports
-
 ### Community 55 - "AniList Tracker Logic"
+Cohesion: 0.1
+Nodes (14): WasmAidoku, ObjectType, array, bool, date, float, int, node (+6 more)
+
+### Community 56 - "Webtoon Page Node"
 Cohesion: 0.14
 Nodes (4): Coordinator, CustomSearchBar, NavSearchBarWrapper, View
 
-### Community 56 - "Webtoon Page Node"
+### Community 57 - "Home List View"
 Cohesion: 0.1
 Nodes (6): InsightsView, SettingsAboutView, SourceListsView, DiagonalMask, TapZoneCard, TapZonesSelectView
 
-### Community 57 - "Home List View"
+### Community 58 - "Custom Searchable Bridge"
 Cohesion: 0.09
 Nodes (20): Acceptance Criteria, Approach, code:block1 (TranslationServiceFactory.shared), code:swift (@Generable), code:block3 (Below are text fragments detected in a single manga page in ), code:block4 (Rephrase the following <LANG> text at CEFR level <LEVEL> (e.), Decision Register, DeepL usage (+12 more)
 
-### Community 58 - "Custom Searchable Bridge"
+### Community 59 - "Komga Book Models"
+Cohesion: 0.1
+Nodes (3): SentenceTranslationSheet, ReaderSettingsView, NavigationCoordinator
+
+### Community 60 - "Community 60"
 Cohesion: 0.18
 Nodes (9): makeContext(), makeOCRResult(), Mode, groupError, success, translateError, SentenceTranslationViewModelTests, SentenceTranslationViewModel (+1 more)
 
-### Community 59 - "Komga Book Models"
+### Community 61 - "Community 61"
+Cohesion: 0.11
+Nodes (16): CEFRLevel, a1, a2, b1, b2, c1, c2, SentenceGroup (+8 more)
+
+### Community 62 - "Community 62"
 Cohesion: 0.12
 Nodes (5): AniListTracker, AniListTrackerError, getStateFailed, invalidId, TrackUpdate
 
-### Community 60 - "Community 60"
+### Community 63 - "Community 63"
 Cohesion: 0.13
 Nodes (6): BangumiTracker, BangumiTrackerError, getStateFailed, invalidId, notLoggedIn, updateFailed
 
-### Community 64 - "Community 64"
-Cohesion: 0.14
-Nodes (3): FlashcardsViewModelTests, makeInMemoryContainer(), VocabularyManagerTests
-
-### Community 65 - "Community 65"
+### Community 66 - "Community 66"
 Cohesion: 0.13
 Nodes (13): FilterState, excluded, included, normal, GenreButtonStyle, MultiSelectFilterGroupView, MultiSelectFilterView, Option (+5 more)
 
-### Community 68 - "Community 68"
-Cohesion: 0.11
-Nodes (7): CustomSourceConfig, demo, kavita, komga, local, SourceObject, SourceObjectData
-
 ### Community 69 - "Community 69"
-Cohesion: 0.15
-Nodes (8): AidokuRunner.ContentRating, AidokuRunner.Manga, AidokuRunner.Page, AidokuRunner.PublishingStatus, AidokuRunner.SelectFilter, AidokuRunner.Source, AidokuRunner.SourceContentRating, InterpreterConfiguration
+Cohesion: 0.14
+Nodes (8): CarouselCollectionViewDataSource, Carousel, CarouselCollectionViewDataSource, CarouselScreenSizingCollectionViewLayout, Coordinator, UIHostingCollectionViewCell, UICollectionViewCell, UICollectionViewFlowLayout
 
 ### Community 70 - "Community 70"
+Cohesion: 0.15
+Nodes (8): ReaderGestureDelegateTests, OCRError, cancelled, imageUnsupported, requestFailed, OCRResult, OCRService, OCRWordBox
+
+### Community 71 - "Community 71"
 Cohesion: 0.17
 Nodes (3): LearnerOverlayView, WordRegionControl, UIControl
 
-### Community 71 - "Community 71"
-Cohesion: 0.15
-Nodes (6): EnhancedTracker, KavitaTracker, KavitaTrackerError, getStateFailed, invalidId, notLoggedIn
-
 ### Community 72 - "Community 72"
 Cohesion: 0.15
-Nodes (6): KomgaTracker, KomgaTrackerError, getStateFailed, invalidId, notLoggedIn, PageTracker
+Nodes (6): EnhancedTracker, KomgaTracker, KomgaTrackerError, getStateFailed, invalidId, notLoggedIn
 
 ### Community 73 - "Community 73"
 Cohesion: 0.18
 Nodes (6): DownloadError, pageProcessorFailed, DownloadTask, DownloadTaskDelegate, NetworkPage, Error
 
 ### Community 74 - "Community 74"
-Cohesion: 0.16
-Nodes (10): Equatable, ChapterCellView, MangaView, OpenAction, read, readLatest, readNext, RefreshController (+2 more)
+Cohesion: 0.15
+Nodes (6): KavitaTracker, KavitaTrackerError, getStateFailed, invalidId, notLoggedIn, PageTracker
 
 ### Community 75 - "Community 75"
+Cohesion: 0.15
+Nodes (4): confirmAction(), fetchAlbum(), UIImage, MangaCoverCell
+
+### Community 76 - "Community 76"
+Cohesion: 0.17
+Nodes (3): DownloadedMangaView, DownloadedMangaView.ViewModel, ViewModel
+
+### Community 77 - "Community 77"
+Cohesion: 0.1
+Nodes (20): Int, Combination, and, or, KavitaSortField, averageRating, createdDate, lastChapterAdded (+12 more)
+
+### Community 78 - "Community 78"
 Cohesion: 0.1
 Nodes (18): Acceptance Criteria, Approach, code:swift (@MainActor), code:swift (@Observable), code:block3 (1. Convert ocrResult.lines into [TextFragment(index, text)].), Decision Register, Files Touched, Goal (+10 more)
 
-### Community 76 - "Community 76"
+### Community 79 - "Community 79"
 Cohesion: 0.1
 Nodes (20): code:swift (let path = "/Users/rutkay/workspace/mangadict/Aidoku-with-le), code:swift (@Test func recognize_offMainThread() async throws {), code:swift (// Seed 3 entries via test ctx), code:swift (init(coreData: CoreDataManager = .shared, context: NSManaged), code:swift (init(context: LearnerPageContext, ocrResult: OCRResult, focu), code:swift (static let allowedSettingsPrefixes = [), code:swift (guard), code:swift (if isPaged && UserDefaults.standard.bool(forKey: learnerKey)) (+12 more)
 
-### Community 77 - "Community 77"
-Cohesion: 0.15
-Nodes (7): CarouselCollectionViewDataSource, Carousel, CarouselCollectionViewDataSource, CarouselScreenSizingCollectionViewLayout, Coordinator, UIHostingCollectionViewCell, UICollectionViewFlowLayout
-
-### Community 78 - "Community 78"
+### Community 80 - "Community 80"
 Cohesion: 0.15
 Nodes (4): ReaderSliderView, SliderDirection, backward, forward
 
-### Community 79 - "Community 79"
+### Community 81 - "Community 81"
 Cohesion: 0.14
 Nodes (5): MyAnimeListMangaStatus, MyAnimeListTracker, MyAnimeListTrackerError, getStateFailed, invalidId
 
-### Community 80 - "Community 80"
+### Community 82 - "Community 82"
 Cohesion: 0.17
 Nodes (5): OAuthClient, OAuthCodeChallengeMethod, none, plain, s256
 
-### Community 83 - "Community 83"
+### Community 85 - "Community 85"
+Cohesion: 0.16
+Nodes (3): FlashcardsViewModelTests, makeInMemoryContainer(), VocabularyManagerTests
+
+### Community 86 - "Community 86"
 Cohesion: 0.14
 Nodes (6): Coordinator, SearchBar, SearchBarWrapperController, View, UISearchBarDelegate, UISearchResultsUpdating
 
-### Community 85 - "Community 85"
-Cohesion: 0.18
-Nodes (3): DownloadedMangaView, DownloadedMangaView.ViewModel, ViewModel
-
-### Community 86 - "Community 86"
+### Community 88 - "Community 88"
 Cohesion: 0.11
 Nodes (18): Comparison, beginsWith, contains, endsWith, equal, greaterThan, greaterThanEqual, isAfter (+10 more)
 
-### Community 87 - "Community 87"
+### Community 89 - "Community 89"
 Cohesion: 0.11
 Nodes (17): 1. Precondition Sweep, 2. Dependency Check, 3. Assumption Stress-Test, 4. Completeness Check, 5. Failure Pattern Pre-Screen, Acceptance criteria coverage, Auto-fixes Applied, Blockers (must fix before execution) (+9 more)
 
-### Community 88 - "Community 88"
+### Community 90 - "Community 90"
 Cohesion: 0.11
 Nodes (17): Acceptance Criteria, Approach, code:swift (private var wordTapSubscription: AnyCancellable?), code:swift (@Observable), code:block3 (┌──────────────────────────────────┐), Decision Register, Files Touched, Goal (+9 more)
 
-### Community 89 - "Community 89"
+### Community 91 - "Community 91"
 Cohesion: 0.11
 Nodes (17): Acceptance Criteria, Approach, code:swift (// Read), Decision Register, Entity schemas, Files Touched, Goal, Implementation Steps (+9 more)
 
-### Community 90 - "Community 90"
-Cohesion: 0.12
-Nodes (4): Int16, BackupChapter, BackupReadingSession, ChapterObject
-
-### Community 91 - "Community 91"
+### Community 92 - "Community 92"
 Cohesion: 0.11
 Nodes (3): CoreDataManager, BackupLibraryManga, LibraryMangaObject
 
-### Community 93 - "Community 93"
+### Community 94 - "Community 94"
 Cohesion: 0.15
 Nodes (7): InfoPageType, next, previous, PageType, info, page, ReaderPageViewController
 
-### Community 95 - "Community 95"
-Cohesion: 0.24
-Nodes (10): PopupWebViewHandler, addWebView(), cancelTimeout(), checkForCaptcha(), CloudflareHandler, finish(), handle(), proxy() (+2 more)
-
 ### Community 97 - "Community 97"
+Cohesion: 0.16
+Nodes (5): BaseCollectionViewController, OldMangaCollectionViewController, Section, pinned, regular
+
+### Community 99 - "Community 99"
+Cohesion: 0.2
+Nodes (7): ImagePipelineDelegate, AppDelegate, application(), applicationWillTerminate(), LoadingStyle, indefinite, UIApplicationDelegate
+
+### Community 100 - "Community 100"
 Cohesion: 0.25
 Nodes (3): LearnerOverlayCoordinator, PageKey, PageState
 
-### Community 101 - "Community 101"
-Cohesion: 0.12
-Nodes (4): StubTranslationService, CompositeTranslationService, TranslationServiceFactory, TranslationService
-
 ### Community 103 - "Community 103"
+Cohesion: 0.18
+Nodes (4): LearnerCoordinatorTests, LearnerEventsTests, LearnerOverlayViewTests, VocabIndexTests
+
+### Community 105 - "Community 105"
 Cohesion: 0.16
 Nodes (8): BackupsView, SheetID, autoBackup, KomgaReadStatus, inProgress, read, unread, String
 
-### Community 104 - "Community 104"
-Cohesion: 0.15
-Nodes (15): CodingKeys, canAscend, canExclude, code, defaultValue, id, isDefault, name (+7 more)
-
-### Community 105 - "Community 105"
+### Community 106 - "Community 106"
 Cohesion: 0.13
 Nodes (15): BadgeType, PinType, none, unread, updatedChapters, SortMethod, alphabetical, dateAdded (+7 more)
 
-### Community 106 - "Community 106"
-Cohesion: 0.17
-Nodes (6): BaseCollectionViewController, CaseIterable, MangaCollectionViewController, Section, regular, SkeletonView
-
 ### Community 107 - "Community 107"
-Cohesion: 0.17
-Nodes (4): OldMangaCollectionViewController, Section, pinned, regular
-
-### Community 108 - "Community 108"
 Cohesion: 0.17
 Nodes (3): TabBarController, UITabBarController, UITabBarControllerDelegate
 
+### Community 108 - "Community 108"
+Cohesion: 0.26
+Nodes (9): PopupWebViewHandler, addWebView(), cancelTimeout(), checkForCaptcha(), CloudflareHandler, finish(), handle(), proxy() (+1 more)
+
 ### Community 110 - "Community 110"
-Cohesion: 0.13
-Nodes (7): Hashable, ChapterFilterMethod, downloaded, unread, ChapterFilterOption, MangaInfo, ExternalSourceInfo
+Cohesion: 0.14
+Nodes (6): HomeFiltersView, PlaceholderHomeFiltersView, HomeImageScrollerView, PlaceholderHomeImageScrollerView, HomeLinksView, PlaceholderHomeLinksView
 
 ### Community 111 - "Community 111"
 Cohesion: 0.12
 Nodes (15): Acceptance Criteria, API surface, Approach, Cache, code:swift (public protocol OCRService: Sendable {), code:swift (let candidate = obs.topCandidates(1).first), Decision Register, Files Touched (+7 more)
 
 ### Community 112 - "Community 112"
-Cohesion: 0.2
-Nodes (3): CarouselCollectionView, UICollectionView, UICollectionViewCell
+Cohesion: 0.18
+Nodes (10): AidokuRunner.ContentRating, AidokuRunner.Manga, AidokuRunner.Page, AidokuRunner.PublishingStatus, AidokuRunner.SelectFilter, AidokuRunner.SourceContentRating, InterpreterConfiguration, URLSessionUnsecureDelegate (+2 more)
 
 ### Community 113 - "Community 113"
 Cohesion: 0.29
@@ -851,146 +843,142 @@ Cohesion: 0.12
 Nodes (16): CodingKeys, cover, description, finalVolume, finishDate, id, progressChapter, progressVolume (+8 more)
 
 ### Community 116 - "Community 116"
-Cohesion: 0.13
-Nodes (3): KVCObject, Manga, Listing
+Cohesion: 0.12
+Nodes (3): WasmDefaults, WasmHtml, WasmJson
 
 ### Community 117 - "Community 117"
-Cohesion: 0.13
-Nodes (12): ObjectType, array, bool, date, float, int, node, null (+4 more)
+Cohesion: 0.16
+Nodes (14): CodingKeys, canAscend, canExclude, code, defaultValue, id, isDefault, name (+6 more)
 
 ### Community 118 - "Community 118"
 Cohesion: 0.18
+Nodes (5): CaseIterable, MangaCollectionViewController, Section, regular, SkeletonView
+
+### Community 119 - "Community 119"
+Cohesion: 0.18
 Nodes (5): makeEvent(), Mode, failure, success, WordLookupViewModelTests
 
-### Community 120 - "Community 120"
+### Community 121 - "Community 121"
 Cohesion: 0.12
 Nodes (16): KomgaSearchCondition, ageRating, allOf, anyOf, author, deleted, genre, language (+8 more)
 
-### Community 123 - "Community 123"
+### Community 125 - "Community 125"
 Cohesion: 0.14
 Nodes (5): MangaBakaTracker, MangaBakaTrackerError, invalidId, TrackState, OAuthTracker
 
-### Community 125 - "Community 125"
-Cohesion: 0.15
-Nodes (6): ImageProcessing, BlockingTask, BlockingThrowingTask, ProcessorError, invalidModel, UpscaleProcessor
-
-### Community 126 - "Community 126"
+### Community 128 - "Community 128"
 Cohesion: 0.13
 Nodes (5): ButtonStyle, DarkOverlayButtonStyle, ListButtonStyle, SelectHighlightButtonStyle, CardButtonStyle
 
-### Community 127 - "Community 127"
+### Community 129 - "Community 129"
+Cohesion: 0.19
+Nodes (6): Hashable, MangaInfo, Item, MangaUpdatesView, UpdateInfo, UpdateSection
+
+### Community 130 - "Community 130"
 Cohesion: 0.13
 Nodes (13): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Phase A — Project bootstrap, Phase B — OCR pipeline (+5 more)
 
-### Community 128 - "Community 128"
+### Community 131 - "Community 131"
 Cohesion: 0.13
 Nodes (13): 1. Precondition Sweep, 2. Dependency Check, 3. Assumption Stress-Test, 4. Completeness Check, 5. Failure Pattern Pre-Screen, Auto-fixes Applied, Blockers (must fix before execution), Escalations (require human / re-plan) (+5 more)
 
-### Community 131 - "Community 131"
+### Community 132 - "Community 132"
 Cohesion: 0.21
 Nodes (13): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Phase A: source-of-truth identifiers, Phase B: pbxproj build settings + Info.plist surfaces (+5 more)
 
-### Community 132 - "Community 132"
+### Community 133 - "Community 133"
 Cohesion: 0.22
 Nodes (7): Entry, FamiliarityLevel, familiar, fresh, learning, mastered, VocabIndex
 
-### Community 133 - "Community 133"
+### Community 134 - "Community 134"
 Cohesion: 0.18
 Nodes (4): CollectionView, CollectionViewSection, Coordinator, UICollectionViewDataSource
 
-### Community 134 - "Community 134"
+### Community 135 - "Community 135"
 Cohesion: 0.22
 Nodes (5): MangaBakaApi, MangaBakaApiError, apiError, invalidURL, todo
 
-### Community 135 - "Community 135"
+### Community 136 - "Community 136"
 Cohesion: 0.23
 Nodes (6): LearnerGate, LearnerGateMode, inherit, off, on, LearnerStrings
 
-### Community 136 - "Community 136"
+### Community 137 - "Community 137"
 Cohesion: 0.14
 Nodes (5): BaseObservingViewController, BaseCollectionViewController, BaseTableViewController, UICollectionViewDelegate, UITableViewDelegate
 
-### Community 137 - "Community 137"
+### Community 138 - "Community 138"
 Cohesion: 0.15
 Nodes (6): SourceImageView, Icon, raw, system, url, SettingHeaderView
 
-### Community 138 - "Community 138"
+### Community 139 - "Community 139"
 Cohesion: 0.18
 Nodes (12): DefaultTapZones, automatic, disabled, edge, kindle, leftRight, lShaped, Region (+4 more)
 
-### Community 139 - "Community 139"
+### Community 140 - "Community 140"
 Cohesion: 0.19
 Nodes (4): BaseTableViewController, AddToCategoryViewController, Section, regular
 
 ### Community 141 - "Community 141"
+Cohesion: 0.15
+Nodes (4): Coordinator, WebView, WKHTTPCookieStoreObserver, WKNavigationDelegate
+
+### Community 143 - "Community 143"
 Cohesion: 0.19
 Nodes (3): categories, CategoriesView, locked
 
-### Community 143 - "Community 143"
+### Community 145 - "Community 145"
 Cohesion: 0.18
 Nodes (10): ImportFileInfo, LocalFileManagerError, cannotReadArchive, fileCopyFailed, invalidFileType, noImagesFound, tempDirectoryUnavailable, LocalFileType (+2 more)
 
-### Community 144 - "Community 144"
+### Community 146 - "Community 146"
 Cohesion: 0.14
 Nodes (12): 1. Precondition Sweep, 2. Dependency Check, 3. Assumption Stress-Test, 4. Completeness Check, 5. Failure Pattern Pre-Screen, Auto-fixes Applied, Blockers (must fix before execution), Escalations (require human / re-plan) (+4 more)
 
-### Community 145 - "Community 145"
+### Community 147 - "Community 147"
 Cohesion: 0.2
 Nodes (5): NavigationController, Coordinator, ReaderNavigationController, SwiftUIReaderNavigationController, UINavigationController
 
-### Community 148 - "Community 148"
+### Community 149 - "Community 149"
 Cohesion: 0.21
 Nodes (4): URLRequest, URLSession, URLSessionError, noData
 
-### Community 149 - "Community 149"
-Cohesion: 0.18
-Nodes (6): Coordinator, ImagePicker, URLSessionUnsecureDelegate, NSObject, PHPickerViewControllerDelegate, URLSessionDelegate
-
-### Community 152 - "Community 152"
+### Community 153 - "Community 153"
 Cohesion: 0.29
 Nodes (10): applyEdits(), init(), loadTranslation(), loadVocabState(), markDone(), requestSentenceTranslation(), revertEdits(), setFamiliarity() (+2 more)
 
-### Community 155 - "Community 155"
+### Community 156 - "Community 156"
 Cohesion: 0.19
 Nodes (4): Direction, ltr, rtl, ReaderDoublePageViewController
 
-### Community 156 - "Community 156"
-Cohesion: 0.17
-Nodes (3): Coordinator, WebView, WKHTTPCookieStoreObserver
-
-### Community 160 - "Community 160"
+### Community 159 - "Community 159"
 Cohesion: 0.15
 Nodes (13): UIKeyboardType, asciiCapable, asciiCapableNumberPad, decimalPad, `default`, emailAddress, namePhonePad, numberPad (+5 more)
 
-### Community 161 - "Community 161"
+### Community 160 - "Community 160"
 Cohesion: 0.15
 Nodes (13): UIReturnKeyType, `continue`, `default`, done, emergencyCall, go, google, join (+5 more)
 
-### Community 162 - "Community 162"
+### Community 161 - "Community 161"
 Cohesion: 0.19
 Nodes (3): IconView, SourceIconView, SettingsTrackingView
 
-### Community 163 - "Community 163"
+### Community 162 - "Community 162"
 Cohesion: 0.19
 Nodes (6): ButtonState, `default`, error, loading, GetButton, UpscaleModelListView
 
-### Community 164 - "Community 164"
+### Community 163 - "Community 163"
 Cohesion: 0.26
 Nodes (10): Identifiable, LineBox, OCRError, invalidImage, requestFailed, OCRLevel, line, word (+2 more)
 
-### Community 165 - "Community 165"
-Cohesion: 0.29
-Nodes (3): ImagePipelineDelegate, AppDelegate, UIApplicationDelegate
-
-### Community 166 - "Community 166"
+### Community 164 - "Community 164"
 Cohesion: 0.19
 Nodes (7): AnimationOptions, easeIn, easeInOut, easeOut, linear, NoHitTesting, SwiftUIWrapper
 
-### Community 168 - "Community 168"
+### Community 166 - "Community 166"
 Cohesion: 0.15
 Nodes (11): Acceptance Criteria (product-level), Architecture overview, Mangadict MVP, Module isolation strategy, One-line summary, Open questions resolved (or defaulted in auto mode), Out-of-scope from Q&A (lock these), Scope (in) (+3 more)
 
-### Community 169 - "Community 169"
+### Community 167 - "Community 167"
 Cohesion: 0.15
 Nodes (11): Acceptance Criteria Status, Anti-Skip Confirmation, Code Review — Mangadict MVP (Tasks 1-8 complete branch) — `20260509-123140_mangadict-mvp`, code:bash (sudo xcode-select -s /Applications/Xcode.app/Contents/Develo), Conclusion, Context, Deferred Items Review, Evidence Trail (+3 more)
 
@@ -1006,59 +994,55 @@ Nodes (4): OIDCLoginController, OIDCLoginControllerView, OIDCLoginView, UIViewCo
 Cohesion: 0.3
 Nodes (10): FoundationModelsTranslationService, groupFragmentsIntoSentences(), SentenceGroupItem, SentenceGroupResult, SentenceTranslationResult, SimplifyResult, simplifyToCEFR(), translateSentence() (+2 more)
 
-### Community 174 - "Community 174"
+### Community 175 - "Community 175"
 Cohesion: 0.39
 Nodes (10): init(), LearnerPageContext, load(), loadSourceSentences(), retry(), SentenceVM, simplify(), String (+2 more)
-
-### Community 175 - "Community 175"
-Cohesion: 0.18
-Nodes (3): SourceActor, SourceError, missingValue
 
 ### Community 176 - "Community 176"
 Cohesion: 0.18
 Nodes (5): MangaContentRating, nsfw, safe, suggestive, MangaPageResult
 
-### Community 184 - "Community 184"
+### Community 177 - "Community 177"
+Cohesion: 0.18
+Nodes (3): SourceActor, SourceError, missingValue
+
+### Community 183 - "Community 183"
 Cohesion: 0.18
 Nodes (10): BackupError, chapters, history, library, manga, sessions, track, updates (+2 more)
 
-### Community 185 - "Community 185"
+### Community 184 - "Community 184"
 Cohesion: 0.18
 Nodes (3): SegmentTableViewCell, StepperTableViewCell, UITableViewCell
 
-### Community 186 - "Community 186"
+### Community 185 - "Community 185"
 Cohesion: 0.24
 Nodes (5): ListingLoadState, allLoaded, loading, notLoading, SourceHomeContentView
 
-### Community 187 - "Community 187"
-Cohesion: 0.24
-Nodes (5): ContentView, HighlightButtonStyle, ListView, LocalFileImportView, PresentationDetentHandler
-
-### Community 188 - "Community 188"
+### Community 186 - "Community 186"
 Cohesion: 0.23
 Nodes (6): SortButtonStyle, SortFilterGroupView, SortFilterView, State, descending, normal
 
+### Community 187 - "Community 187"
+Cohesion: 0.18
+Nodes (4): MangaViewController, MangaListViewController, SourceListingViewController, UIHostingController<MangaView>
+
 ### Community 189 - "Community 189"
-Cohesion: 0.18
-Nodes (3): HomeChapterListView, MangaViewController, UIHostingController<MangaView>
-
-### Community 191 - "Community 191"
-Cohesion: 0.18
-Nodes (5): GetButtonView, State, downloading, fail, get
-
-### Community 192 - "Community 192"
 Cohesion: 0.21
 Nodes (4): SelectionCheckView, Style, bordered, plain
 
-### Community 193 - "Community 193"
+### Community 190 - "Community 190"
 Cohesion: 0.18
-Nodes (4): GIFImage, ChapterTableCell, DownloadProgressView, UIViewRepresentable
+Nodes (5): GetButtonView, State, downloading, fail, get
 
-### Community 194 - "Community 194"
+### Community 191 - "Community 191"
+Cohesion: 0.18
+Nodes (4): CloseButton, CloseButtonUIKit, GIFImage, UIViewRepresentable
+
+### Community 192 - "Community 192"
 Cohesion: 0.18
 Nodes (10): FilterMethod, category, completed, contentRating, downloaded, hasUnread, source, started (+2 more)
 
-### Community 195 - "Community 195"
+### Community 194 - "Community 194"
 Cohesion: 0.18
 Nodes (3): NSManagedObject, FamiliarityProgressObject, FlashcardStateObject
 
@@ -1066,45 +1050,61 @@ Nodes (3): NSManagedObject, FamiliarityProgressObject, FlashcardStateObject
 Cohesion: 0.31
 Nodes (4): KomgaApi, KomgaBookReadProgressUpdate, KomgaReadProgress, KomgaReadProgressUpdate
 
-### Community 201 - "Community 201"
+### Community 199 - "Community 199"
 Cohesion: 0.18
 Nodes (10): MediaType, book, comic, manga, manhua, manhwa, novel, oel (+2 more)
 
-### Community 202 - "Community 202"
+### Community 200 - "Community 200"
 Cohesion: 0.18
 Nodes (11): CodingKeys, chapters, createdAt, id, score, status, targetId, targetType (+3 more)
 
-### Community 203 - "Community 203"
+### Community 201 - "Community 201"
 Cohesion: 0.2
 Nodes (7): CodingKeys, accessToken, askedForRefresh, expiresIn, refreshToken, tokenType, OAuthResponse
 
-### Community 204 - "Community 204"
+### Community 202 - "Community 202"
 Cohesion: 0.18
 Nodes (11): FilterType, author, base, check, genre, group, select, sort (+3 more)
 
-### Community 205 - "Community 205"
-Cohesion: 0.2
-Nodes (7): Section, external, installed, pinned, updates, SourceCellDataSource, UITableViewDiffableDataSource<Section, SourceInfo2>
-
-### Community 206 - "Community 206"
+### Community 203 - "Community 203"
 Cohesion: 0.22
 Nodes (5): ReaderTransitionNode, Transition, TransitionType, next, prev
 
-### Community 208 - "Community 208"
+### Community 205 - "Community 205"
 Cohesion: 0.2
 Nodes (4): InsightPlatterView, StatsGridView, YearSelectorView, items
 
-### Community 209 - "Community 209"
+### Community 206 - "Community 206"
 Cohesion: 0.24
 Nodes (4): EditingGroupTitle, FilterGroupsView, SheetID, create
 
-### Community 213 - "Community 213"
+### Community 208 - "Community 208"
 Cohesion: 0.29
 Nodes (3): ContentView, ScrollVisibilityReportingView, View
 
-### Community 214 - "Community 214"
+### Community 209 - "Community 209"
 Cohesion: 0.27
 Nodes (7): NumberType, float, int, TrackerSettingOptionType, counter, date, TrackerSettingOptionView
+
+### Community 210 - "Community 210"
+Cohesion: 0.33
+Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
+
+### Community 211 - "Community 211"
+Cohesion: 0.33
+Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
+
+### Community 212 - "Community 212"
+Cohesion: 0.33
+Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
+
+### Community 213 - "Community 213"
+Cohesion: 0.33
+Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
+
+### Community 214 - "Community 214"
+Cohesion: 0.33
+Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
 
 ### Community 215 - "Community 215"
 Cohesion: 0.33
@@ -1115,8 +1115,8 @@ Cohesion: 0.33
 Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
 
 ### Community 217 - "Community 217"
-Cohesion: 0.33
-Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
+Cohesion: 0.18
+Nodes (11): code:swift (let learnerViewController = UIHostingController(rootView: Le), code:swift (let inputSet = Set(fragments.map(\.index))), code:swift (viewControllers = [), code:swift (imageView.image = image), code:swift (imageView.image = response.image), code:swift (imageView.image = imageContainer?.image   // line 301), code:swift (imageView.image = imageContainer?.image   // line 363), code:swift (if let ctx = learnerContext {) (+3 more)
 
 ### Community 218 - "Community 218"
 Cohesion: 0.33
@@ -1130,243 +1130,223 @@ Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal
 Cohesion: 0.33
 Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
 
-### Community 221 - "Community 221"
-Cohesion: 0.33
-Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
-
-### Community 222 - "Community 222"
-Cohesion: 0.18
-Nodes (11): code:swift (let learnerViewController = UIHostingController(rootView: Le), code:swift (let inputSet = Set(fragments.map(\.index))), code:swift (viewControllers = [), code:swift (imageView.image = image), code:swift (imageView.image = response.image), code:swift (imageView.image = imageContainer?.image   // line 301), code:swift (imageView.image = imageContainer?.image   // line 363), code:swift (if let ctx = learnerContext {) (+3 more)
-
 ### Community 223 - "Community 223"
-Cohesion: 0.33
-Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
-
-### Community 224 - "Community 224"
-Cohesion: 0.33
-Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
+Cohesion: 0.2
+Nodes (5): CustomSourceConfig, demo, kavita, komga, local
 
 ### Community 225 - "Community 225"
-Cohesion: 0.33
-Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
-
-### Community 228 - "Community 228"
 Cohesion: 0.29
 Nodes (3): FileManager, String, URL
 
-### Community 230 - "Community 230"
-Cohesion: 0.27
-Nodes (4): LearnerEvents, LearnerPageContext, Notification.Name, WordTapEvent
-
-### Community 232 - "Community 232"
-Cohesion: 0.22
-Nodes (6): BackupCategory, CodingKeys, data, group, sort, title
-
-### Community 233 - "Community 233"
+### Community 228 - "Community 228"
 Cohesion: 0.2
 Nodes (8): MangaBakaLibraryState, completed, considering, dropped, paused, planToRead, reading, rereading
 
-### Community 235 - "Community 235"
+### Community 229 - "Community 229"
+Cohesion: 0.22
+Nodes (6): BackupCategory, CodingKeys, data, group, sort, title
+
+### Community 231 - "Community 231"
 Cohesion: 0.2
 Nodes (3): ReaderPagedViewModel, ReaderTextViewModel, ReaderWebtoonViewModel
 
-### Community 237 - "Community 237"
+### Community 233 - "Community 233"
 Cohesion: 0.22
 Nodes (5): FilterGroupCreateView, FilterState, excluded, included, none
 
-### Community 238 - "Community 238"
+### Community 234 - "Community 234"
+Cohesion: 0.27
+Nodes (5): PreferenceKey, MultiSelectDestination, ScrollOffsetPreferenceKey, SelectDestination, SettingPageDestination
+
+### Community 235 - "Community 235"
 Cohesion: 0.29
 Nodes (4): ReaderInfoPageType, next, previous, ReaderInfoPageView
 
-### Community 239 - "Community 239"
-Cohesion: 0.44
-Nodes (8): canceled(), checkForCaptcha(), init(), load(), navigated(), openWebViewPopup(), timeout(), webView()
-
-### Community 240 - "Community 240"
+### Community 236 - "Community 236"
 Cohesion: 0.22
 Nodes (5): NetworkDataType, cellular, none, wifi, Reachability
 
-### Community 242 - "Community 242"
+### Community 237 - "Community 237"
+Cohesion: 0.44
+Nodes (8): canceled(), checkForCaptcha(), init(), load(), navigated(), openWebViewPopup(), timeout(), webView()
+
+### Community 239 - "Community 239"
 Cohesion: 0.29
 Nodes (4): PageBackground, color, gradient, UIColor
 
-### Community 243 - "Community 243"
+### Community 240 - "Community 240"
 Cohesion: 0.27
 Nodes (3): ContentView, ImageOverlayView, OCRDetailView
 
-### Community 244 - "Community 244"
+### Community 242 - "Community 242"
 Cohesion: 0.27
 Nodes (4): LabelView, MangaActionButtonStyle, MangaDetailsHeaderView, TagView
 
-### Community 247 - "Community 247"
+### Community 243 - "Community 243"
+Cohesion: 0.27
+Nodes (3): BetterBorderedButtonStyle, Color, EdgeInsets
+
+### Community 244 - "Community 244"
 Cohesion: 0.29
 Nodes (4): Option, SelectButtonStyle, SelectFilterGroupView, SelectFilterView
 
 ### Community 248 - "Community 248"
 Cohesion: 0.27
-Nodes (3): BetterBorderedButtonStyle, Color, EdgeInsets
-
-### Community 249 - "Community 249"
-Cohesion: 0.27
 Nodes (4): SmallSectionHeaderConfiguration, SmallSectionHeaderContentView, UIContentConfiguration, UIContentView
 
-### Community 253 - "Community 253"
-Cohesion: 0.29
-Nodes (4): Item, MangaUpdatesView, UpdateInfo, UpdateSection
-
-### Community 254 - "Community 254"
+### Community 250 - "Community 250"
 Cohesion: 0.2
 Nodes (9): Acceptance Criteria, Approach, Decision Register, Files Touched, Goal, Implementation Steps, Risks, Testing Strategy (+1 more)
 
-### Community 260 - "Community 260"
+### Community 254 - "Community 254"
 Cohesion: 0.28
-Nodes (3): LearnerCoordinatorTests, LearnerEventsTests, VocabIndexTests
+Nodes (3): Coordinator, ImagePicker, PHPickerViewControllerDelegate
 
-### Community 261 - "Community 261"
-Cohesion: 0.28
-Nodes (6): OCRError, cancelled, imageUnsupported, requestFailed, OCRResult, OCRService
+### Community 255 - "Community 255"
+Cohesion: 0.31
+Nodes (4): LearnerEvents, LearnerPageContext, Notification.Name, WordTapEvent
 
-### Community 262 - "Community 262"
+### Community 256 - "Community 256"
 Cohesion: 0.22
 Nodes (7): PublishingStatus, cancelled, completed, hiatus, notPublished, ongoing, unknown
 
-### Community 263 - "Community 263"
+### Community 257 - "Community 257"
 Cohesion: 0.25
 Nodes (5): CodingKey, BackupSource, CodingKeys, apiVersion, id
 
-### Community 265 - "Community 265"
+### Community 259 - "Community 259"
 Cohesion: 0.22
 Nodes (6): LogType, debug, `default`, error, info, warning
 
-### Community 266 - "Community 266"
-Cohesion: 0.25
-Nodes (3): NSCopying, FilterBase, SortSelection
-
-### Community 268 - "Community 268"
+### Community 261 - "Community 261"
 Cohesion: 0.33
 Nodes (3): Dictionary, ImageRequest.UserInfoKey, PageInterceptorProcessor
 
-### Community 269 - "Community 269"
+### Community 263 - "Community 263"
 Cohesion: 0.25
 Nodes (7): VocabSection, VocabSortOption, alphabetical, dateAddedAsc, dateAddedDesc, familiarityAsc, familiarityDesc
 
-### Community 274 - "Community 274"
-Cohesion: 0.28
-Nodes (3): MigrateSourceSelectionView, SourceCell, View
-
-### Community 275 - "Community 275"
+### Community 268 - "Community 268"
 Cohesion: 0.28
 Nodes (3): SwiftUINavigationView, MigrateSourceInfo, MigrateSourcesView
 
-### Community 277 - "Community 277"
+### Community 269 - "Community 269"
+Cohesion: 0.28
+Nodes (3): MigrateSourceSelectionView, SourceCell, View
+
+### Community 272 - "Community 272"
 Cohesion: 0.22
 Nodes (3): SceneDelegate, UIResponder, UIWindowSceneDelegate
 
-### Community 279 - "Community 279"
+### Community 274 - "Community 274"
 Cohesion: 0.33
 Nodes (5): EnvironmentKey, EnvironmentValues, SettingCustomContentKey, SettingPageContentKey, View
 
-### Community 280 - "Community 280"
-Cohesion: 0.25
-Nodes (3): CloseButton, CloseButtonUIKit, action
-
-### Community 281 - "Community 281"
+### Community 275 - "Community 275"
 Cohesion: 0.25
 Nodes (5): Page, PageType, imagePage, nextInfoPage, prevInfoPage
 
-### Community 283 - "Community 283"
+### Community 276 - "Community 276"
 Cohesion: 0.39
 Nodes (7): ShikimoriManga, ShikimoriMangas, ShikimoriPoster, ShikimoriQueries, ShikimoriSearchVars, ShikimoriUser, ShikimoriUserRate
 
-### Community 284 - "Community 284"
+### Community 277 - "Community 277"
 Cohesion: 0.22
 Nodes (6): ReadingMode, continuous, ltr, rtl, vertical, webtoon
 
-### Community 290 - "Community 290"
+### Community 281 - "Community 281"
 Cohesion: 0.25
 Nodes (7): MangaBakaType, manga, manhua, manhwa, novel, oel, other
 
-### Community 291 - "Community 291"
+### Community 283 - "Community 283"
+Cohesion: 0.25
+Nodes (3): PagePosition, first, second
+
+### Community 284 - "Community 284"
 Cohesion: 0.29
 Nodes (4): NSImage, UITextAutocapitalizationType, allCharacters, none
 
-### Community 292 - "Community 292"
+### Community 285 - "Community 285"
 Cohesion: 0.39
 Nodes (3): Range<String.Index>, String, StringProtocol
 
-### Community 293 - "Community 293"
+### Community 286 - "Community 286"
 Cohesion: 0.32
 Nodes (3): TrackerSearchItemCell, TrackerSearchOptionsView, TrackerSearchView
 
-### Community 296 - "Community 296"
+### Community 291 - "Community 291"
 Cohesion: 0.25
 Nodes (3): TrackerSettingOptionViewCoordinator, UIPickerViewDataSource, UIPickerViewDelegate
 
-### Community 300 - "Community 300"
+### Community 295 - "Community 295"
 Cohesion: 0.29
 Nodes (3): App, AidokuApp, OCRSpikeApp
 
-### Community 302 - "Community 302"
+### Community 297 - "Community 297"
 Cohesion: 0.29
 Nodes (6): MangaViewer, defaultViewer, ltr, rtl, scroll, vertical
 
-### Community 304 - "Community 304"
+### Community 299 - "Community 299"
 Cohesion: 0.29
 Nodes (5): QueryContext, dashboard, none, recommended, search
 
-### Community 305 - "Community 305"
+### Community 300 - "Community 300"
 Cohesion: 0.29
 Nodes (5): TrackScoreType, hundredPoint, optionList, tenPoint, tenPointDecimal
 
-### Community 307 - "Community 307"
+### Community 302 - "Community 302"
 Cohesion: 0.48
 Nodes (3): HeightQueryable, ReaderWebtoonPageNode, ReaderWebtoonTransitionNode
 
-### Community 311 - "Community 311"
+### Community 306 - "Community 306"
 Cohesion: 0.29
 Nodes (4): ChapterSortOption, chapter, sourceOrder, uploadDate
 
-### Community 314 - "Community 314"
+### Community 309 - "Community 309"
 Cohesion: 0.29
 Nodes (5): MigrationState, done, failed, idle, running
 
-### Community 318 - "Community 318"
+### Community 315 - "Community 315"
 Cohesion: 0.38
 Nodes (5): LearnerTabView, String, Tab, flashcards, vocabulary
 
-### Community 321 - "Community 321"
-Cohesion: 0.38
-Nodes (4): application(), applicationWillTerminate(), LoadingStyle, indefinite
-
-### Community 322 - "Community 322"
+### Community 317 - "Community 317"
 Cohesion: 0.33
 Nodes (3): CustomSourceKind, kavita, komga
 
-### Community 323 - "Community 323"
+### Community 318 - "Community 318"
+Cohesion: 0.33
+Nodes (4): ChapterFilterMethod, downloaded, unread, ChapterFilterOption
+
+### Community 319 - "Community 319"
 Cohesion: 0.29
 Nodes (5): Autonomous Decisions, Deferred Items — 20260512-081402_learner-bugfix-batch, Execution Mode, Skipped Steps, Tooling Autoinstall
 
-### Community 324 - "Community 324"
+### Community 320 - "Community 320"
 Cohesion: 0.29
 Nodes (5): Deferred Items — 20260509-123140_mangadict-mvp, Execution Mode, Skipped Steps, Tooling Autoinstall, Validation Warnings Acknowledged (carry-forward)
 
-### Community 326 - "Community 326"
+### Community 323 - "Community 323"
 Cohesion: 0.33
 Nodes (4): ScreenPosition, bottom, middle, top
 
-### Community 328 - "Community 328"
+### Community 324 - "Community 324"
+Cohesion: 0.4
+Nodes (4): ImageProcessing, ProcessorError, invalidModel, UpscaleProcessor
+
+### Community 326 - "Community 326"
 Cohesion: 0.53
 Nodes (3): SearchContentView, SearchResult, ViewModel
 
-### Community 332 - "Community 332"
+### Community 330 - "Community 330"
 Cohesion: 0.53
 Nodes (4): String, VocabRowView, VocabularyEntryObject, VocabularyListView
 
-### Community 338 - "Community 338"
+### Community 337 - "Community 337"
 Cohesion: 0.33
 Nodes (4): 2026-05-09, 2026-05-12, Project Log, Timeline
 
-### Community 339 - "Community 339"
+### Community 338 - "Community 338"
 Cohesion: 0.33
 Nodes (4): Go / No-Go Decision, Observations, OCR Spike Notes, Per-Page Accuracy Log
 
@@ -1374,35 +1354,31 @@ Nodes (4): Go / No-Go Decision, Observations, OCR Spike Notes, Per-Page Accuracy
 Cohesion: 0.33
 Nodes (4): Reader, paged, scroll, text
 
-### Community 344 - "Community 344"
-Cohesion: 0.4
-Nodes (3): PagePosition, first, second
-
-### Community 363 - "Community 363"
+### Community 361 - "Community 361"
 Cohesion: 0.6
 Nodes (3): ChapterReadProgress, PageTracker, PageTrackUpdate
 
-### Community 390 - "Community 390"
+### Community 388 - "Community 388"
 Cohesion: 0.5
 Nodes (4): code:bash (sudo xcode-select -s /Applications/Xcode.app/Contents/Develo), Lock-in tests added / updated, Resolution — 2026-05-11, Verification
 
-### Community 416 - "Community 416"
+### Community 411 - "Community 411"
 Cohesion: 0.67
 Nodes (3): code:swift (guard let cgImage = image.cgImage else { return }), Findings (Introduced / Aggravated), Nitpicks
 
 ## Knowledge Gaps
 - **944 isolated node(s):** `GET`, `POST`, `HEAD`, `PUT`, `DELETE` (+939 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **178 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **179 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `NSLocalizedString()` connect `Settings View (SwiftUI)` to `Community 256`, `Community 129`, `Carousel Component`, `Community 262`, `Add Source Flow`, `Reader Legacy UIKit Views`, `Manga Grid Styles`, `Zoomable Reader Nodes`, `Community 139`, `Community 140`, `Komga Source Models`, `Community 142`, `Community 141`, `Community 137`, `Texture (AsyncDisplayKit) Cells`, `CoreData Track Manager`, `Community 276`, `Kavita Filters`, `Image Upscaling Models`, `Community 154`, `Community 155`, `Layout Utilities (WrappingHStack)`, `Download Manager`, `Community 286`, `Community 159`, `Source Manager`, `Community 162`, `Download Queue`, `Community 165`, `CoreData Categories Manager`, `Backup Views (SwiftUI)`, `Community 295`, `Home Big Scroller`, `Highlight Button & List`, `Community 297`, `Tracker Sync Tests`, `Community 183`, `Webtoon Page Node`, `Community 67`, `Community 327`, `Community 201`, `Community 74`, `Community 205`, `Community 206`, `Community 80`, `Community 208`, `Community 210`, `Community 211`, `Community 212`, `Community 341`, `Community 214`, `Community 345`, `Community 346`, `Community 347`, `Community 92`, `Community 96`, `Community 354`, `Community 358`, `Community 103`, `Community 362`, `Community 108`, `Community 365`, `Community 238`, `Community 244`, `Community 245`, `Community 250`, `Community 253`?**
+- **Why does `NSLocalizedString()` connect `Backup Schema` to `Community 256`, `Community 129`, `Carousel Component`, `Add Source Flow`, `Texture (AsyncDisplayKit) Cells`, `Manga Grid Styles`, `Zoomable Reader Nodes`, `Komga Source Models`, `Community 140`, `Library View Controller`, `Community 142`, `Community 143`, `Community 144`, `Community 271`, `Community 138`, `Community 278`, `Settings View (SwiftUI)`, `Backup Data Models`, `Community 156`, `CoreData Source Manager`, `Community 155`, `Community 158`, `SwiftUI / UIKit Bridge`, `Community 289`, `Source Manager`, `Community 161`, `Community 287`, `AidokuRunner Chapter Extensions`, `Community 290`, `Backup Views (SwiftUI)`, `Kavita Source Runner`, `Highlight Button & List`, `Tracker Sync Tests`, `Legacy Chapter Models`, `Tracker Adapters (AniList/Bangumi)`, `UIKit / AppKit Shim`, `JsonAnyValue Codable`, `Home List View`, `Community 187`, `Komga Book Models`, `Community 193`, `Community 68`, `Community 325`, `Community 199`, `Community 203`, `Community 75`, `Community 205`, `Community 207`, `Community 209`, `Community 82`, `Community 344`, `Community 345`, `Community 95`, `Community 352`, `Community 98`, `Community 99`, `Community 356`, `Community 359`, `Community 105`, `Community 107`, `Community 235`, `Community 241`, `Community 242`, `Community 247`, `Community 252`?**
   _High betweenness centrality (0.158) - this node is a cross-community bridge._
-- **Why does `ChapterIdentifier` connect `Community 299` to `Community 389`, `Community 325`, `Community 74`, `Community 110`, `Tracker Adapters (AniList/Bangumi)`, `Download Errors & Tasks`, `Community 245`, `Image Upscaling Models`, `Layout Utilities (WrappingHStack)`?**
+- **Why does `ChapterIdentifier` connect `Community 293` to `SwiftUI / UIKit Bridge`, `Community 129`, `Community 385`, `Community 322`, `Home Big Scroller`, `JsonAnyValue Codable`, `Community 241`, `Old Source View Controller`, `Backup Data Models`?**
   _High betweenness centrality (0.045) - this node is a cross-community bridge._
-- **Why does `UIImage` connect `Add Source Flow` to `Carousel Component`, `Community 260`, `Reader Legacy UIKit Views`, `Manga Grid Styles`, `Zoomable Reader Nodes`, `Backup Schema`, `Kavita Filters`, `Community 150`, `Community 154`, `Settings View (SwiftUI)`, `CoreData Categories Manager`, `Highlight Button & List`, `Tracker Sync Tests`, `Community 183`, `Custom Searchable Bridge`, `Community 62`, `Community 81`, `Community 345`, `Community 92`, `Community 108`, `Community 238`, `Community 243`, `Community 251`?**
+- **Why does `UIImage` connect `Community 75` to `Carousel Component`, `Add Source Flow`, `Manga Grid Styles`, `Komga Source Models`, `Library View Controller`, `Reader Text View`, `Community 151`, `Settings View (SwiftUI)`, `Community 155`, `CoreData Source Manager`, `AidokuRunner Chapter Extensions`, `Tracker Sync Tests`, `Tracker Adapters (AniList/Bangumi)`, `Community 60`, `Community 64`, `Community 83`, `Community 95`, `Community 103`, `Community 107`, `Community 235`, `Community 240`, `Community 249`?**
   _High betweenness centrality (0.044) - this node is a cross-community bridge._
 - **Are the 135 inferred relationships involving `NSLocalizedString()` (e.g. with `.backgroundRefreshLibrary()` and `.refreshLibrary()`) actually correct?**
   _`NSLocalizedString()` has 135 INFERRED edges - model-reasoned connections that need verification._
