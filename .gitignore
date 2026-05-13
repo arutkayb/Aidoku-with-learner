@@ -40,5 +40,6 @@ spikes/OCRSpike/DerivedData/
 /build/
 
 # Per-machine Claude state
-.claude/settings.local.json
-.claude/scheduled_tasks.lock
+.claude/
+agent-logs/
+CLAUDE.md
