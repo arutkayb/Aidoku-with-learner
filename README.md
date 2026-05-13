@@ -31,14 +31,14 @@ The project requires two sibling packages checked out next to this repo:
 
 ```
 mangadict/
-  Aidoku-with-learner/   ← this repo
+  Aidoku-lingo/          ← this repo
   AidokuRunner/          ← sibling, same parent dir
   Wasm3/                 ← sibling, same parent dir
 ```
 
 ```sh
 # Clone all three into the same parent directory
-git clone https://github.com/arutkayb/Aidoku-with-learner.git
+git clone https://github.com/arutkayb/Aidoku-lingo.git
 git clone https://github.com/Aidoku/AidokuRunner.git
 git clone https://github.com/Skittyblock/Wasm3.git
 ```

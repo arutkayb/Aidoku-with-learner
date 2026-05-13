@@ -59,6 +59,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>aidoku-lingo</string>
+				<string>aidoku</string>
 			</array>
 		</dict>
 	</array>
