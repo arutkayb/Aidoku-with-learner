@@ -1,0 +1,140 @@
+{
+  "base_branch": "main",
+  "status": "completed",
+  "has_deferred": false,
+  "deferred_count": 0,
+  "tasks": [
+    {
+      "number": 1,
+      "name": "app-identity-rename",
+      "depends_on": [],
+      "parallelizable_with": [2, 3, 4],
+      "status": "completed",
+      "plan_file": "PLAN-task-1-app-identity-rename.md",
+      "changes_summary": "Renamed xcconfigs (Aidoku→Aidoku-lingo, IOS, MACOS variants); updated APP_ID_SUFFIX, PRODUCT_BUNDLE_IDENTIFIER (iOS pbxproj override), PRODUCT_NAME, INFOPLIST_KEY_CFBundleDisplayName in pbxproj; InfoPlist.strings en+ja; iOS URL scheme; renamed Aidoku.xcodeproj→Aidoku-lingo.xcodeproj + scheme ReferencedContainer refs. Build verified: CFBundleDisplayName=Aidoku Lingo, CFBundleIdentifier=app.aidoku.Aidoku-lingo.",
+      "verification_result": {
+        "verdict": "PASS",
+        "checks_passed": 7,
+        "checks_failed": 0,
+        "spot_check_passed": true,
+        "retry_count": 0,
+        "log_file": null
+      },
+      "error": null,
+      "skip_reason": null,
+      "retry_count": 0
+    },
+    {
+      "number": 2,
+      "name": "app-icon-swap",
+      "depends_on": [],
+      "parallelizable_with": [1, 3, 4],
+      "status": "completed",
+      "plan_file": "PLAN-task-2-app-icon-swap.md",
+      "changes_summary": "Replaced AppIcon.appiconset contents with drop icons (37 PNGs + Contents.json); deleted Shared/AppIcon.icon/ Liquid Glass variant.",
+      "verification_result": {
+        "verdict": "PASS",
+        "checks_passed": 4,
+        "checks_failed": 0,
+        "spot_check_passed": true,
+        "retry_count": 0,
+        "log_file": null
+      },
+      "error": null,
+      "skip_reason": null,
+      "retry_count": 0
+    },
+    {
+      "number": 3,
+      "name": "readme-rewrite",
+      "depends_on": [],
+      "parallelizable_with": [1, 2, 4],
+      "status": "completed",
+      "plan_file": "PLAN-task-3-readme-rewrite.md",
+      "changes_summary": "Wholesale rewrite of README.md as Aidoku Lingo fork doc with Features (reader+learner), Limitations (iOS 15+/18+), Setup (sibling-clone instructions for AidokuRunner+Wasm3), How to use, Acknowledgements sections. Upstream-only sections (TestFlight/AltStore/Discord/Weblate/CLA/Contributing) removed.",
+      "verification_result": {
+        "verdict": "PASS",
+        "checks_passed": 2,
+        "checks_failed": 0,
+        "spot_check_passed": true,
+        "retry_count": 0,
+        "log_file": null
+      },
+      "error": null,
+      "skip_reason": null,
+      "retry_count": 0
+    },
+    {
+      "number": 4,
+      "name": "strip-upstream-artifacts",
+      "depends_on": [],
+      "parallelizable_with": [1, 2, 3],
+      "status": "completed",
+      "plan_file": "PLAN-task-4-strip-upstream-artifacts.md",
+      "changes_summary": "Deleted .github/FUNDING.yml, .github/workflows/update_altstore_source.yml, .github/workflows/supporting/, .github/ISSUE_TEMPLATE/. Updated SettingsAboutView.swift: GITHUB_REPO points to arutkayb/Aidoku-lingo, removed DISCORD_SERVER and SUPPORT_VIA_KOFI rows. lint.yml + nightly.yml retained.",
+      "verification_result": {
+        "verdict": "PASS",
+        "checks_passed": 5,
+        "checks_failed": 0,
+        "spot_check_passed": true,
+        "retry_count": 0,
+        "log_file": null
+      },
+      "error": null,
+      "skip_reason": null,
+      "retry_count": 0
+    },
+    {
+      "number": 5,
+      "name": "folder-and-repo-rename",
+      "depends_on": [1, 2, 3, 4],
+      "parallelizable_with": [],
+      "status": "completed",
+      "plan_file": "PLAN-task-5-folder-and-repo-rename.md",
+      "changes_summary": "GitHub repo renamed arutkayb/Aidoku-with-learner→arutkayb/Aidoku-lingo. Local origin remote repointed. altstore remote branch was already absent (no-op). User executed local mv /Users/rutkay/workspace/mangadict/Aidoku-with-learner → Aidoku-lingo. Final build from new path succeeded (CFBundleDisplayName=Aidoku Lingo, CFBundleIdentifier=app.aidoku.Aidoku-lingo, URL scheme=aidoku-lingo). graphify update . refreshed graph (5612 nodes, 8639 edges).",
+      "verification_result": {
+        "verdict": "PASS",
+        "checks_passed": 6,
+        "checks_failed": 0,
+        "spot_check_passed": true,
+        "retry_count": 0,
+        "log_file": null
+      },
+      "error": null,
+      "skip_reason": null,
+      "retry_count": 0
+    }
+  ],
+  "execution_log": [
+    {
+      "task": 1,
+      "event": "completed",
+      "commit": "60384f65",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "task": 2,
+      "event": "completed",
+      "commit": "ccd6aa28",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "task": 3,
+      "event": "completed",
+      "commit": "01df2831",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "task": 4,
+      "event": "completed",
+      "commit": "112fbbd5",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "task": 5,
+      "event": "completed",
+      "commit": null,
+      "timestamp": "2026-05-12"
+    }
+  ]
+}

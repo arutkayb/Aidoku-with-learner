@@ -23,7 +23,18 @@ buildServer.json
 # graphify (local-only — see graphify README)
 graphify-out/manifest.json
 graphify-out/cost.json
+graphify-out/cache/
+graphify-out/.graphify_incremental.json
+graphify-out/.graphify_root
+graphify-out/.graphify_python
 
 # OCR Spike build artifacts
 spikes/OCRSpike/build/
 spikes/OCRSpike/DerivedData/
+
+# Top-level xcodebuild output
+/build/
+
+# Per-machine Claude state
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
