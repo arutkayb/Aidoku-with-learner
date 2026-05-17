@@ -22,7 +22,8 @@ struct LearnerOCRLanguagesPicker: View {
         ("en-US", "English (en-US)"),
         ("ja-JP", "Japanese (ja-JP)"),
         ("fr-FR", "French (fr-FR)"),
-        ("es-ES", "Spanish (es-ES)")
+        ("es-ES", "Spanish (es-ES)"),
+        ("tr-TR", "Turkish (tr-TR)")
     ]
 
     static let defaultsKey = "Learner.ocrLanguagesList"
