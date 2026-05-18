@@ -259,6 +259,13 @@ extension LearnerPageContext {
     /// Derives the source language tag from the OCR language stored in UserDefaults.
     /// Currently global; per-manga language is tracked as I11 in the review backlog.
     var language: String {
+        // Prefer the new multi-select list (first entry = primary language).
+        if let data = UserDefaults.standard.data(forKey: "Learner.ocrLanguagesList"),
+           let langs = try? JSONDecoder().decode([String].self, from: data),
+           let first = langs.first, !first.isEmpty {
+            return first
+        }
+        // Legacy single-select key (kept as a fallback for users mid-migration).
         if let lang = UserDefaults.standard.string(forKey: "Learner.ocrLanguages"), !lang.isEmpty {
             return lang
         }
